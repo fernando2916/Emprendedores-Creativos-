@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+
+/* Preline ui */
+@import "../../node_modules/preline/variants.css";
+@source "../../node_modules/preline/dist/*.js";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+        --color-selec-100: #812485;
+        --color-fondo-100: #000c1f;
+        --color-cont-100: #00122e;
+    
+        --color-nav-50: #eedbff;
+        --color-nav-100: #dfbdff;
+        --color-nav-200: #bc75ff;
+        --color-nav-300: #9c33ff;
+        --color-nav-400: #7c00f0;
+        --color-nav-500: #5900ab;
+        --color-nav-600: #47008a;
+        --color-nav-700: #350066;
+        --color-nav-800: #220042;
+        --color-nav-900: #120024;
+        --color-nav-950: #08000f;
+    
+        --color-link-100: #3bbdf5;
+        --color-link-200: #1bb2f3;
+        --color-link-300: #0ba0df;
+        --color-link-400: #0a8bc2;
+        --color-link-500: #0873a0;
+        --color-link-600: #065a7e;
+        --color-link-700: #054561;
+        --color-link-800: #032d3f;
+        --color-link-900: #021822;
+        --color-link-950: #010a0f;
+    
+        --color-btn-50: #ff0fb3;
+        --color-btn-200: #bd0081;
+        --color-btn-400: #6e004c;
+        --color-btn-600: #54003a;
+    
+        --color-alerts-100: #1ee618;
+        --color-alerts-300: #ffb433;
+        --color-alerts-500: #eb0000;
+    
+        --color-categoria-100: #005761;
+
+}
+
+@layer utilities {
+    tr:nth-child(even) {
+      background: #1e0833;
+    }
+    body {
+      touch-action: pan-y
+    }
+    
+    
+    ::-webkit-scrollbar {
+      width: 1px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: "#000";
+      border-radius: 10px;
+    }
+    
+  }
+
