@@ -8,17 +8,21 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Profile;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
+
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasRoles;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -56,5 +60,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function profile(): HasOne
+    {
+        return $this->hasOne(Profile::class, 'users_id');
+    }
+
+    // Accessor para obtener la foto o una por defecto
+    public function getAvatarUrlAttribute(): string
+    {
+        return $this->avatar
+            ? Storage::url($this->avatar)
+            : 'https://ui-avatars.com/api/?name=' . urlencode($this->nombre_completo);
     }
 }

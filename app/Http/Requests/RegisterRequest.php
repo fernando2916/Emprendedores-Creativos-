@@ -27,9 +27,9 @@ class RegisterRequest extends FormRequest
             'username' => ['required', 'unique:users', 'min:3', 'max:20'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => [
-                'required', 
-                'confirmed', 
-                PasswordRules::min(8)->letters()->symbols()->numbers()
+                'required',
+                'confirmed',
+                PasswordRules::min(8)->letters()->symbols()->numbers(),
             ],
         ];
     }
@@ -45,7 +45,7 @@ class RegisterRequest extends FormRequest
             'email.email' => 'El correo no es válido',
             'email.unique' => 'El correo ya esta registrado, utiliza otro',
             'password' => 'La contraseña debe de contener al menos 8 caracteres, un símbolo, un número y tiene que estar confirmada.',
-            'password.confirmed' => 'Las contraseñas no son iguales'
+            'password.confirmed' => 'Las contraseñas no son iguales',
         ];
     }
 }

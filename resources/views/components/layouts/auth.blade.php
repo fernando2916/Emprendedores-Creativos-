@@ -6,7 +6,7 @@
 
         <title>@yield('titulo') Emprendedores Creativos &copy;</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <script src="https://kit.fontawesome.com/255bc8dd2c.js" crossorigin="anonymous"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @livewireStyles
         @fluxAppearance()

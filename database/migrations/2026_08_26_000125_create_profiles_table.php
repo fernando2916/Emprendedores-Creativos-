@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('profiles', function (Blueprint $table) {
+            $table->id();
+            $table->string('avatar')->nullable();
+            $table->string('headline', 60)->nullable()->default('Sin titulo profesional.');
+            $table->text('biografia')->nullable();
+            $table->string('facebook_user')->nullable();
+            $table->string('instagram_user')->nullable();
+            $table->string('whatsapp_user')->nullable();
+            $table->string('twitter_user')->nullable();
+            $table->string('tiktok_user')->nullable();
+            $table->string('youtube_user')->nullable();
+            $table->foreignId('users_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('profiles');
+    }
+};

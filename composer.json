@@ -17,6 +17,7 @@
         "spatie/laravel-permission": "^8.3"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.7",
         "fakerphp/faker": "^1.23",
         "laravel/boost": "^2.2",
         "laravel/pail": "^1.2.5",
@@ -58,7 +59,13 @@
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@ide-helper"
+        ],
+        "ide-helper": [
+            "@php artisan clear-compiled",
+            "@php artisan ide-helper:generate",
+            "@php artisan idehelper:models --nowrite"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",

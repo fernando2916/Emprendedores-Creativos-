@@ -5,14 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class ConfirmPasswordController extends Controller
 {
     public function index(User $user)
     {
         return view('Auth.ConfirmPassword', [
-            'user' => $user
+            'user' => $user,
         ]);
     }
 

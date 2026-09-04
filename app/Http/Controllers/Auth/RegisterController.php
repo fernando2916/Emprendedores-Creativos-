@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Mail\VerificationMail;
-use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -25,7 +25,7 @@ class RegisterController extends Controller
         $data = $request->validated();
 
         $data['username'] = Str::slug($data['username']);
-        
+
         $user = User::create([
             'nombre_completo' => $data['nombre_completo'],
             'username' => $data['username'],
@@ -34,6 +34,11 @@ class RegisterController extends Controller
             'verification_code' => random_int(100000, 999999),
             'verification_code_expires_at' => $expiration,
             'verification_id' => Str::uuid(),
+        ]);
+
+        $user->profile()->create([
+            'avatar' => null,
+            'headline' => 'Sin titulo profesional.',
         ]);
 
         Mail::to($user->email)->send(new VerificationMail($user));
@@ -46,10 +51,8 @@ class RegisterController extends Controller
             'color' => '#ffffff',
         ]);
 
-
         return redirect()->route('verify', [
             'user' => $user,
         ]);
     }
-
 }
