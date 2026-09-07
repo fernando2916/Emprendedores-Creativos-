@@ -43,11 +43,11 @@ Verificar Cuenta |
             <input type="hidden" name="code" id="code">
              <button type="submit" :disabled="cargando"
                 class="w-full dark:bg-btn-400 transition-colors duration-150 bg-btn-200 hover:bg-btn-400 dark:text-white py-2 px-4 rounded-lg dark:hover:bg-btn-600 mb-4 cursor-pointer dark:disabled:bg-btn-600 disabled:bg-btn-400">
-                <span x-show="!cargando">
+                <span x-show="!cargando" x-cloak>
                     <i class="fa-solid fa-user-check"></i>
                     Verificar Cuenta
                 </span>
-                <span x-show="cargando">
+                <span x-show="cargando" x-cloak>
                     <i class="fa-solid fa-circle-notch animate-spin"></i>
                 </span>
             </button>

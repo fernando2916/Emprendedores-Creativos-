@@ -66,24 +66,25 @@ Crear Cuenta |
                     placeholder="********" />
             </div>
             <div 
-                class="w-full py-2 flex flex-wrap items-center justify-center gap-x-1 text-[13px] break-words">
+                class="w-full py-2 flex flex-wrap items-center justify-center gap-x-1 text-[13px] wrap-break">
                 <p class="leading-snug">
                     Al registrarte, aceptas los
-                    {{-- <x-ui.modales.terminos-modal /> --}}
+                    
+                    <x-ui.modales.terminos-modal />
 
                     y el
-                    {{-- <x-ui.modales.aviso /> --}}
+                    <x-ui.modales.aviso />
                     de
                     <strong>Emprendedores Creativos.</strong>
                 </p>
             </div>
             <button type="submit" :disabled="cargando"
                 class="bg-btn-200 hover:bg-btn-400 dark:bg-btn-400 text-white dark:hover:bg-btn-600 duration-300 transition-colors rounded-md px-3 py-2 w-full cursor-pointer flex items-center justify-center gap-2 dark:disabled:bg-btn-600 disabled:bg-btn-400">
-                <span x-show="!cargando">
+                <span x-show="!cargando" x-cloak>
                     <i class="fa-solid fa-right-to-bracket"></i>
                     Crear Cuenta
                 </span>
-                <span x-show="cargando">
+                <span x-show="cargando" x-cloak>
                     <i class="fa-solid fa-circle-notch animate-spin"></i>
                 </span>
             </button>
@@ -92,8 +93,8 @@ Crear Cuenta |
     </div>
     <div class="space-x-1 rtl:space-x-reverse text-center  text-lg">
         ¿Ya tienes una cuenta?
-        {{-- <a href="" wire:navigate
-            class="text-link-100 font-semibold">Ingresar</a> --}}
+        <a href="{{ route('login') }}" wire:navigate
+            class="text-link-100 font-semibold">Ingresar</a>
     </div>
 </div>
 @endsection

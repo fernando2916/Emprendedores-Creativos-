@@ -15,7 +15,7 @@
     <button
         type="button"
         @click="show = !show" 
-        class="absolute top-[22px] right-3 flex items-center"
+        class="absolute top-5.5 right-3 flex items-center"
     >
         <i class="fa-solid fa-eye" x-show="show"></i>
         <i class="fa-solid fa-eye-slash" x-show="!show"></i>

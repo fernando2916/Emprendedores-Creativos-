@@ -26,11 +26,11 @@ Restablecer Contraseña |
         </div>
         <button type="submit" :disabled="cargando"
             class="bg-btn-200 hover:bg-btn-400 dark:bg-btn-400 text-white dark:hover:bg-btn-600 duration-300 transition-colors rounded-md px-3 py-2 w-full cursor-pointer flex items-center justify-center gap-2 dark:disabled:bg-btn-600 disabled:bg-btn-400">
-            <span x-show="!cargando">
+            <span x-show="!cargando" x-cloak>
                 <i class="fa-solid fa-key"></i>
                 Restablecer contraseña
             </span>
-            <span x-show="cargando">
+            <span x-show="cargando" x-cloak>
                 <i class="fa-solid fa-circle-notch animate-spin"></i>
             </span>
         </button>
