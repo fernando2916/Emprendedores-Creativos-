@@ -1,0 +1,37 @@
+.ql-toolbar {
+    background-color: #000c1f;
+  }
+  
+  .ql-toolbar span  {
+    color: white;
+  }
+  
+  span .ql-formats button {
+    color: white;
+  }
+  
+  div .ql-editor  {
+    font-size: medium;
+    color: white;
+  }
+  
+  .ql-container {
+    border-color: #3bbdf5;
+  
+  }
+  
+  
+  .post-content .ql-code-block-container {
+    background-color: #425e81;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .post-content p {
+    margin: 15px 0;
+  }
+  
+  .post-content p span img {
+    border-radius: 10px;
+  }

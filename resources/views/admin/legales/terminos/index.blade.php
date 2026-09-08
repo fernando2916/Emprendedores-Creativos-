@@ -7,7 +7,7 @@
   </p>
   @can('terminsCon create')
 
-  <a href="{{ route('admin.terminos.create') }}" wire:navigate>
+  <a href="{{ route('admin.terminos.create') }}">
     <button
       class="bg-btn-200 hover:bg-btn-400 dark:bg-btn-400 text-white dark:hover:bg-btn-600 duration-300 transition-colors rounded-md px-3 py-2 cursor-pointer">
       <i class="fa-solid fa-pen"></i>
@@ -33,23 +33,23 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($terms as $term )
+            @foreach ($terminos as $termino )
             <tr class="border-b dark:border-gray-700 ">
               <th scope="row" class="px-4 py-3 font-medium whitespace-nowrap dark:text-white">
-                {{ $term->id }}
+                {{ $termino->id }}
                 </th>
               <td class="px-4 py-3">
                 <p class="line-clamp-2">
-                  {{ $term->titulo }}
+                  {{ $termino->titulo }}
                 </p>
               </td>
-              <td class="px-4 py-3">{{ $term->fecha }}</td>
-              <td class="px-4 py-3">{{ $term->contenido }}</td>
+              <td class="px-4 py-3">{{ $termino->fecha }}</td>
+              <td class="px-4 py-3">{{ $termino->contenido }}</td>
               <td class="px-4 py-3 flex items-center justify-start">
                 <div class="flex items-center gap-2">
                   @can('terminsCon edit')
 
-                  <a href="{{ route('admin.terminos.edit', $term) }}">
+                  <a href="{{ route('admin.terminos.edit', $termino) }}">
                     <button
                       class="px-3 py-2 bg-btn-200 hover:bg-btn-400 dark:bg-btn-400 dark:hover:bg-btn-600 transition-colors duration-150 rounded-md cursor-pointer">
                       <i class="fa-solid fa-pen-to-square"></i>

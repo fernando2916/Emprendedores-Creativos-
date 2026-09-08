@@ -1,5 +1,8 @@
 @import "tailwindcss";
+@import 'quill/dist/quill.snow.css';
 @import "flowbite/src/themes/default";
+@import './post-content.css';
+@import './plan-content.css';
 
 @import "../../vendor/livewire/flux/dist/flux.css";
 @plugin "flowbite/plugin";
@@ -9,6 +12,8 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source "../../node_modules/flowbite";
+
+
 
 @theme {
     --font-sans:

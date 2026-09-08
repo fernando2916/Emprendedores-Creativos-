@@ -7,7 +7,7 @@
   </p>
   @can('avisoPriv create')
 
-  <a href="{{ route('admin.privacy.create') }}" wire:navigate>
+  <a href="{{ route('admin.privacy.create') }}">
     <button
       class="bg-btn-200 hover:bg-btn-400 dark:bg-btn-400 text-white dark:hover:bg-btn-600 duration-300 transition-colors rounded-md px-3 py-2 cursor-pointer">
       <i class="fa-solid fa-pen"></i>
@@ -33,10 +33,10 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($avisopr as $aviso )
+            @foreach ($privacy as $aviso )
             <tr class="border-b dark:border-gray-700 ">
               <th scope="row" class="px-4 py-3 font-medium whitespace-nowrap dark:text-white">
-                {{ $bloavisog->id }}
+                {{ $aviso->id }}
                 </th>
               <td class="px-4 py-3">
                 <p class="line-clamp-2">

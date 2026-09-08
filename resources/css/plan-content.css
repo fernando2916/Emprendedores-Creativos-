@@ -1,0 +1,8 @@
+.plan-content ol {
+    padding: 2px ;
+    list-style: disc;
+  }
+  
+  .plan-content ol li {
+    margin-left: 3rem;
+  }
