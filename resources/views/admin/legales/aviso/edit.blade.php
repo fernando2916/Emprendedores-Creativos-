@@ -57,7 +57,7 @@
 
         <button type="submit"
           class="bg-btn-200 hover:bg-btn-400 dark:bg-btn-400 text-white dark:hover:bg-btn-600 duration-300 transition-colors rounded-md px-3 py-2 w-full mt-5 cursor-pointer">
-          Editar Terminos
+          Editar Aviso de privacidad
         </button>
       </form>
     </div>
