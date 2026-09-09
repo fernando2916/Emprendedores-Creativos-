@@ -23,14 +23,9 @@
                     type="text" 
                     id="email"
                     disabled
-                    placeholder="Tu dirección de correo electrónico es {{ auth()->user()->email }} "
-                    class="disabled:bg-nav-900 disabled:border-nav-900 focus:shadow-link-200 w-full rounded-md border-2 bg-transparent border-link-100 p-2 pr-10 outline-none focus:shadow-md placeholder:text-slate-900 dark:placeholder:text-slate-400 mt-2"
+                    placeholder="Tu correo electrónico es {{ auth()->user()->email }} "
+                    class="disabled:bg-nav-900 disabled:border-nav-900 focus:shadow-link-200 w-full rounded-md border-2 bg-transparent border-link-100 p-2 pr-10 outline-none focus:shadow-md placeholder:text-slate-900 dark:placeholder:text-slate-400 mt-2 text-[13px] md:text-[14px] lg:text-xl"
                 />
-                {{-- <button class="px-4 text-link-400 border-2 border-link-100 rounded-md hover:bg-purple-50 transition-colors">
-                    <span class="text-sm">
-                        <i class="fa-solid fa-pencil"></i>
-                    </span>
-                </button> --}}
             </div>
 
             <form action="{{ route('cuenta.update', $user) }}" method="POST" class="space-y-6" novalidate>

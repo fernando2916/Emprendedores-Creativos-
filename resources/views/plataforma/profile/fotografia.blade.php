@@ -42,7 +42,7 @@
                                 id="dropzone-file"
                                 name="avatar"
                                 type="file"
-                                accept="image/png,image/jpeg"
+                                accept="image/png,image/jpeg,image/jpg"
                                 class="hidden"
                                 onchange="preview_image(event, '#imgPreview')"
                             >
