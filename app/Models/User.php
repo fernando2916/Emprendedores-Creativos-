@@ -7,12 +7,11 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
-use App\Models\Profile;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -20,7 +19,7 @@ use App\Models\Profile;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -62,6 +61,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function postComentario()
+    {
+        return $this->hasMany(PostComentario::class);
+    }
+
     public function profile(): HasOne
     {
         return $this->hasOne(Profile::class, 'users_id');
@@ -72,6 +76,6 @@ class User extends Authenticatable
     {
         return $this->avatar
             ? Storage::url($this->avatar)
-            : 'https://ui-avatars.com/api/?name=' . urlencode($this->nombre_completo);
+            : 'https://ui-avatars.com/api/?name='.urlencode($this->nombre_completo);
     }
 }

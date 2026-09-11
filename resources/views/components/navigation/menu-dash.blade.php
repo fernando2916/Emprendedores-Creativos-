@@ -5,7 +5,7 @@
       Inicio
     </a>
   </li>
-  {{-- @can('ver panel') --}}
+  @can('ver panel')
     
   <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
     <a wire:navigate 
@@ -15,10 +15,10 @@
     Panel Administrativo
   </a>
 </li>
-{{-- @endcan --}}
+@endcan
   <li @click="showMenu = false" class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all">
     <a wire:navigate 
-    href="" 
+    href="{{ route('blog.index') }}" 
     class="flex items-center gap-3 p-3 text-xl">
       <i class="fa-solid fa-book"></i>
       Blog

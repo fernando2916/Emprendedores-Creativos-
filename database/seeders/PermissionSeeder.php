@@ -46,6 +46,7 @@ class PermissionSeeder extends Seeder
             'blog index',
             'blog create',
             'blog edit',
+            'blog show',
             'blog delete',
 
             'categoria post index',

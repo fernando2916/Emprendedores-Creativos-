@@ -18,7 +18,7 @@
     >
       <a
         wire:navigate 
-        href=""
+        href="{{ route('blog.index') }}"
         class="flex items-center gap-3 p-3 text-lg"
       >
         <i class="fa-solid fa-book"></i>

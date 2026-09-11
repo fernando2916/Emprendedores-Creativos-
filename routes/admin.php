@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BoletinController;
+use App\Http\Controllers\Admin\CategoriaPostController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PrivacyNoticeController;
 use App\Http\Controllers\Admin\TerminosController;
@@ -19,3 +21,5 @@ Route::resource('/terminos-condiciones', TerminosController::class)->names('admi
     ]);
 Route::resource('/banners', BannerController::class)->names('admin.banner');
 Route::resource('/boletin', BoletinController::class)->names('admin.boletin');
+Route::resource('/categories', CategoriaPostController::class)->names('admin.categories');
+Route::resource('/blogs', BlogController::class)->names('admin.blogs');

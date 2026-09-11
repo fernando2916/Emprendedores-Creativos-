@@ -22,7 +22,7 @@ export default defineConfig({
         },
         host: "0.0.0.0", // Permite conexiones externas
         hmr: {
-            host: "192.168.0.3", // 👈 REEMPLAZA AQUÍ con la IP real de tu computadora
+            host: "192.168.0.7", // 👈 REEMPLAZA AQUÍ con la IP real de tu computadora
         },
     },
 });

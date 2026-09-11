@@ -9,7 +9,7 @@
               <h3 class="text-sm font-semibold mb-4 uppercase text-link-100">Menu</h3>
               <ul class="space-y-2 text-sm">
                 <li><a wire:navigate 
-                  href=") }}" class="hover:text-link-100">Blog</a></li>
+                  href="{{ route('blog.index') }}" class="hover:text-link-100">Blog</a></li>
                 <li><a wire:navigate 
                   href=") }}" class="hover:text-link-100">Tienda</a></li>
                 <li><a wire:navigate 
