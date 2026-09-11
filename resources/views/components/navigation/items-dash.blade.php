@@ -283,7 +283,7 @@
   
       </div>
       @endcan
-      {{-- @can('ver diseño')
+       @can('ver diseño')
   
         <div>
             <p class="text-gray-400 ml-2">Diseño</p>
@@ -291,6 +291,7 @@
   
               <li>
                 <a href="{{ route('admin.plans.index') }}" wire:navigate
+                wire:current.exact="bg-light-200 dark:bg-purple-700"
                   class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
                   <i class="fa-solid fa-dollar-sign"></i>
                   Planes Diseño
@@ -301,6 +302,7 @@
   
             <li>
               <a href="{{ route('admin.cotizacion.index') }}" wire:navigate
+              wire:current.exact="bg-light-200 dark:bg-purple-700"
                 class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
                 <i class="fa-solid fa-folder-tree"></i>
                 Cotizaciones Diseño
@@ -311,6 +313,7 @@
   
             <li>
               <a href="{{ route('admin.proyecto.index') }}" wire:navigate
+              wire:current.exact="bg-light-200 dark:bg-purple-700"
                 class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
                 <i class="fa-solid fa-briefcase"></i>
                 Proyectos Diseño
@@ -320,6 +323,7 @@
             @can('opinion desing index')
             <li>
               <a href="{{ route('admin.opinion.index') }}" wire:navigate
+              wire:current.exact="bg-light-200 dark:bg-purple-700"
                 class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
                 <i class="fa-solid fa-message"></i>
                 Opiniones Diseño
@@ -329,7 +333,7 @@
         </div>
       @endcan
   
-      @can('ver foto')
+      {{--  @can('ver foto')
   
         <div>
             <p class="text-gray-400 ml-2">Fotografía</p>

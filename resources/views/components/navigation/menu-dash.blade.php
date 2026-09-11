@@ -19,6 +19,7 @@
   <li @click="showMenu = false" class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all">
     <a wire:navigate 
     href="{{ route('blog.index') }}" 
+    wire:current.exact="bg-light-200 dark:bg-purple-700"
     class="flex items-center gap-3 p-3 text-xl">
       <i class="fa-solid fa-book"></i>
       Blog
@@ -102,7 +103,8 @@
   </div>
   <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
     <a wire:navigate 
-    href=""
+    href="{{ route('diseno.index') }}"
+    wire:current.exact="bg-light-200 dark:bg-purple-700"
      class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-pen"></i>
       Diseño Gráfico

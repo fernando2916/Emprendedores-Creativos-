@@ -65,8 +65,9 @@
       @click="showMenu = false"
     >
       <a
-        wire:navigate 
-        href=""
+        wire:navigate
+        wire:current.exact="bg-light-200 dark:bg-purple-700"
+        href="{{ route('diseno.index') }}"
         class="flex items-center gap-3 p-3 text-lg"
       >
         <i class="fa-solid fa-pen"></i>

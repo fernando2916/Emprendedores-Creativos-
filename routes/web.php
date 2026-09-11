@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\DiseñoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Profile\FotoPerfilController;
 use App\Http\Controllers\Profile\MetodosPagoController;
@@ -12,6 +13,8 @@ use App\Livewire\ComentarioPost;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/diseño-grafico', [DiseñoController::class, 'index'])->name('diseno.index');
+Route::get('/diseño-grafico/proyectos/{proyect:slug}', [DiseñoController::class, 'show'])->name('diseno.show');
 Route::get('/contacto', [HomeController::class, 'index'])->name('contacto');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');

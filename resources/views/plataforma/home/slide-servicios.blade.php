@@ -2,7 +2,7 @@
     <div class="swiper mySwiper-slider">
       <div class="swiper-wrapper">
         <div class="swiper-slide shadow-2xl h-72 shadow-link-500 p-4 border-double border-2 border-link-500 rounded-lg">
-         <a href="">
+         <a href="{{ route('diseno.index') }}">
           <div class="flex place-content-center">
             <div class="h-12 w-12 bg-btn-600 rounded-full">
               <span class="flex justify-center items-center text-2xl py-4 text-cyan-400 h-full w-full object-cover">

@@ -8,7 +8,7 @@
   
     <div class=" hidden md:grid md:grid-cols-3 gap-8 md:shrink mx-auto mt-2 lg:max-w-7xl mb-10">
       <div class="shadow-lg hover:shadow-link-500 p-6 border-double border border-cyan-400/40 rounded-lg">
-        <a wire:navigate href="">
+        <a wire:navigate href="{{ route('diseno.index') }}">
           <div class="flex place-content-center">
             <div class="h-16 w-16 bg-btn-600 rounded-full">
               <span class="flex justify-center items-center text-4xl py-4 text-cyan-400 h-full w-full object-cover">
