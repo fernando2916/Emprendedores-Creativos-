@@ -1,14 +1,14 @@
 <ul class="p-3 border-b">
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate href="{{ route('home') }}" class="flex items-center gap-3 p-3 text-lg">
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700" href="{{ route('home') }}" class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-home"></i>
       Inicio
     </a>
   </li>
   @can('ver panel')
     
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     href="{{ route('dashboard') }}" 
     class="flex items-center gap-3 p-3 text-lg">
     <i class="fa-solid fa-user-shield"></i>
@@ -16,24 +16,23 @@
   </a>
 </li>
 @endcan
-  <li @click="showMenu = false" class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all">
-    <a wire:navigate 
+  <li @click="showMenu = false" class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     href="{{ route('blog.index') }}" 
-    wire:current.exact="bg-light-200 dark:bg-purple-700"
     class="flex items-center gap-3 p-3 text-xl">
       <i class="fa-solid fa-book"></i>
       Blog
     </a>
   </li>
-  <li @click="showMenu = false" class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all">
-    <a wire:navigate 
+  <li @click="showMenu = false" class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     href="" 
     class="flex items-center gap-3 p-3 text-xl">
       <i class="fa-solid fa-shopping-cart"></i>
       Tienda
     </a>
   </li>
-  <li @click="showMenu = false" class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all">
+  <li @click="showMenu = false" class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all">
     <a wire:navigate 
     href="" 
     class="flex items-center gap-3 p-3 text-xl">
@@ -41,8 +40,8 @@
       Cursos
     </a>
   </li>
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a href="notificaciones" class="flex items-center justify-between gap-3 p-3 text-lg">
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:current.exact="bg-light-200 dark:bg-purple-700" href="notificaciones" class="flex items-center justify-between gap-3 p-3 text-lg">
       <div class="flex items-center gap-3">
         <i class="fa-solid fa-bell"></i>
         Notificaciones
@@ -53,8 +52,8 @@
       </div>
     </a>
   </li>
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     {{-- href="{{ route("cuenta.cursos.index") }}"  --}}
     class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-laptop-code"></i>
@@ -62,8 +61,8 @@
     </a>
   </li>
 
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     {{-- href="{{ route("deseos.index") }}"  --}}
     class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-heart"></i>
@@ -71,16 +70,16 @@
     </a>
   </li>
 
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     {{-- href="{{ route("facturacion.index") }}"  --}}
     class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-shield"></i>
       Facturación
     </a>
   </li>
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     {{-- href="{{ route("soporte.index") }}"  --}}
     class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-user-gear"></i>
@@ -88,7 +87,7 @@
     </a>
   </li>
   <form method='post' action="{{ route('logout') }}">
-    <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
+    <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
       @csrf
       <button type='submit' class="flex items-center gap-3 p-3 text-lg cursor-pointer">
         <i class="fa-solid fa-right-from-bracket"></i>
@@ -101,8 +100,8 @@
   <div class="flex items-center justify-start pl-7 text-a-500 font-semibold dark:text-slate-400 gap-3">
     <span class="">Nuestros Servicios</span>
   </div>
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     href="{{ route('diseno.index') }}"
     wire:current.exact="bg-light-200 dark:bg-purple-700"
      class="flex items-center gap-3 p-3 text-lg">
@@ -110,24 +109,24 @@
       Diseño Gráfico
     </a>
   </li>
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     href=""
      class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-camera"></i>
       Fotografía
     </a>
   </li>
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     {{-- href="{{ route("desarrollo.index") }}" --}}
      class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-laptop-code"></i>
       Diseño y Desarrollo Web
     </a>
   </li>
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     {{-- href="{{ route("asesorias.index") }}" --}}
      class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-chalkboard-user"></i>
@@ -139,40 +138,40 @@
   <div class="flex items-center justify-start pl-7 text-a-500 font-semibold dark:text-slate-400 gap-3">
     <span class="">Más de Emprendedores</span>
   </div>
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     {{-- href="{{ route("nosotros.index") }}" --}}
      class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-building"></i>
       Quienes somos
     </a>
   </li>
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     href=""
      class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-envelopes-bulk"></i>
       Contacto
     </a>
   </li>
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     href=""
      class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-download"></i>
       Recursos
     </a>
   </li>
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     href=""
      class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-brands fa-glide-g"></i>
       Glosario
     </a>
   </li>
-  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
-    <a wire:navigate 
+  <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
+    <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
     href=""
      class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-briefcase"></i>

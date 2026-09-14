@@ -1,9 +1,11 @@
 <ul class="p-3 border-b">
     <li
-      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
       @click="showMenu = false"
-    >
+      >
       <a
+      wire:navigate 
+      wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
         href="{{ route('home') }}"
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -13,11 +15,12 @@
       </a>
     </li>
     <li
-      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
       @click="showMenu = false"
     >
       <a
         wire:navigate 
+        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
         href="{{ route('blog.index') }}"
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -26,11 +29,12 @@
         
       </a>
     <li
-      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
       @click="showMenu = false"
     >
       <a
         wire:navigate 
+        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
         href=""
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -40,11 +44,12 @@
       </a>
     </li>
     <li
-      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
       @click="showMenu = false"
     >
       <a
         wire:navigate 
+        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
         {{-- href="{{ route("cursos.index") }}" --}}
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -61,12 +66,12 @@
 
   <ul class="p-3 border-b">
     <li
-      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
       @click="showMenu = false"
     >
       <a
         wire:navigate
-        wire:current.exact="bg-light-200 dark:bg-purple-700"
+        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
         href="{{ route('diseno.index') }}"
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -76,11 +81,12 @@
       </a>
     </li>
     <li
-      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
       @click="showMenu = false"
     >
       <a
         wire:navigate 
+        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
         href=""
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -90,11 +96,12 @@
       </a>
     </li>
     <li
-      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
       @click="showMenu = false"
     >
       <a
         wire:navigate 
+        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
         {{-- href="{{ route("desarrollo.index") }}" --}}
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -105,11 +112,12 @@
     </li>
 
     <li
-      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+      class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
       @click="showMenu = false"
     >
       <a
         wire:navigate 
+        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
         {{-- href="{{ route("asesorias.index") }}" --}}
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -126,11 +134,12 @@
 
   <ul class="p-3 border-b">
     <li
-    class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+    class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
     @click="showMenu = false"
   >
     <a
       wire:navigate 
+      wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
       {{-- href="{{ route("nosotros.index") }}" --}}
       class="flex items-center gap-3 p-3 text-lg"
     >
@@ -140,11 +149,12 @@
     </a>
   </li>
   <li
-    class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+    class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
     @click="showMenu = false"
   >
     <a
       wire:navigate 
+      wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
       href=""
       class="flex items-center gap-3 p-3 text-lg"
     >
@@ -154,11 +164,12 @@
     </a>
   </li>
   <li
-    class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+    class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
     @click="showMenu = false"
   >
     <a
       wire:navigate 
+      wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
       href=""
       class="flex items-center gap-3 p-3 text-lg"
     >
@@ -168,11 +179,12 @@
     </a>
   </li>
   <li
-    class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+    class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
     @click="showMenu = false"
   >
     <a
       wire:navigate 
+      wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
       href=""
       class="flex items-center gap-3 p-3 text-lg"
     >
@@ -182,11 +194,12 @@
     </a>
   </li>
   <li
-    class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all"
+    class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all"
     @click="showMenu = false"
   >
     <a
       wire:navigate 
+      wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
       href=""
       class="flex items-center gap-3 p-3 text-lg"
     >

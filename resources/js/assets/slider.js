@@ -25,6 +25,8 @@ function startSwiperDiseño() {
         pagination: {
             el: ".swiper-pagination",
             clickable: true,
+          dynamicBullets: true,
+
         },
     });
 }

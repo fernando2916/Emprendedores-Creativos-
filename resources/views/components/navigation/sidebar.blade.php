@@ -52,7 +52,7 @@
                 </div>
                 <a href="{{ route('login') }}" wire:navigate @click="showMenu = false">
                     <button
-                        class="bg-btn-200 hover:bg-btn-400 dark:bg-btn-400 dark:hover:bg-btn-600 w-full rounded-lg p-2 flex items-center justify-center gap-2 mx-auto text-white cursor-pointer">
+                        class="bg-btn-200 hover:bg-btn-400 dark:bg-btn-400 dark:hover:bg-btn-600 w-full rounded-md p-2 flex items-center justify-center gap-2 mx-auto text-white cursor-pointer">
                         <i class="fa-solid fa-user"></i>
                         Ingresar
                     </button>
@@ -75,7 +75,7 @@
         @endauth
     </div>
     <ul class="p-2">
-        <li class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-lg transition-all" @click="showMenu = false">
+        <li class="hover:bg-light-200 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
             <a wire:navigate href="{{ route('home') }}" class="text-sm text-link-100 font-semibold">
                 Emprendedores Creativos &copy;
             </a>

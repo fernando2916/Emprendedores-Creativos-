@@ -18,7 +18,7 @@
 </div>
 
 <section class="pt-3">
-  <div class="mx-auto max-w-screen-xl">
+  <div class="mx-auto max-w-7xl">
     <!-- Start coding here -->
     <div class="bg-light-200 dark:bg-cont-100 relative shadow-md rounded-lg overflow-hidden">
       <div class="overflow-x-auto">
