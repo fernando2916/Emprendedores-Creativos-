@@ -333,7 +333,7 @@
         </div>
       @endcan
   
-      {{--  @can('ver foto')
+       @can('ver foto')
   
         <div>
             <p class="text-gray-400 ml-2">Fotografía</p>
@@ -375,8 +375,8 @@
                 Testimonios Fotografía
               </a>
             </li>
-            @endcan --}}
+            @endcan 
         </div>
-      {{-- @endcan --}}
+       @endcan
     </ul>
   </div>

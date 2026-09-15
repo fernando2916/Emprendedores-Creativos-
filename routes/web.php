@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DiseñoController;
+use App\Http\Controllers\FotoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Profile\FotoPerfilController;
 use App\Http\Controllers\Profile\MetodosPagoController;
@@ -20,6 +21,7 @@ Route::get('/contacto', [HomeController::class, 'index'])->name('contacto');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{blog:slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/comentarios', ComentarioPost::class)->name('comentarios.store');
+Route::get('/fotografia', [FotoController::class, 'index'])->name('fotografia.index');
 // Perfil
 Route::middleware('auth')->group(function () {
     Route::get('/{user:username}/mi-perfil', [PerfilController::class, 'index'])->name('perfil.index');

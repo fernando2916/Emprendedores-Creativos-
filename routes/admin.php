@@ -5,12 +5,16 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BoletinController;
 use App\Http\Controllers\Admin\CategoriaPostController;
 use App\Http\Controllers\Admin\CotizacionDesingController;
+use App\Http\Controllers\Admin\CotizacionFotoController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OpDesingController;
+use App\Http\Controllers\Admin\PaqueteFotoController;
 use App\Http\Controllers\Admin\PlansDesingController;
+use App\Http\Controllers\Admin\PortafolioFotoController;
 use App\Http\Controllers\Admin\PrivacyNoticeController;
 use App\Http\Controllers\Admin\ProyectController;
 use App\Http\Controllers\Admin\TerminosController;
+use App\Http\Controllers\Admin\TestimonioFotoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -34,3 +38,7 @@ Route::resource('/cotizaciones/diseño', CotizacionDesingController::class)->nam
     ]);
 Route::resource('/proyectos', ProyectController::class)->names('admin.proyecto');
 Route::resource('/opiniones', OpDesingController::class)->names('admin.opinion');
+Route::resource('/testimonios', TestimonioFotoController::class)->names('admin.testimonio');
+Route::resource('/sesiones', PortafolioFotoController::class)->names('admin.sesion');
+Route::resource('/paquetes', PaqueteFotoController::class)->names('admin.paquete');
+Route::resource('/cotizaciones/foto', CotizacionFotoController::class)->names('admin.foto');

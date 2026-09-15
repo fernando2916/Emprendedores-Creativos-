@@ -19,7 +19,7 @@
         </a>
         </div>
         <div class="swiper-slide shadow-2xl h-72 shadow-link-500 p-4 border-double border-2 border-link-500 rounded-lg">
-          <a href="">
+          <a href="{{route('fotografia.index')}}">
             <div class="flex place-content-center">
               <div class="h-16 w-16 bg-btn-600 rounded-full">
                 <span class="flex justify-center items-center text-4xl py-4 text-cyan-400 h-full w-full object-cover">
