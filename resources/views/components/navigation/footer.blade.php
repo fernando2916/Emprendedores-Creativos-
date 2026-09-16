@@ -22,9 +22,9 @@
               <h3 class="text-sm font-semibold mb-4 uppercase text-link-100">Soporte</h3>
               <ul class="space-y-2 text-sm">
                 <li><a wire:navigate 
-                  href=") }}" class="hover:text-link-100">Contacto</a></li>
+                  href="{{ route('contacto.index') }}" class="hover:text-link-100">Contacto</a></li>
                 <li><a wire:navigate 
-                  href=""" class="hover:text-link-100">Preguntas Frecuentes</a></li>
+                  href="" class="hover:text-link-100">Preguntas Frecuentes</a></li>
               </ul>
             </div>
 
@@ -65,7 +65,7 @@
           Nos importa mucho tu privacidad, por lo tanto solo enviamos 5
           correos por mes.
         </p>
-        {{-- @livewire('boletin') --}}
+        @livewire('boletin')
       </div>
     </div>
     <div class="mt-8 border-t border-gray-200 pt-8 md:flex md:items-center md:justify-between">

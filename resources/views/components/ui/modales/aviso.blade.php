@@ -1,4 +1,4 @@
-@props(['privacy'])
+@props(['privacy' => null])
 
 <div class="block md:flex items-center">
 

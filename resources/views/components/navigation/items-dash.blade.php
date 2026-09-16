@@ -74,7 +74,7 @@
       @can('ver empresa')
       <div>
          <p class="text-gray-400 ml-2">Empresa</p>
-        {{-- @can('contacto index')
+         @can('contacto index')
     
         <li>
           <a href="{{ route('admin.contacto.index') }}" wire:navigate
@@ -85,7 +85,7 @@
             </span>
           </a>
         </li>
-        @endcan --}}
+        @endcan 
         @can('boletin index')
     
         <li>

@@ -17,7 +17,7 @@
                         </p>
                     </div>
                     <div class="flex flex-col gap-2 w-full">
-                        <a href="{{ route('contacto') }}" wire:navigate>
+                        <a href="{{ route('contacto.index') }}" wire:navigate>
                             <button
                                 class='dark:bg-btn-400 dark:hover:bg-btn-600 bg-btn-200 hover:bg-btn-400 transition-colors duration-300 flex items-center gap-3 w-full place-content-center p-2 rounded-md text-white cursor-pointer'>
                                 <i class="fa-solid fa-envelope"></i>

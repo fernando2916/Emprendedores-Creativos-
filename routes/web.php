@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\DiseñoController;
 use App\Http\Controllers\FotoController;
 use App\Http\Controllers\HomeController;
@@ -16,12 +17,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/diseño-grafico', [DiseñoController::class, 'index'])->name('diseno.index');
 Route::get('/diseño-grafico/proyectos/{proyect:slug}', [DiseñoController::class, 'show'])->name('diseno.show');
-Route::get('/contacto', [HomeController::class, 'index'])->name('contacto');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{blog:slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/comentarios', ComentarioPost::class)->name('comentarios.store');
 Route::get('/fotografia', [FotoController::class, 'index'])->name('fotografia.index');
+Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto.index');
+
 // Perfil
 Route::middleware('auth')->group(function () {
     Route::get('/{user:username}/mi-perfil', [PerfilController::class, 'index'])->name('perfil.index');
