@@ -50,9 +50,9 @@
                 <li><a wire:navigate 
                   href="" class="hover:text-link-100">Facturación</a></li>
                 <li><a wire:navigate 
-                  href="" class="hover:text-link-100">Aviso de Privacidad</a></li>
+                  href="{{ route('aviso.index') }}" class="hover:text-link-100">Aviso de Privacidad</a></li>
                 <li><a wire:navigate 
-                  href="" class="hover:text-link-100">Términos y Condiciones</a></li>
+                  href="{{ route('terminos.index') }}" class="hover:text-link-100">Términos y Condiciones</a></li>
               </ul>
             </div>
         </div>

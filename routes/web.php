@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AvisoPrivacidadController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\DiseñoController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Profile\PerfilController;
 use App\Http\Controllers\Profile\PreferenciasNotifiController;
 use App\Http\Controllers\Profile\SeguridadCuentaController;
 use App\Http\Controllers\Profile\SuscripcionesController;
+use App\Http\Controllers\TerminosController;
 use App\Livewire\ComentarioPost;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +28,9 @@ Route::get('/fotografia', [FotoController::class, 'index'])->name('fotografia.in
 Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto.index');
 
 Route::get('/glosario', [GlosarioController::class, 'index'])->name('glosario.index');
+Route::get('/privacidad', [AvisoPrivacidadController::class, 'index'])->name('aviso.index');
+Route::get('/privacidad/resumen', [AvisoPrivacidadController::class, 'resumen'])->name('resumen.index');
+Route::get('/terminos-y-condiciones', [TerminosController::class, 'index'])->name('terminos.index');
 
 // Perfil
 Route::middleware('auth')->group(function () {
