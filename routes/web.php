@@ -4,6 +4,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\DiseñoController;
 use App\Http\Controllers\FotoController;
+use App\Http\Controllers\GlosarioController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Profile\FotoPerfilController;
 use App\Http\Controllers\Profile\MetodosPagoController;
@@ -23,6 +24,8 @@ Route::get('/blog/{blog:slug}', [BlogController::class, 'show'])->name('blog.sho
 Route::get('/comentarios', ComentarioPost::class)->name('comentarios.store');
 Route::get('/fotografia', [FotoController::class, 'index'])->name('fotografia.index');
 Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto.index');
+
+Route::get('/glosario', [GlosarioController::class, 'index'])->name('glosario.index');
 
 // Perfil
 Route::middleware('auth')->group(function () {

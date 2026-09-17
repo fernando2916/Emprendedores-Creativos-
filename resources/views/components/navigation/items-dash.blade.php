@@ -8,7 +8,7 @@
           <span class="ms-3">Inicio</span>
         </a>
       </li>
-      {{-- @can('usuarios index')
+       {{-- @can('usuarios index')
   
       <li>
         <a wire:navigate href="{{ route('admin.users.index') }}"
@@ -41,7 +41,7 @@
           </span>
         </a>
       </li>
-      @endcan --}}
+      @endcan  --}}
       @can('ver legales')
       <div>
           <p class="text-gray-400 ml-2">Legales</p>
@@ -99,7 +99,7 @@
           </a>
         </li>
         @endcan
-        {{-- @can('vacante index')
+         {{-- @can('vacante index')
     
         <li>
           <a href="{{ route('admin.vacante.index') }}" wire:navigate
@@ -110,7 +110,7 @@
             </span>
           </a>
         </li>
-        @endcan --}}
+        @endcan  --}}
       </div>
       @endcan
       @can('ver promo')
@@ -128,7 +128,7 @@
           </a>
         </li>
         @endcan
-        {{-- @can('aviso index')
+         {{-- @can('aviso index')
   
         <li>
           <a href="{{ route('admin.aviso.index') }}" wire:navigate
@@ -137,11 +137,11 @@
             Avisos
           </a>
         </li>
-        @endcan --}}
-  
+        @endcan  --}}
+
       </div>
       @endcan
-      {{-- @can('ver glosario')
+       @can('ver glosario')
       <div>
         <p class="text-gray-400 ml-2">Recursos</p>
         @can('glosario index')
@@ -154,7 +154,7 @@
         </a>
       </li>
       @endcan
-        @can('recurso index')
+       {{-- @can('recurso index')
         
         <li>
           <a href="{{ route('admin.recursos.index') }}" wire:navigate
@@ -163,10 +163,10 @@
       Recursos
         </a>
       </li>
-      @endcan
+      @endcan --}}
     </div>
       @endcan
-      @can('ver tienda')
+      {{-- @can('ver tienda')
         <div>
         <p class="text-gray-400 ml-2">Productos</p>
         @can('producto index')
@@ -254,7 +254,7 @@
         @endcan
   
       </div>
-      @endcan --}}
+      @endcan  --}}
   
       @can('ver blog')
   

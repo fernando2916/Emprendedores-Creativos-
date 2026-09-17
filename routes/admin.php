@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ContactoController;
 use App\Http\Controllers\Admin\CotizacionDesingController;
 use App\Http\Controllers\Admin\CotizacionFotoController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\GlosarioController;
 use App\Http\Controllers\Admin\OpDesingController;
 use App\Http\Controllers\Admin\PaqueteFotoController;
 use App\Http\Controllers\Admin\PlansDesingController;
@@ -44,3 +45,4 @@ Route::resource('/sesiones', PortafolioFotoController::class)->names('admin.sesi
 Route::resource('/paquetes', PaqueteFotoController::class)->names('admin.paquete');
 Route::resource('/cotizaciones/foto', CotizacionFotoController::class)->names('admin.foto');
 Route::resource('/contacto', ContactoController::class)->names('admin.contacto');
+Route::resource('/glosario', GlosarioController::class)->names('admin.glosario');

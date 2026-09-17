@@ -92,7 +92,7 @@
           Recursos
         </a>
         <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm dark:text-white hover:bg-light-200 focus:outline-hidden focus:bg-gray-100 text-slate-200 dark:hover:bg-nav-700" 
-        wire:navigate href="">
+        wire:navigate href="{{ route('glosario.index') }}">
           <i class="fa-brands fa-glide-g"></i>
           Glosario
         </a>
