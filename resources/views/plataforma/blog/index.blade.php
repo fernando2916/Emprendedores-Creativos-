@@ -161,7 +161,7 @@
                     <img src="{{ $blog->autor->profile?->avatar
                     ? Storage::url($blog->autor->profile->avatar)
                     : 'https://ui-avatars.com/api/?name=' . urlencode($blog->autor->nombre_completo) }}"
-                    alt="Foto de {{ $post->autor->nombre_completo }}"
+                    alt="Foto de {{ $blog->autor->nombre_completo }}"
                     class="w-6 h-6 rounded-full object-cover">
                   <p class="capitalize text-[10.5px]">{{$blog->autor->nombre_completo}}</p>
                 </div>

@@ -36,6 +36,7 @@ Route::get('/terminos-y-condiciones', [TerminosController::class, 'index'])->nam
 Route::get('/vacantes', [VacantesController::class, 'index'])->name('vacantes.index');
 Route::get('/vacantes/{vacante:identificador}', [VacantesController::class, 'show'])->name('vacante.show');
 Route::post('/vacantes/{vacante:id}', [VacantesController::class, 'store'])->name('vacante.store');
+Route::get('/user/{user:username}', [PerfilController::class, 'perfil'])->name('perfil.perfil');
 
 // Perfil
 Route::middleware('auth')->group(function () {

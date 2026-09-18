@@ -15,6 +15,11 @@ class PerfilController extends Controller
         return view('plataforma.profile.perfil', compact('user'));
     }
 
+    public function perfil(User $user)
+    {
+        return view('plataforma.profile.user', compact('user'));
+    }
+
     public function update(ProfileRequest $request, User $user)
     {
         abort_unless(Auth::id() === $user->id, 403);

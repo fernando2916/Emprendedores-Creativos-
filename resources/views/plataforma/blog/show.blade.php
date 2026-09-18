@@ -64,7 +64,7 @@
             </div>
           </div>
           <p class="flex items-center gap-2 ml-12">
-            <a href="/#" wire:navigate class="text-link-100 text-sm cursor-pointer">
+            <a href="{{ route('perfil.perfil', [$blog->autor]) }}" wire:navigate class="text-link-100 text-sm cursor-pointer">
             Ver perfil
             </a>
           </p>
