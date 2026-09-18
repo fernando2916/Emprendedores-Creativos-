@@ -1,8 +1,8 @@
 @import "tailwindcss";
-@import 'quill/dist/quill.snow.css';
+@import "quill/dist/quill.snow.css";
 @import "flowbite/src/themes/default";
-@import './post-content.css';
-@import './plan-content.css';
+@import "./post-content.css";
+@import "./plan-content.css";
 
 @import "../../vendor/livewire/flux/dist/flux.css";
 @plugin "flowbite/plugin";
@@ -13,8 +13,6 @@
 @source '../../storage/framework/views/*.php';
 @source "../../node_modules/flowbite";
 
-
-
 @theme {
     --font-sans:
         "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
@@ -24,7 +22,6 @@
         "Montserrat", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
         "Segoe UI Emoji";
 
-        
     --color-fondo-100: #1f2632;
     --color-fondo-200: #000c1f;
 
@@ -32,7 +29,7 @@
 
     --color-cont-100: #00122e;
     --color-cont-200: #59799c;
-    --color-cont-300: #041634;
+    --color-cont-300: #011b47;
 
     --color-nav-50: #eedbff;
     --color-nav-100: #dfbdff;
@@ -73,7 +70,7 @@
     --color-categoria-100: #00ffdf;
     --color-categoria-200: #035863;
     --color-categoria-300: #463173;
-    --color-categoria-400: #012D33;
+    --color-categoria-400: #012d33;
 
     --color-post-100: #b822d7;
     --color-post-200: #6c1877;
@@ -104,17 +101,17 @@
 }
 
 .swiper {
-      width: 100%;
-      height: 300px;
-    } 
+    width: 100%;
+    height: 300px;
+}
 
- .swiper-slide {
-      text-align: center;
-      font-size: 18px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 /* .select2-container--default .select2-selection--multiple {
         background-color: #0f172a; 

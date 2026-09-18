@@ -77,7 +77,9 @@
          @can('contacto index')
     
         <li>
-          <a href="{{ route('admin.contacto.index') }}" wire:navigate
+          <a href="{{ route('admin.contacto.index') }}" 
+          wire:navigate
+          wire:current.exact="bg-light-200 dark:bg-purple-700"
             class="flex items-center p-2 rounded-lg dark:text-white hover:bg-light-200 dark:hover:bg-nav-700 group">
             <i class="fa-solid fa-envelope"></i>
             <span class="ms-3">
@@ -99,10 +101,12 @@
           </a>
         </li>
         @endcan
-         {{-- @can('vacante index')
+         @can('vacante index')
     
         <li>
-          <a href="{{ route('admin.vacante.index') }}" wire:navigate
+          <a href="{{ route('admin.vacante.index') }}" 
+          wire:navigate
+          wire:current.exact="bg-light-200 dark:bg-purple-700"
             class="flex items-center p-2 rounded-lg dark:text-white hover:bg-light-200 dark:hover:bg-nav-700 group">
             <i class="fa-solid fa-briefcase"></i>
             <span class="ms-3">
@@ -110,7 +114,7 @@
             </span>
           </a>
         </li>
-        @endcan  --}}
+        @endcan 
       </div>
       @endcan
       @can('ver promo')
@@ -147,7 +151,9 @@
         @can('glosario index')
         
         <li>
-          <a href="{{ route('admin.glosario.index') }}" wire:navigate
+          <a href="{{ route('admin.glosario.index') }}" 
+          wire:navigate
+          wire:current.exact="bg-light-200 dark:bg-purple-700"
           class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
           <i class="fa-brands fa-glide-g"></i>
           Glosario
@@ -158,6 +164,7 @@
         
         <li>
           <a href="{{ route('admin.recursos.index') }}" wire:navigate
+          wire:current.exact="bg-light-200 dark:bg-purple-700"
           class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
           <i class="fa-solid fa-download"></i>
       Recursos
@@ -173,6 +180,7 @@
   
         <li>
           <a href="{{ route('admin.producto.index') }}" wire:navigate
+          wire:current.exact="bg-light-200 dark:bg-purple-700"
             class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
             <i class="fa-solid fa-store"></i>
             Productos
@@ -183,6 +191,7 @@
   
         <li>
           <a href="{{ route('admin.categorias.index') }}" wire:navigate
+          wire:current.exact="bg-light-200 dark:bg-purple-700"
             class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
             <i class="fa-solid fa-tag"></i>
             Categorias Curso
@@ -192,6 +201,7 @@
         @can('subCategoria producto index')
         <li>
           <a href="{{ route('admin.subcategorias.index') }}" wire:navigate
+          wire:current.exact="bg-light-200 dark:bg-purple-700"
             class="flex items-center w-full p-2 transition duration-75 rounded-lg gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
             <i class="fa-solid fa-tags"></i>
             Sub Categorias Curso
@@ -201,6 +211,7 @@
         @can('especialidad producto index')
         <li>
           <a href="{{ route('admin.especialidad.index') }}" wire:navigate
+          wire:current.exact="bg-light-200 dark:bg-purple-700"
             class="flex items-center w-full p-2 transition duration-75 rounded-lg gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
             <i class="fa-solid fa-school"></i>
             Especialidad Curso
@@ -218,6 +229,7 @@
   
         <li>
           <a href="{{ route('admin.cursos.index') }}" wire:navigate
+          wire:current.exact="bg-light-200 dark:bg-purple-700"
             class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
             <i class="fa-solid fa-book"></i>
             Cursos
@@ -228,6 +240,7 @@
   
         <li>
           <a href="{{ route('admin.categorias.index') }}" wire:navigate
+          wire:current.exact="bg-light-200 dark:bg-purple-700"
             class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
             <i class="fa-solid fa-tag"></i>
             Categorias Curso
@@ -237,6 +250,7 @@
         @can('subCategoria curso index')
         <li>
           <a href="{{ route('admin.subcategorias.index') }}" wire:navigate
+          wire:current.exact="bg-light-200 dark:bg-purple-700"
             class="flex items-center w-full p-2 transition duration-75 rounded-lg gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
             <i class="fa-solid fa-tags"></i>
             Sub Categorias Curso
@@ -246,6 +260,7 @@
         @can('especialidad curso index')
         <li>
           <a href="{{ route('admin.especialidad.index') }}" wire:navigate
+          wire:current.exact="bg-light-200 dark:bg-purple-700"
             class="flex items-center w-full p-2 transition duration-75 rounded-lg gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
             <i class="fa-solid fa-school"></i>
             Especialidad Curso
@@ -341,6 +356,7 @@
   
               <li>
                 <a href="{{ route('admin.paquete.index') }}" wire:navigate
+                wire:current.exact="bg-light-200 dark:bg-purple-700"
                   class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
                   <i class="fa-solid fa-dollar-sign"></i>
                   Paquetes Foto
@@ -351,6 +367,7 @@
   
             <li>
               <a href="{{ route('admin.foto.index') }}" wire:navigate
+              wire:current.exact="bg-light-200 dark:bg-purple-700"
                 class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
                 <i class="fa-solid fa-folder-tree"></i>
                 Cotizaciones Foto
@@ -361,6 +378,7 @@
   
             <li>
               <a href="{{ route('admin.sesion.index') }}" wire:navigate
+              wire:current.exact="bg-light-200 dark:bg-purple-700"
                 class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
                 <i class="fa-solid fa-folder"></i>
                 Portafolio
@@ -370,6 +388,7 @@
             @can('testimonio foto index')
             <li>
               <a href="{{ route('admin.testimonio.index') }}" wire:navigate
+              wire:current.exact="bg-light-200 dark:bg-purple-700"
                 class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
                 <i class="fa-solid fa-message"></i>
                 Testimonios Fotografía

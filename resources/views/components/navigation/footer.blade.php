@@ -39,7 +39,7 @@
                 <li><a wire:navigate 
                   href=") }}" class="hover:text-link-100">Recursos</a></li>
                 <li><a wire:navigate 
-                  href=") }}" class="hover:text-link-100">Vacantes</a></li>
+                  href="{{ route('vacantes.index') }}" class="hover:text-link-100">Vacantes</a></li>
               </ul>
             </div>
 

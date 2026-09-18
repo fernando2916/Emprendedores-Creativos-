@@ -14,6 +14,7 @@ use App\Http\Controllers\Profile\PreferenciasNotifiController;
 use App\Http\Controllers\Profile\SeguridadCuentaController;
 use App\Http\Controllers\Profile\SuscripcionesController;
 use App\Http\Controllers\TerminosController;
+use App\Http\Controllers\VacantesController;
 use App\Livewire\ComentarioPost;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,10 @@ Route::get('/glosario', [GlosarioController::class, 'index'])->name('glosario.in
 Route::get('/privacidad', [AvisoPrivacidadController::class, 'index'])->name('aviso.index');
 Route::get('/privacidad/resumen', [AvisoPrivacidadController::class, 'resumen'])->name('resumen.index');
 Route::get('/terminos-y-condiciones', [TerminosController::class, 'index'])->name('terminos.index');
+
+Route::get('/vacantes', [VacantesController::class, 'index'])->name('vacantes.index');
+Route::get('/vacantes/{vacante:identificador}', [VacantesController::class, 'show'])->name('vacante.show');
+Route::post('/vacantes/{vacante:id}', [VacantesController::class, 'store'])->name('vacante.store');
 
 // Perfil
 Route::middleware('auth')->group(function () {
