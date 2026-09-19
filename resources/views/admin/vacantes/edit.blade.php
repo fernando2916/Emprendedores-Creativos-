@@ -93,7 +93,7 @@
         <div>
           <label for="postulacion"
             class="font-medium mb-2 after:ml-0.5 after:text-red-500 after:content-['*']">Último día para postularse</label>
-          <input id="postulacion" name="postulacion" value="{{ old('postulacion', $vacante->postulacion) }}" type="date"
+          <input id="postulacion" name="postulacion" value="{{ old('postulacion', $vacante->postulacion?->format('Y-m-d')) }}" type="date"
             placeholder="Ultimo dia para pstularse" class="disabled:bg-nav-900 disabled:border-nav-900 border-link-100 focus:shadow-link-200 w-full rounded-md border-2 bg-transparent p-2 outline-none focus:shadow-md placeholder:text-slate-300 dark:placeholder:text-slate-400 mt-2 @error('postulacion')
           dark:border-alerts-500
           @enderror">

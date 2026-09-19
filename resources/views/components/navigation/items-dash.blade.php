@@ -42,35 +42,6 @@
         </a>
       </li>
       @endcan  --}}
-      @can('ver legales')
-      <div>
-          <p class="text-gray-400 ml-2">Legales</p>
-        @can('avisoPriv index')
-    
-        <li>
-          <a href="{{ route('admin.privacy.index') }}" wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
-            class="flex items-center p-2 rounded-md dark:text-white hover:bg-light-200 dark:hover:bg-nav-700 group">
-            <i class="fa-solid fa-file"></i>
-            <span class="ms-3">
-              Aviso de privacidad
-            </span>
-          </a>
-        </li>
-        @endcan
-        @can('terminsCon index')
-    
-        <li>
-          <a href="{{ route('admin.terminos.index') }}" wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
-            class="flex items-center p-2 rounded-md dark:text-white hover:bg-light-200 dark:hover:bg-nav-700 group">
-            <i class="fa-solid fa-file-lines"></i>
-            <span class="ms-3">
-              Terminos y condiciones
-            </span>
-          </a>
-        </li>
-        @endcan
-      </div>
-      @endcan
       @can('ver empresa')
       <div>
          <p class="text-gray-400 ml-2">Empresa</p>

@@ -29,8 +29,7 @@ Route::get('/fotografia', [FotoController::class, 'index'])->name('fotografia.in
 Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto.index');
 
 Route::get('/glosario', [GlosarioController::class, 'index'])->name('glosario.index');
-Route::get('/privacidad', [AvisoPrivacidadController::class, 'index'])->name('aviso.index');
-Route::get('/privacidad/resumen', [AvisoPrivacidadController::class, 'resumen'])->name('resumen.index');
+Route::get('/aviso-de-privacidad', [AvisoPrivacidadController::class, 'index'])->name('aviso.index');
 Route::get('/terminos-y-condiciones', [TerminosController::class, 'index'])->name('terminos.index');
 
 Route::get('/vacantes', [VacantesController::class, 'index'])->name('vacantes.index');

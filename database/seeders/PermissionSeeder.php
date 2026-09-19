@@ -98,15 +98,6 @@ class PermissionSeeder extends Seeder
             'contacto index',
             'boletin index',
 
-            'ver legales',
-            'avisoPriv index',
-            'avisoPriv create',
-            'avisoPriv edit',
-
-            'terminsCon index',
-            'terminsCon create',
-            'terminsCon edit',
-
             'vacante index',
             'vacante create',
             'vacante edit',

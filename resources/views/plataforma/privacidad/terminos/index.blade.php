@@ -8,15 +8,14 @@ Términos y Condiciones
 <section class="pt-5 max-w-7xl mx-5 lg:mx-auto">
         <div>
           <h2 class="text-2xl md:text-3xl font-semibold text-center">
-          Términos y condiciones de uso de la Plataforma
+         Terminos y Condiciones de la plataforma
           </h2>
           <div class="bg-slate-500 dark:bg-cont-100 p-5 my-5 rounded-lg">
           <span class="text-gray-200 dark:text-wwhite font-light">
-              Versión vigente: 24 de noviembre, 2023
+              Versión vigente:
             </span>
             {{-- {/* resumen */} --}}
-
-            <div>
+             <div>
               <h3 class="font-semibold text-base md:text-xl mt-3">
                 Resumen de términos y condiciones
               </h3>
@@ -93,16 +92,13 @@ Términos y Condiciones
               <p class="pt-3 text-justify">Para poder operar en la plataforma todas las Personas Usuarias deberán aceptar los Términos y Condiciones, los anexos y la Declaración de Privacidad.</p>
               <p class="pt-3 text-justify">Cada Persona Usuaria es responsable de los datos personales que brinda al momento de registrarse y se obliga a mantenerlos actualizados. Además, es el único responsable del uso y resguardo de su contraseña. </p>
               <p class="pt-3 text-justify">En algunos casos, podremos cobrar una tarifa por el uso de los servicios que integran el ecosistema de Mercado Libre, que la Persona Usuaria se compromete a pagar.</p>
-            </div>
-            {{-- {/* Emprendedores Creativos */} --}}
-            <div class="mt-5">
+            </div> 
+             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">1- Emprendedores Creativos</h3>
               <div class="mt-5 space-y-3">
                 <p class="text-justify ml-6 md:ml-9">Mercado Libre es una compañía de tecnología que ofrece servicios vinculados principalmente al comercio electrónico y a los pagos digitales.</p>
                 <p class="text-justify ml-6 md:ml-9">Los servicios que ofrece Mercado Libre en los sitios www.mercadolibre.com.mx y sus aplicaciones móviles (de ahora en más: “Sitio”) están diseñados para formar un ecosistema que permita a las personas vender, comprar, pagar, enviar productos y realizar otras actividades comerciales con tecnología aplicada (de ahora en más:“Ecosistema MELI”).</p>
               </div>
-            </div>
-            {{-- {/* Términos y condiciones */} --}}
             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">2- Términos y Condiciones</h3>
               <div class="space-y-3 mt-5">
@@ -112,7 +108,6 @@ Términos y Condiciones
                 <p class="text-justify ml-6 md:ml-9">Las Personas Usuarias que no tengan obligaciones pendientes con Mercado Libre o con otras Personas Usuarias, podrán finalizar la relación con Mercado Libre cancelando su cuenta.</p>
               </div>
             </div>
-            {{-- {/* Capacidad */} --}}
             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">3- Capacidad</h3>
               <div class="mt-5 space-y-3">
@@ -120,7 +115,6 @@ Términos y Condiciones
                 <p class="text-justify ml-6 md:ml-9">Quien use el Ecosistema MELI en representación de una empresa deberá tener capacidad para contratar a nombre de ella. Además, para poder usar la cuenta, la Persona Usuaria debe encontrarse activa. </p>
               </div>
             </div>
-            {{-- {/* Registro y cuenta */} --}}
             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">4-  Registro y Cuenta</h3>
               <div class="mt-5 space-y-3">
@@ -130,7 +124,6 @@ Términos y Condiciones
                 <p class="text-justify ml-6 md:ml-9">Además, en caso de detectar el uso de más de una cuenta, podremos aplicar retenciones, débitos y/o cualquier otra medida si consideramos que ese accionar puede perjudicar al resto de las personas que usan el Sitio o a Mercado Libre, más allá de las sanciones que pudieran corresponder. </p>
               </div>
             </div>
-            {{-- {/* Privacidad de datos */} --}}
             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">5- Privacidad de datos</h3>
               <div class="mt-5">
@@ -139,28 +132,24 @@ Términos y Condiciones
                 </p>
               </div>
             </div>
-            {{-- {/* Acceso a otra informacion comercial */} --}}
             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">6- Acceso a Otra Información Comercial</h3>
               <div class="mt-5">
                 <p class="text-justify ml-6 md:ml-9">Además de lo previsto en las secciones anteriores, Mercado Libre proporciona herramientas, aplicaciones y servicios basados en otra información comercial provista por las Personas Usuarias y/o generada al utilizar los servicios del Ecosistema MELI, para ayudar a los Vendedores a optimizar sus ventas, aumentar su volumen y gestionar su negocio. También podremos usarla para ofrecer a las Personas Usuarias promociones, productos y servicios de otras empresas o de marca compartida, también podrá utilizarse en programas de prevención de fraude y otras medidas destinadas a aumentar la seguridad del Marketplace, de las Personas Usuarias y el cumplimiento de los Términos y Condiciones. Conoce más sobre nuestra política de Acceso a Información.</p>
               </div>
             </div>
-            {{-- {/* Sanciones */} --}}
             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">7- Sanciones</h3>
               <div class="mt-5">
                 <p class="text-justify ml-6 md:ml-9">En caso que la Persona Usuaria incumpliera una ley o los Términos y Condiciones, podremos advertir, suspender, restringir o inhabilitar temporal o definitivamente su cuenta, sin perjuicio de otras sanciones que se establezcan en las reglas de uso particulares de los servicios de Mercado Libre. </p>
               </div>
             </div>
-            {{-- {/* Responsabilidad */} --}}
             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">8- Responsabilidad</h3>
               <div class="mt-5">
                 <p class="text-justify ml-6 md:ml-9">Mercado Libre será responsable por cualquier defecto en la prestación de su servicio, en la medida en que le sea imputable y con el alcance previsto en las leyes vigentes. </p>
               </div>
             </div>
-            {{-- {/* Tarifas */} --}}
             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">9- Tarifas</h3>
               <div class="mt-5 space-y-3">
@@ -171,7 +160,6 @@ Términos y Condiciones
                 <p class="text-justify ml-6 md:ml-9">En todos los casos se emitirá la factura de conformidad con los datos fiscales que las personas tengan cargados en su cuenta. </p>
               </div>
             </div>
-            {{-- {/* Propiedad Intelectual */} --}}
             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">10- Propiedad Intelectual</h3>
               <div class="mt-5 space-y-3">
@@ -181,7 +169,6 @@ Términos y Condiciones
                 En caso que una Persona Usuaria o cualquier publicación infrinja la Propiedad Intelectual de Mercado Libre o de terceros, Mercado Libre podrá remover dicha publicación total o parcialmente), sancionar al usuario conforme a lo previsto en estos Términos y Condiciones y ejercer las acciones extrajudiciales y/o judiciales correspondientes.</p>
               </div>
             </div>
-            {{-- {/* Indemnidad */} --}}
             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">11- Indemnidad</h3>
               <div class="mt-5">
@@ -189,7 +176,6 @@ Términos y Condiciones
                 En virtud de esa responsabilidad, podrán realizar compensaciones, retenciones u otras medidas necesarias para la reparación de pérdidas, daños y perjuicios, cualquiera sea su naturaleza.</p>
               </div>
             </div>
-            {{-- {/* Anexos */} --}}
             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">12- Anexos</h3>
               <div class="mt-5">
@@ -222,7 +208,6 @@ Términos y Condiciones
                 </ul>
               </div>
             </div>
-            {{-- {/* Jurisdicción y Ley Aplicable */} --}}
             <div class="mt-5">
               <h3 class="text-xl md:text-3xl font-semibold">13- Jurisdicción y Ley Aplicable</h3>
               <div class="mt-5">
