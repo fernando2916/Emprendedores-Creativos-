@@ -24,7 +24,7 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-        <div class="overflow-y-scroll h-[30rem] p-4">
+        <div class="overflow-y-scroll h-120 p-4">
             <p class="text-justify">
               De conformidad con lo previsto en la Ley Federal de Datos
               Personales de Posesión de los Particulares (en lo sucesivo

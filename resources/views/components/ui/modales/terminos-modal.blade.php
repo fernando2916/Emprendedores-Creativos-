@@ -34,7 +34,7 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <div class="overflow-y-scroll p-4 h-[30rem]">
+                <div class="overflow-y-scroll p-4 h-120">
                     <p class="pb-3">Resumen de términos y condiciones </p>
 
                     {{-- resumen --}}
