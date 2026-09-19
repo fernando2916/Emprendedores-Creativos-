@@ -156,7 +156,7 @@
   </li>
   <li class="hover:bg-slate-400 dark:hover:bg-nav-700 pl-3 rounded-md transition-all" @click="showMenu = false">
     <a wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
-    href=""
+    href="{{ route('recursos.index') }}"
      class="flex items-center gap-3 p-3 text-lg">
       <i class="fa-solid fa-download"></i>
       Recursos

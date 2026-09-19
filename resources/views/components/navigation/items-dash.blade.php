@@ -131,7 +131,7 @@
         </a>
       </li>
       @endcan
-       {{-- @can('recurso index')
+       @can('recurso index')
         
         <li>
           <a href="{{ route('admin.recursos.index') }}" wire:navigate
@@ -141,7 +141,7 @@
       Recursos
         </a>
       </li>
-      @endcan --}}
+      @endcan
     </div>
       @endcan
       {{-- @can('ver tienda')

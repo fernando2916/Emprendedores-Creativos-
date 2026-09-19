@@ -13,6 +13,7 @@ use App\Http\Controllers\Profile\PerfilController;
 use App\Http\Controllers\Profile\PreferenciasNotifiController;
 use App\Http\Controllers\Profile\SeguridadCuentaController;
 use App\Http\Controllers\Profile\SuscripcionesController;
+use App\Http\Controllers\RecursoController;
 use App\Http\Controllers\TerminosController;
 use App\Http\Controllers\VacantesController;
 use App\Livewire\ComentarioPost;
@@ -36,6 +37,8 @@ Route::get('/vacantes', [VacantesController::class, 'index'])->name('vacantes.in
 Route::get('/vacantes/{vacante:identificador}', [VacantesController::class, 'show'])->name('vacante.show');
 Route::post('/vacantes/{vacante:id}', [VacantesController::class, 'store'])->name('vacante.store');
 Route::get('/user/{user:username}', [PerfilController::class, 'perfil'])->name('perfil.perfil');
+Route::get('/recursos', [RecursoController::class, 'index'])->name('recursos.index');
+Route::get('/recursos/{id}/descargar', [RecursoController::class, 'download'])->name('recursos.download');
 
 // Perfil
 Route::middleware('auth')->group(function () {

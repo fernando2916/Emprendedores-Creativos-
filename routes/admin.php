@@ -14,23 +14,14 @@ use App\Http\Controllers\Admin\OpDesingController;
 use App\Http\Controllers\Admin\PaqueteFotoController;
 use App\Http\Controllers\Admin\PlansDesingController;
 use App\Http\Controllers\Admin\PortafolioFotoController;
-use App\Http\Controllers\Admin\PrivacyNoticeController;
 use App\Http\Controllers\Admin\ProyectController;
-use App\Http\Controllers\Admin\TerminosController;
+use App\Http\Controllers\Admin\RecursoController;
 use App\Http\Controllers\Admin\TestimonioFotoController;
 use App\Http\Controllers\Admin\VacanteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::resource('/aviso-privacidad', PrivacyNoticeController::class)->names('admin.privacy')
-    ->parameters([
-        'aviso-privacidad' => 'privacy',
-    ]);
-Route::resource('/terminos-condiciones', TerminosController::class)->names('admin.terminos')
-    ->parameters([
-        'terminos-condiciones' => 'terminos',
-    ]);
 Route::resource('/banners', BannerController::class)->names('admin.banner');
 Route::resource('/boletin', BoletinController::class)->names('admin.boletin');
 Route::resource('/categories', CategoriaPostController::class)->names('admin.categories');
@@ -50,3 +41,4 @@ Route::resource('/contacto', ContactoController::class)->names('admin.contacto')
 Route::resource('/glosario', GlosarioController::class)->names('admin.glosario');
 Route::resource('/vacantes', VacanteController::class)->names('admin.vacante');
 Route::get('/candidatos/{vacante}', [CandidatosController::class, 'index'])->name('candidatos.index');
+Route::resource('/recursos', RecursoController::class)->names('admin.recursos');
