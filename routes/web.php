@@ -15,6 +15,7 @@ use App\Http\Controllers\Profile\SeguridadCuentaController;
 use App\Http\Controllers\Profile\SuscripcionesController;
 use App\Http\Controllers\RecursoController;
 use App\Http\Controllers\TerminosController;
+use App\Http\Controllers\TiendaController;
 use App\Http\Controllers\VacantesController;
 use App\Livewire\ComentarioPost;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,9 @@ Route::post('/vacantes/{vacante:id}', [VacantesController::class, 'store'])->nam
 Route::get('/user/{user:username}', [PerfilController::class, 'perfil'])->name('perfil.perfil');
 Route::get('/recursos', [RecursoController::class, 'index'])->name('recursos.index');
 Route::get('/recursos/{id}/descargar', [RecursoController::class, 'download'])->name('recursos.download');
+
+// Tienda
+Route::get('/tienda', [TiendaController::class, 'index'])->name('tienda.index');
 
 // Perfil
 Route::middleware('auth')->group(function () {

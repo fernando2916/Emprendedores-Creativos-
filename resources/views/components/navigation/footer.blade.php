@@ -11,7 +11,7 @@
                 <li><a wire:navigate 
                   href="{{ route('blog.index') }}" class="hover:text-link-100">Blog</a></li>
                 <li><a wire:navigate 
-                  href=") }}" class="hover:text-link-100">Tienda</a></li>
+                  href="{{ route('tienda.index') }}" class="hover:text-link-100">Tienda</a></li>
                 <li><a wire:navigate 
                   href="" class="hover:text-link-100">Cursos</a></li>
               </ul>
