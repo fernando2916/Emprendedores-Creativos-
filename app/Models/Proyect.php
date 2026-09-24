@@ -17,6 +17,8 @@ class Proyect extends Model
         'descripcion',
         'objetivo',
         'cliente',
+        'categoria',
+        'url',
     ];
 
     public function getRouteKeyName()

@@ -73,7 +73,7 @@
                @error('messaje') <span class="text-red-500">{{ $message }}</span> @enderror
            </div>
            <div class="w-full py-2 flex flex-wrap items-center justify-center gap-x-1 text-[13px] wrap-break-word">
-               <p class="leading-snug">Puedes revisar el <x-ui.modales.aviso :privacy="$privacy" /> si tienes dudas con el manejo de tus datos personales.</p>
+               <p class="leading-snug">Puedes revisar el <x-ui.modales.aviso /> si tienes dudas con el manejo de tus datos personales.</p>
            </div>
            <button type="submit"" class="flex items-center justify-center gap-2 w-full rounded-md bg-btn-200 hover:bg-btn-400 text-white dark:bg-btn-400 dark:hover:bg-btn-600 px-3.5 py-2.5 mt-5 text-center text-sm font-semibold duration-150 shadow-sm uppercase cursor-pointer transition-colors">
                <i class="fa-solid fa-envelope"></i>

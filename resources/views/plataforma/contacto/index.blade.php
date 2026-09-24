@@ -47,7 +47,7 @@ Contacto |
                   <i class="fa-brands fa-whatsapp"></i>
                   <h3 class="">WhatsApp:</h3>
                 </div>
-                <p class="text-link-300 dark:text-link-100"> 44 - 25 - 45 - 92 - 18</p>
+                <p class="text-link-300 dark:text-link-100"> 46 - 12 - 01 - 23 - 08</p>
               </div>
               <div class="flex flex-col lg:flex-row gap-2 items-center">
                 <div class="flex item gap-2">

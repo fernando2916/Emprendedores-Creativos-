@@ -39,6 +39,18 @@
           @enderror
         </div>
         <div>
+            <label for="categoria" class="font-medium mb-2 after:ml-0.5 after:text-red-500 after:content-['*']">
+                Nombre de la categoria
+            </label>
+            <input id="categoria" name="categoria" value="{{ old('categoria') }}" type="text" placeholder="categoria" class="disabled:bg-nav-900 disabled:border-nav-900 border-link-100 focus:shadow-link-200 w-full rounded-md border-2 bg-transparent p-2 outline-none focus:shadow-md placeholder:text-slate-300 dark:placeholder:text-slate-400 mt-2 @error('categoria')
+            dark:border-alerts-500
+            @enderror" />
+            @error('categoria')
+  
+            <p class="text-sm font-semibold text-alerts-500">{{ $message }}</p>
+            @enderror
+          </div>
+        <div>
          <label for="name"
             class="font-medium mb-2 after:ml-0.5 after:text-red-500 after:content-['*']">Imagenes</label>  
         
@@ -148,6 +160,16 @@
           <p class="text-sm font-semibold text-alerts-500">{{ $message }}</p>
           @enderror
         </div>
+        <div>
+            <label for="url" class="font-medium mb-2 after:ml-0.5 after:text-red-500">Link del proyecto</label>
+            <input id="url" name="url" value="{{ old('url') }}" type="text" placeholder="Link del proyecto" class="disabled:bg-nav-900 disabled:border-nav-900 border-link-100 focus:shadow-link-200 w-full rounded-md border-2 bg-transparent p-2 outline-none focus:shadow-md placeholder:text-slate-300 dark:placeholder:text-slate-400 mt-2 @error('url')
+            dark:border-alerts-500
+            @enderror" />
+            @error('url')
+  
+            <p class="text-sm font-semibold text-alerts-500">{{ $message }}</p>
+            @enderror
+          </div>
 
         @if(session('message'))
         <p class="text-red-500 text-sm mt-2">{{ session('message') }}</p>

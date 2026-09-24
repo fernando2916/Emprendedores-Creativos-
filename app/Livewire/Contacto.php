@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Contacto as ModelsContacto;
-use App\Models\PrivacyNotice;
 use Livewire\Component;
 
 class Contacto extends Component
@@ -18,7 +17,6 @@ class Contacto extends Component
 
     public $messaje;
 
-    public $privacy;
 
     public function rules()
     {
@@ -56,10 +54,6 @@ class Contacto extends Component
         $this->dispatch('alertContacto');
     }
 
-    public function mount()
-    {
-        $this->privacy = PrivacyNotice::first();
-    }
 
     public function render()
     {

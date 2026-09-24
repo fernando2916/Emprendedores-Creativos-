@@ -33,7 +33,7 @@ Proyectos |
                             <div class="p-8 lg:p-10 flex-flex-col justify-center bg-cont-200 dark:bg-cont-400">
                                 <div class="flex flex-wrap gap-2 mb-4">
                                     <span class="px-2.5 py-0.5 text-2xs font-mono font-semibold text-link-200 bg-link-500/8 border border-link-500/20 rounded-full">
-                                    Categoria
+                                    {{ $proyecto->categoria }}
                                     </span>
                                 </div>
                                 <h2 class="text-2xl font-bold text-dark-100 mb-3">{{ $proyecto->titulo }}</h2>
@@ -51,10 +51,12 @@ Proyectos |
                                         <i class="fa-solid fa-circle-info"></i>
                                         Detalles del proyecto
                                     </a>
-                                    <a href="" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-dark-200 rounded-full bg-link-100/5 border border-link-200 hover:bg-link-100/20 hover:text-dark-100 transition-all duration-200">
+                                    @if ($proyecto->url)
+                                    <a href="{{ $proyecto->url }}" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-dark-200 rounded-full bg-link-100/5 border border-link-200 hover:bg-link-100/20 hover:text-dark-100 transition-all duration-200">
                                         <i class="fa-solid fa-globe"></i>
-                                        Sitio en vivo
+                                        Sitio
                                     </a>
+                                    @endif
                                 </div>                        
                             </div>
                         </div>

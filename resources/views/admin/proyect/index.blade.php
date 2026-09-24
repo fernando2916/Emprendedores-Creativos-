@@ -28,6 +28,7 @@
               <th scope="col" class="px-4 py-3">Id</th>
               <th scope="col" class="px-4 py-3">Titulo</th>
               <th scope="col" class="px-4 py-3">Slug</th>
+              <th scope="col" class="px-4 py-3">Categoria</th>
               <th scope="col" class="px-4 py-3">Imagen Pincipal</th>
               <th scope="col" class="px-4 py-3">Imagen dos</th>
               <th scope="col" class="px-4 py-3">Imagen tres</th>
@@ -44,6 +45,7 @@
                 }}</th>
               <td class="px-4 py-3">{{ $proyecto->titulo }}</td>
               <td class="px-4 py-3">{{ $proyecto->slug }}</td>
+              <td class="px-4 py-3">{{ $proyecto->categoria }}</td>
              
               <td class="px-4 py-3"><img src={{ $proyecto->image_principal ? Storage::url($proyecto->image_principal) : 'NULL' }} alt={{ $proyecto->titulo }} className="w-20 h-20 object-cover
                 rounded-md" /></td>

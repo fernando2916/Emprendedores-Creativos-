@@ -20,8 +20,10 @@ return new class extends Migration
             $table->string('image_third')->nullable();
             $table->string('image_fourth')->nullable();
             $table->text('descripcion');
+            $table->text('categoria');
             $table->text('objetivo');
             $table->string('cliente');
+            $table->string('url')->nullable();
             $table->timestamps();
         });
     }
