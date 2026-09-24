@@ -103,5 +103,11 @@
         Todos los derechos reservados.
       </p>
     </div>
+    <div class="uppercase font-bold flex gap-2 items-center text-xs text-gray-400">
+        Construido con 
+        <i class="fa-brands fa-laravel text-red-600/50 hover:text-red-600"></i>
+        <i class="fa-brands fa-tailwind-css text-sky-600/50 hover:text-sky-600"></i>
+        <i class="fa-brands fa-php text-blue-600/50 hover:text-blue-600"></i>
+    </div>
   </div>
 </footer>

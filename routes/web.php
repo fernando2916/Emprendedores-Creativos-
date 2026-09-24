@@ -13,6 +13,7 @@ use App\Http\Controllers\Profile\PerfilController;
 use App\Http\Controllers\Profile\PreferenciasNotifiController;
 use App\Http\Controllers\Profile\SeguridadCuentaController;
 use App\Http\Controllers\Profile\SuscripcionesController;
+use App\Http\Controllers\ProyectosController;
 use App\Http\Controllers\RecursoController;
 use App\Http\Controllers\TerminosController;
 use App\Http\Controllers\TiendaController;
@@ -22,7 +23,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/diseño-grafico', [DiseñoController::class, 'index'])->name('diseno.index');
-Route::get('/diseño-grafico/proyectos/{proyect:slug}', [DiseñoController::class, 'show'])->name('diseno.show');
+Route::get('/proyectos/{proyect:slug}', [DiseñoController::class, 'show'])->name('diseno.show');
+Route::get('/proyectos', [ProyectosController::class, 'index'])->name('proyectos.index');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{blog:slug}', [BlogController::class, 'show'])->name('blog.show');
