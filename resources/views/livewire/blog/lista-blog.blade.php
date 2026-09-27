@@ -87,9 +87,11 @@
                                 </div>
                             </div>
 
-                            <h3 class="hover:text-link-400 dark:hover:text-link-200 mb-2 text-2xl font-semibold">
-                                {{ $blog->titulo }}
-                            </h3>
+                            <div class="min-h-16">
+                                <h3 class="hover:text-link-400 dark:hover:text-link-200 mb-2 text-2xl font-semibold">
+                                    {{ $blog->titulo }}
+                                </h3>
+                            </div>
                             <div class="">
                                 <p class="line-clamp-2 leading-relaxed mb-5 text-justify text-sm text-slate-200 dark:text-slate-300">
                                     {{ $blog->descripcion_corta }}
@@ -98,12 +100,12 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center justify-center gap-3">
                                     <div class="flex items-center justify-center gap-1">
-                                        <i class="fa-solid fa-thumbs-up"></i>
+                                        <i class="fa-solid fa-heart"></i>
                                         <p>{{ $blog->likes->count() }}</p>
                                     </div>
                                     <div class="flex items-center justify-center gap-1">
                                         <i class="fa-solid fa-comment"></i>
-                                        <livewire:contador-comentarios :post="$blog" />
+                                        <livewire:contador-comentarios :blog="$blog" />
                                     </div>
                                 </div>
                                 <div class="flex items-center justify-center gap-3 text-sm">

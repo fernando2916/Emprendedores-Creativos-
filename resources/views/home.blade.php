@@ -1,9 +1,6 @@
 @extends('components.layouts.principal')
 
 @section('contenido')
-    @if ($banners->isNotEmpty())
-        @include('plataforma.home.carousel', $banners)
-    @else
         <div
             class="w-full bg-light-300 dark:to-[#100042] bg-radial dark:from-[#610942] mx-auto px-5 sm:px-10 lg:px-12 pt-28 pb-12 sm:py-24 min-h-svh lg:min-h-screen">
 
@@ -55,7 +52,6 @@
                 </div>
             </div>
         </div>
-    @endif
     @auth
         @php
             $user = auth()->user();
@@ -76,14 +72,69 @@
     @include('plataforma.home.servicios')
 
     <div class="mx-auto px-5 lg:container">
-        <div class="">
-            productos
-        </div>
-        <div class="">
-            Cursos
-        </div>
+        {{-- tienda --}}
         <section class="py-32">
-            <div class="max-w-350 mx-auto px-6 sm:px-10 lg:px-12">                            
+            <div class="max-w-350 mx-auto px-6 sm:px-10 lg:px-12 ">                            
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 animate-on-scroll visible">
+                    <div class="max-w-2xl">
+                        <span class="inline-block px-4 py-1.5 text-2xs font-mono font-semibold tracking-widest uppercase text-link-200 bg-accent-500/8 border border-link-500/20 rounded-full mb-4">
+                        De la tienda
+                        </span>
+                        <h2 class="text-4xl sm:text-6xl font-black mb-6">
+                            Productos recientes
+                        </h2>
+                        <p class="text-lg leading-relaxed">
+                           Playeras, sudaderas, promocionales, personalizados...
+                        </p>
+                    </div>
+                    <a href="{{ route('tienda.index') }}" wire:navigate class="hidden md:flex items-center gap-3 text-sm font-bold text-link-400 hover:text-link-300 transition-color group">
+                        Ver todos los productos
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    @forelse ($ultimosPost as $post)
+
+                    @empty
+                        <p class="text-center">No hay productos aún.</p>
+                    @endforelse
+                </div>
+                <a href="{{ route('tienda.index') }}" class="md:hidden mt-10 flex items-center justify-center gap-3 text-sm font-bold text-link-400 hover:text-link-300 transition-color group">
+                    Ir a la tienda
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </section>
+        {{-- cursos --}}
+        <section class="py-32">
+            <div class="max-w-350 mx-auto px-4 sm:px-10 lg:px-12 ">                            
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 animate-on-scroll visible">
+                    <div class="max-w-2xl">
+                        <span class="inline-block px-4 py-1.5 text-2xs font-mono font-semibold tracking-widest uppercase text-link-200 bg-accent-500/8 border border-link-500/20 rounded-full mb-4">
+                        De los cursos
+                        </span>
+                        <h2 class="text-4xl sm:text-6xl font-black mb-6">
+                            Cursos recientes
+                        </h2>
+                        <p class="text-lg leading-relaxed">
+                           Diseño, dessarollo web, impresion, marketing... gratis, por plan o como tu desses.
+                        </p>
+                    </div>
+                    <a href="{{ route('blog.index') }}" wire:navigate class="hidden md:flex items-center gap-3 text-sm font-bold text-link-400 hover:text-link-300 transition-color group">
+                        Ver todos los cursos
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+  
+                <a href="{{ route('tienda.index') }}" class="md:hidden mt-10 flex items-center justify-center gap-3 text-sm font-bold text-link-400 hover:text-link-300 transition-color group">
+                    Ir a todos los cursos
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </section>
+        {{-- blog --}}
+        <section class="py-32">
+            <div class="max-w-350 mx-auto px-2 sm:px-10 lg:px-12">                            
                 <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 animate-on-scroll visible">
                     <div class="max-w-2xl">
                         <span class="inline-block px-4 py-1.5 text-2xs font-mono font-semibold tracking-widest uppercase text-link-200 bg-accent-500/8 border border-link-500/20 rounded-full mb-4">
@@ -107,30 +158,33 @@
                             class="mb-4 block overflow-hidden rounded-lg">
                             <article class="dark:bg-cont-100 bg-light-200 text-white">
                                 <div>
-                                    <img src={{ $post->imagen ? Storage::url($post->imagen) : '' }} alt="{{ $post->titulo }}"
-                                        class=" aspect-video w-full object-cover " />
+                                    <img 
+                                        src={{ $post->imagen ? Storage::url($post->imagen) : '' }} 
+                                        alt="{{ $post->titulo }}"
+                                        class=" aspect-video w-full object-cover "/>
                                 </div>
                                 <div class="space-y-3 p-4 mt-2">
                                     <div class="flex flex-wrap items-center gap-3 mb-3">
                                         <span
-                                            class="bg-categoria-400 dark:bg-categoria-200 rounded-md px-2 py-1 text-2xs font-semibold">
+                                            class="bg-categoria-400 dark:bg-categoria-200 rounded-md px-2 py-1 text-2xs md:text-xs font-semibold">
                                             {{ $post->categoriaPost->nombre }}
                                         </span>
-                                        <div class="flex items-center gap-1 text-sm">
+                                        <div class="flex items-center gap-1 text-2xs md:text-xs">
                                             <i class="fa-solid fa-calendar"></i>
                                             {{ $post->created_at->diffForHumans() }}
                                         </div>
-                                        <div class="flex items-center justify-center gap-3 text-sm">
+                                        <div class="flex items-center justify-center gap-3 text-2xs md:text-xs">
                                             <div class="flex items-center gap-1">
                                                 <i class="fa-solid fa-eye"></i>
-                                                <p>Lectura de {{ $post->tiempo_de_lectura }} min.</p>
+                                                <p>{{ $post->tiempo_de_lectura }} min de lectura.</p>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <h3 class="hover:text-link-400 dark:hover:text-link-200 mb-2 text-2xl font-semibold">
-                                        {{ $post->titulo }}
-                                    </h3>
+                                    <div class="min-h-16">
+                                        <h3 class="hover:text-link-400 dark:hover:text-link-200 mb-2 text-2xl font-semibold">
+                                            {{ $post->titulo }}
+                                        </h3>
+                                    </div>
                                     <div class="">
                                         <p class="line-clamp-2 leading-relaxed mb-5 text-justify text-sm text-slate-200 dark:text-slate-300">
                                             {{ $post->descripcion_corta }}
@@ -139,12 +193,12 @@
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center justify-center gap-3">
                                             <div class="flex items-center justify-center gap-1">
-                                                <i class="fa-solid fa-thumbs-up"></i>
+                                                <i class="fa-solid fa-heart"></i>
                                                 <p>{{ $post->likes->count() }}</p>
                                             </div>
                                             <div class="flex items-center justify-center gap-1">
                                                 <i class="fa-solid fa-comment"></i>
-                                                <livewire:contador-comentarios :post="$post" />
+                                                <livewire:contador-comentarios :blog="$post" />
                                             </div>
                                         </div>
                                         <div class="flex items-center justify-center gap-3 text-sm">
@@ -166,7 +220,7 @@
                             </article>
                         </a>
                     @empty
-                        <p class="text-center">No hay publicaciones aun</p>
+                        <p class="text-center">No hay publicaciones aún.</p>
                     @endforelse
                 </div>
                 <a href="{{ route('blog.index') }}" class="md:hidden mt-10 flex items-center justify-center gap-3 text-sm font-bold text-link-400 hover:text-link-300 transition-color group">

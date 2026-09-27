@@ -70,10 +70,10 @@ Crear Cuenta |
                 <p class="leading-snug">
                     Al registrarte, aceptas los
                     
-                    <x-ui.modales.terminos-modal :termino="$termino" />
+                    <x-ui.modales.terminos-modal />
 
                     y el
-                    <x-ui.modales.aviso :privacy="$privacy" />
+                    <x-ui.modales.aviso />
                     de
                     <strong>Emprendedores Creativos.</strong>
                 </p>

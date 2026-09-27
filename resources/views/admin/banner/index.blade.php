@@ -1,7 +1,7 @@
 @extends('components.layouts.admin')
 
 @section('contenido')
-<div class="w-full flex justify-between items-center max-w-screen-xl mx-auto">
+<div class="w-full flex justify-between items-center max-w-7xl mx-auto">
   <p class="text-xl font-semibold">
     Diapositivas Promo
   </p>
@@ -18,7 +18,7 @@
 </div>
 
 <section class="pt-3">
-  <div class="mx-auto max-w-screen-xl">
+  <div class="mx-auto max-w-7xl">
     <!-- Start coding here -->
     <div class="bg-light-200 dark:bg-cont-100 relative shadow-md rounded-lg overflow-hidden">
       <div class="overflow-x-auto">
@@ -26,10 +26,7 @@
           <thead class="uppercase bg-light-100 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" class="px-4 py-3">Id</th>
-              <th scope="col" class="px-4 py-3">Titulo</th>
-              <th scope="col" class="px-4 py-3">descipcion</th>
               <th scope="col" class="px-4 py-3">Banner</th>
-              <th scope="col" class="px-4 py-3">Enlace</th>
 
               <th scope="col" class="px-4 py-3">Acciones</th>
             </tr>
@@ -40,19 +37,9 @@
               <th scope="row" class="px-4 py-3 font-medium whitespace-nowrap dark:text-white">
                 {{ $banner->id }}
                 </th>
-              <td class="px-4 py-3">
-                <p class="line-clamp-2">
-                  {{ $banner->titulo }}
-                </p>
-              </td>
-    
-              <td class="px-4 py-3">
-                <p class="line-clamp-1">
-                  {{ $banner->descripcion }}
-                </p>
-              </td>              
+     
               <td class="px-4 py-3">{{ $banner->banner }}</td>
-              <td class="px-4 py-3">{{ $banner->enlace }}</td>
+
 
               <td class="px-4 py-3 flex items-center justify-start">
                 <div class="flex items-center gap-2">                 

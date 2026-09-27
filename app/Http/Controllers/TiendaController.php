@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
+
 class TiendaController extends Controller
 {
     //
     public function index()
     {
-        return view('plataforma.shop.index');
+        $banners = Banner::all();
+        return view('plataforma.shop.index', [
+           'banners' => $banners, 
+        ]);
     }
 }

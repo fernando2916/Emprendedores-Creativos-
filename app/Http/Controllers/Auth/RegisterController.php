@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Mail\VerificationMail;
-use App\Models\PrivacyNotice;
-use App\Models\Terminos;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -18,9 +16,8 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $privacy = PrivacyNotice::first();
-        $termino = Terminos::first();
-        return view('Auth.Register', compact('privacy', 'termino'));
+
+        return view('Auth.Register');
     }
 
     public function store(RegisterRequest $request)

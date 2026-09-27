@@ -1,20 +1,9 @@
 <div>
-    <div class="swiper mySwiper-banner relative">
+    <div class="swiper mySwiper-banner relative w-full h-100 md:h-197.5">
     <div class="swiper-wrapper">
         @foreach ($banners as $banner)
             <div class="swiper-slide relative">
-                <img src="{{ $banner->banner ? Storage::url($banner->banner) : '' }}" alt="" class="w-full h-96 object-cover">
-                <div class="absolute top-5 md:top-10 left-0 w-full">
-                    <div class="p-5 flex flex-col items-center md:items-start max-w-3xl mx-auto text-white">
-                        <h3 class="text-xl md:text-4xl font-bold">{{ $banner->titulo }}</h3>
-                        <p class="mt-2">{{ $banner->descripcion }}</p>
-                        <a href="{{ route($banner->enlace) }}">
-                            <button class="bg-btn-200 hover:bg-btn-400 dark:bg-btn-400 hover:dark:bg-btn-600 transition-colors duration-150 p-3 rounded-md cursor-pointer font-semibold mt-4">
-                                Visitar
-                            </button>
-                        </a>
-                    </div>
-                </div>
+                <img src="{{ $banner->banner ? Storage::url($banner->banner) : '' }}" alt="" class="w-full h-full object-cover">
             </div>           
         @endforeach
     </div>

@@ -1,5 +1,5 @@
 
-<div>
+<div class="flex mx-auto justify-center flex-col max-w-7xl">
     <div class="max-w-7xl mx-10 mt-10 flex flex-col justify-center space-y-2">
             <h2 class="text-center text-3xl font-bold">Glosario Gráfico</h2>
             <div>

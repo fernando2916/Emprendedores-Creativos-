@@ -74,12 +74,7 @@
         class="dark:bg-cont-100  before:bg-nav-400 relative overflow-hidden rounded-lg bg-light-300 p-6 shadow-md before:absolute before:top-0 before:left-0 before:h-1 before:w-full">
         <div class="flex items-center justify-between gap-3">          
           <div class="flex items-center gap-2 text-2xl">
-            @auth
-              
             <livewire:like-post :blog="$blog"/>
-            @endauth
-            <i class="fa-solid fa-heart"></i>
-            <span class=""> 0</span>
           </div>
           <div class="flex items-center gap-2 text-2xl">
             <i class="fa-solid fa-comment"></i>

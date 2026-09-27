@@ -36,6 +36,11 @@
                             : 'https://ui-avatars.com/api/?name=' . urlencode($comentario->autor->nombre_completo) }}"
                             alt="Foto de {{ $comentario->autor->nombre_completo }}" class="w-10 h-10 rounded-full object-cover">
                         {{ $comentario->autor->nombre_completo }}
+                        @if ($blog->esAutor($comentario->user_id))
+                            <span class="text-link-500 text-sm font-semibold">
+                                · Autor
+                            </span>
+                        @endif
                         <span class="text-xs text-gray-400 ml-2">{{ $comentario->created_at->diffForHumans()
                             }}</span>
 
@@ -48,9 +53,9 @@
                         onclick="alert('Debes iniciar sesión para dar like')" @endif
                         class="flex items-center gap-1 cursor-pointer mt-2 ml-10">
                         @if($comentario->isLikedBy(Auth::id()))
-                        <i class="fa-solid fa-thumbs-up text-link-100"></i>
+                        <i class="fa-solid fa-heart text-btn-400"></i>
                         @else
-                        <i class="fa-regular fa-thumbs-up"></i>
+                        <i class="fa-regular fa-heart"></i>
                         @endif
                         {{ $comentario->likes->count() }}
                     </button>
@@ -114,7 +119,9 @@
         <!-- Lista de respuestas -->
         @foreach($comentario->replies ?? [] as $respuesta)
          <x-reply 
-         :reply="$respuesta" :respuestaActiva="$respuestaActiva" />
+         :reply="$respuesta" 
+         :respuestaActiva="$respuestaActiva"
+         :blog="$blog" />
         @endforeach
     </div>
     @endforeach

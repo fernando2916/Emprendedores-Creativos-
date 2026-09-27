@@ -34,15 +34,13 @@ class BannerController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'titulo' => 'string',
-            'descripcion' => 'string',
-            'banner' => 'nullable|image|mimes:jpeg,png',
-            'enlace' => 'required|string',
+            
+            'banner' => 'nullable|image|mimes:jpeg,png,webp',
+    
         ], [
-            'titulo.string' => 'El titulo es requerido.',
-            'descripcion.string' => 'La descripción es requerida.',
+           
             'banner.required' => 'La imagen es requerida.',
-            'enlace.required' => 'El enlace es requerido.',
+  
         ]);
 
         if ($request->hasFile('banner')) {
@@ -87,15 +85,9 @@ class BannerController extends Controller
     {
         //
         $data = $request->validate([
-            'titulo' => 'string',
-            'descripcion' => 'string',
             'banner' => 'image|mimes:jpeg,png',
-            'enlace' => 'string',
         ], [
-            'titulo.required' => 'El titulo es requerido.',
-            'descripcion.required' => 'La descripción es requerida.',
             'banner.required' => 'La imagen es requerida.',
-            'enlace.required' => 'El enlace es requerido.',
         ]);
 
         if ($request->hasFile('banner')) {

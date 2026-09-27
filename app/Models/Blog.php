@@ -35,6 +35,11 @@ class Blog extends Model
         return $this->belongsTo(User::class, 'users_id');
     }
 
+    public function esAutor($userId)
+{
+    return $this->users_id === $userId;
+}
+
     public function comentarioPost()
     {
         return $this->hasMany(PostComentario::class);

@@ -6,9 +6,9 @@
         title="@if(Auth::check()) Me gusta @else Inicia sesión para dar like @endif"
     >
         @if($isLiked)
-            <i class="fa-solid fa-thumbs-up text-3xl text-link-100"></i>
+            <i class="fa-solid fa-heart text-3xl text-btn-400"></i>
         @else
-            <i class="fa-solid fa-thumbs-up text-3xl "></i>
+            <i class="fa-solid fa-heart text-3xl "></i>
         @endif
     </button>
     <span>

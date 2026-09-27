@@ -14,11 +14,16 @@
                 class="w-10 h-10 rounded-full object-cover"
             >
 
-            <div class="flex flex-col">
+            <div class="flex flex-wrap gap-3 items-center">
 
                 <span class="text-sm font-semibold">
                     {{ $reply->user->nombre_completo }}
                 </span>
+                @if ($blog->esAutor($reply->user_id))
+                <span class="text-link-500 text-sm font-semibold">
+                    · Autor
+                </span>
+            @endif
 
                 <span class="text-xs text-gray-400">
                     {{ $reply->created_at->diffForHumans() }}
@@ -50,11 +55,11 @@
 
                 @if($reply->isLikedBy(Auth::id()))
 
-                    <i class="fa-solid fa-thumbs-up text-link-100"></i>
+                    <i class="fa-solid fa-heart text-btn-400"></i>
 
                 @else
 
-                    <i class="fa-regular fa-thumbs-up"></i>
+                    <i class="fa-regular fa-heart"></i>
 
                 @endif
 
@@ -132,7 +137,8 @@
 
             @foreach($reply->replies as $childReply)
 
-                <x-reply :reply="$childReply"  :respuestaActiva="$respuestaActiva" />
+                <x-reply :reply="$childReply"  :respuestaActiva="$respuestaActiva"
+                :blog="$blog" />
 
             @endforeach
 
