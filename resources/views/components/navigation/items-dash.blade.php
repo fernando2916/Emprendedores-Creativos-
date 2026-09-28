@@ -144,48 +144,28 @@
       @endcan
     </div>
       @endcan
-      {{-- @can('ver tienda')
+       @can('ver tienda')
         <div>
-        <p class="text-gray-400 ml-2">Productos</p>
-        @can('producto index')
+        <p class="text-gray-400 ml-2">Tienda</p>
+        @can('marca index')
   
         <li>
-          <a href="{{ route('admin.producto.index') }}" wire:navigate
-          wire:current.exact="bg-light-200 dark:bg-purple-700"
-            class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
-            <i class="fa-solid fa-store"></i>
-            Productos
-          </a>
-        </li>
-        @endcan
-        @can('categoria producto index')
-  
-        <li>
-          <a href="{{ route('admin.categorias.index') }}" wire:navigate
+          <a href="{{ route('admin.brand.index') }}" wire:navigate
           wire:current.exact="bg-light-200 dark:bg-purple-700"
             class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
             <i class="fa-solid fa-tag"></i>
-            Categorias Curso
+            Marcas
           </a>
         </li>
         @endcan
-        @can('subCategoria producto index')
+        @can('licencia index')
+  
         <li>
-          <a href="{{ route('admin.subcategorias.index') }}" wire:navigate
+          <a href="{{ route('admin.licencia.index') }}" wire:navigate
           wire:current.exact="bg-light-200 dark:bg-purple-700"
-            class="flex items-center w-full p-2 transition duration-75 rounded-lg gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
-            <i class="fa-solid fa-tags"></i>
-            Sub Categorias Curso
-          </a>
-        </li>
-        @endcan
-        @can('especialidad producto index')
-        <li>
-          <a href="{{ route('admin.especialidad.index') }}" wire:navigate
-          wire:current.exact="bg-light-200 dark:bg-purple-700"
-            class="flex items-center w-full p-2 transition duration-75 rounded-lg gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
-            <i class="fa-solid fa-school"></i>
-            Especialidad Curso
+            class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
+            <i class="fa-solid fa-tag"></i>
+            Licencias
           </a>
         </li>
         @endcan
@@ -193,7 +173,7 @@
       </div>
       @endcan
   
-      @can('ver curso')
+      {{--@can('ver curso')
         <div>
         <p class="text-gray-400 ml-2">Cursos</p>
         @can('curso index')
@@ -241,34 +221,35 @@
   
       </div>
       @endcan  --}}
-  
+
       @can('ver blog')
   
-      <div>
-        <p class="text-gray-400 ml-2">Blog</p>
-        @can('blog index')
-  
-        <li>
-          <a href="{{ route('admin.blogs.index') }}" wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
-            class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
-            <i class="fa-solid fa-book"></i>
-            Publicaciones
-          </a>
-        </li>
-        @endcan
-        @can('categoria post index')
-        <li>
-          <a href="{{ route('admin.categories.index') }}" wire:navigate
-          wire:current.exact="bg-light-200 dark:bg-purple-700"
-            class="flex items-center w-full p-2 transition duration-75 rounded-lg gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
-            <i class="fa-solid fa-tag"></i>
-            Categorias Post
-          </a>
-        </li>
-        @endcan
-  
-      </div>
+        <div>
+            <p class="text-gray-400 ml-2">Blog</p>
+            @can('blog index')
+    
+            <li>
+            <a href="{{ route('admin.blogs.index') }}" wire:navigate wire:current.exact="bg-light-200 dark:bg-purple-700"
+                class="flex items-center w-full p-2 transition duration-75 rounded-lg  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
+                <i class="fa-solid fa-book"></i>
+                Publicaciones
+            </a>
+            </li>
+            @endcan
+            @can('categoria post index')
+            <li>
+            <a href="{{ route('admin.categories.index') }}" wire:navigate
+            wire:current.exact="bg-light-200 dark:bg-purple-700"
+                class="flex items-center w-full p-2 transition duration-75 rounded-lg gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
+                <i class="fa-solid fa-tag"></i>
+                Categorias Post
+            </a>
+            </li>
+            @endcan
+    
+        </div>
       @endcan
+
        @can('ver diseño')
   
         <div>

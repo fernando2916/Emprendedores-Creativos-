@@ -18,6 +18,8 @@ use App\Http\Controllers\Admin\ProyectController;
 use App\Http\Controllers\Admin\RecursoController;
 use App\Http\Controllers\Admin\TestimonioFotoController;
 use App\Http\Controllers\Admin\VacanteController;
+use App\Http\Controllers\Admin\Shop\BrandController;
+use App\Http\Controllers\Admin\Shop\LicenseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -42,3 +44,10 @@ Route::resource('/glosario', GlosarioController::class)->names('admin.glosario')
 Route::resource('/vacantes', VacanteController::class)->names('admin.vacante');
 Route::get('/candidatos/{vacante}', [CandidatosController::class, 'index'])->name('candidatos.index');
 Route::resource('/recursos', RecursoController::class)->names('admin.recursos');
+
+// Tienda
+Route::resource('/marcas', BrandController::class)->names('admin.brand')
+->parameters([
+        'marcas' => 'brand',
+    ]);;
+Route::resource('/licencias', LicenseController::class)->names('admin.licencia');

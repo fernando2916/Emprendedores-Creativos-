@@ -137,7 +137,16 @@ class PermissionSeeder extends Seeder
             'especialidad curso delete',
 
             'ver tienda',
-
+            'marca index',    
+            'marca create',
+            'marca edit',
+            'marca delete',
+            
+            'licencia index',    
+            'licencia create',
+            'licencia edit',
+            'licencia delete',
+            
             'producto index',
             'producto create',
             'producto edit',

@@ -6,6 +6,7 @@ import "./assets/typewrite";
 import "./assets/typewrite-foto";
 import "./assets/slider";
 import "./assets/slider-servicios";
+import "./assets/slider-marcas";
 import "./assets/slider-banner";
 import "./assets/slider-testimonio-foto";
 import "./quill";

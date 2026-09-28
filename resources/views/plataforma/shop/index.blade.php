@@ -184,6 +184,30 @@
 
         {{-- Licencias slider --}}
         {{-- Marcas --}}
+        <div class="relative overflow-hidden">
+            <div class="mx- auto flex justify-center py-5">
+                <span class="font-semibold text-2xl">
+                    Marcas que trabajan con nosotros
+                </span>
+            </div>
+            <div class="swiper-marcas marcasSwiper">
+                <div class="swiper-wrapper items-center">
+        
+                    @foreach ($marcas as $marca)
+                        <div class="swiper-slide flex justify-center items-center">
+                            <img
+                                src="{{ Storage::url($marca->imagen) }}"
+                                alt="{{ $marca->nombre }}"
+                                class="h-16 w-auto object-contain opacity-70
+                                       hover:opacity-100 transition-opacity"
+                            >
+                        </div>
+                    @endforeach
+        
+                </div>
+            </div>
+        
+        </div>
 
         {{-- ========================================================= --}}
         {{-- CONTENIDO --}}
