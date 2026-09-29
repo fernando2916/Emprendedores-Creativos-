@@ -12,7 +12,7 @@
                      @if(!$isLast)
                          <a @if(!empty($item['navigate'])) wire:navigate @endif 
                             href="{{ $item['url'] }}" 
-                            class="inline-flex items-center font-medium hover:text-link-100">
+                            class="inline-flex items-center gap-2 font-medium hover:text-link-100">
                              @if(!empty($item['icon']))
                                  <i class="{{ $item['icon'] }} text-lg p-1"></i>
                              @endif
@@ -37,7 +37,7 @@
                          @if(!$isLast)
                              <a @if(!empty($item['navigate'])) wire:navigate @endif 
                                 href="{{ $item['url'] }}" 
-                                class="ms-1 font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">
+                                class="ms-1 font-medium text-gray-700 hover:text-blue-600 md:ms-2 gap-2 dark:text-gray-400 dark:hover:text-white">
                                  {{ $item['label'] }}
                              </a>
                          @else

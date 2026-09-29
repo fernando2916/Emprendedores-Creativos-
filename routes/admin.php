@@ -12,17 +12,25 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GlosarioController;
 use App\Http\Controllers\Admin\OpDesingController;
 use App\Http\Controllers\Admin\PaqueteFotoController;
+use App\Http\Controllers\Admin\PermisionController;
 use App\Http\Controllers\Admin\PlansDesingController;
 use App\Http\Controllers\Admin\PortafolioFotoController;
 use App\Http\Controllers\Admin\ProyectController;
 use App\Http\Controllers\Admin\RecursoController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TestimonioFotoController;
+use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\VacanteController;
 use App\Http\Controllers\Admin\Shop\BrandController;
 use App\Http\Controllers\Admin\Shop\LicenseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::resource('/users', UsersController::class)->names('admin.users');
+
+Route::resource('/roles', RoleController::class)->names('admin.roles');
+Route::resource('/permissions', PermisionController::class)->names('admin.permissions');
 
 Route::resource('/banners', BannerController::class)->names('admin.banner');
 Route::resource('/boletin', BoletinController::class)->names('admin.boletin');

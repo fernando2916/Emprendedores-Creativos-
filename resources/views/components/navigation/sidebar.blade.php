@@ -63,7 +63,7 @@
     </div>
     <button type="button" data-drawer-hide="drawer-navigation" aria-controls="drawer-navigation"
         class=" bg-light-100 hover:bg-light-300 dark:bg-btn-400 rounded-md text-sm w-8 h-8 absolute top-2.5 inset-e-2.5 inline-flex items-center justify-center dark:hover:bg-btn-600 dark:hover:text-white cursor-pointer">
-        <i class="fa-solid fa-xmark text-lg px-1.5"></i>
+        <i class="fa-solid fa-xmark text-lg "></i>
         <span class="sr-only">Close menu</span>
     </button>
 
