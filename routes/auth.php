@@ -23,6 +23,9 @@ Route::get('/ingresar', [LoginController::class, 'index'])->name('login');
 Route::post('/ingresar', [LoginController::class, 'store']);
 
 Route::get('/restablecer-contraseña', [ResetPasswordController::class, 'index'])->name('reset');
+
+Route::get('/restablecer-contraseña/show', [ResetPasswordController::class, 'show'])->name('passwordReset');
+
 Route::post('/restablecer-contraseña', [ResetPasswordController::class, 'store']);
 
 Route::get('/nueva-contraseña/{user:verification_id}', [ConfirmPasswordController::class, 'index'])->name('password.confirm');

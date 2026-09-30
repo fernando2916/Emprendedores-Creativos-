@@ -14,6 +14,11 @@ class ResetPasswordController extends Controller
     {
         return view('Auth.ResetPassword');
     }
+    
+    public function show()
+    {
+        return view('Auth.PasswordConfirm');
+    }
 
     public function store(Request $request)
     {
@@ -39,9 +44,7 @@ class ResetPasswordController extends Controller
         ]);
 
         // Redirect to login page with success message
-        return redirect()->route('password.confirm', [
-            'user' => $user,
-        ]);
+        return redirect()->route('passwordReset');
 
     }
 }

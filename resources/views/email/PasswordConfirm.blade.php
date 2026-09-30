@@ -1,133 +1,141 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-<style>
-    body {
-    background-color: #000c1f;
-    color: white;
-  }
 
-  main {
-    height: 100vh;
-  }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Restablecer contraseña</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #f3f4f6;
+                font-family: Arial, Helvetica, sans-serif;
+            }
 
-  .contenedor {
-    display: flex;
-    flex-direction: column;
-    padding: 2.5rem;
-  }
+            .contenedor {
+                width: 100%;
+                padding: 40px 0;
+            }
 
-  .fondo {
-    background-color: #00122e;
-    justify-content: center;
-    border-radius: 1rem;
-    padding: 2rem;
-  }
+            .correo {
+                width: 100%;
+                max-width: 672px;
+                margin: 0 auto;
+                background-color: #ffffff;
+            }
 
-  .imagen {
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    margin-inline: auto;
-    margin: .75rem;
-  }
-  img {
-    max-width: 100%;
-    height: auto;
-    width: 4rem;
-  }
-  .contenedor-saludo {
-    margin: 0.75rem;
-    
-  }
+            .contenido {
+                padding: 32px;
+            }
 
-  p {
-    font-size: 1.125rem;
-    line-height: 1.5rem;
-  }
+            .logo {
+                display: block;
+                height: 40px;
+                width: auto;
+                margin-bottom: 32px;
+            }
 
-  .saludo {
-    font-size: 18px;
-    line-height: 20px;
-    font-weight: 800;
-  }
+            h2 {
+                margin: 0;
+                color: #374151;
+                font-size: 24px;
+                line-height: 32px;
+            }
 
-  .codigo {
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin: .5rem;
-  }
+            p {
+                color: #4b5563;
+                font-size: 16px;
+                line-height: 26px;
+                margin: 12px 0 0;
+            }
 
-  .prec {
-    font-size: 15px;
-    /* margin: .5rem; */
-  }
+            .boton-contenedor {
+                margin-top: 28px;
+                margin-bottom: 28px;
+            }
 
-  .btn {
-    margin: 1.25rem 0;
-    margin-inline: auto;
-    display: flex;
-    justify-content: center;
-  }
+            .boton {
+                display: inline-block;
+                padding: 12px 24px;
+                background-color: #6e004c;
+                color: #ffffff !important;
+                text-decoration: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: bold;
+            }
 
-  .link {
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    background-color: #6e004c;
-    border-radius: 6px;
-    padding: 0.75rem 0.5rem;
-    width: 100%;
-    cursor: pointer;
-    text-align: center;
-    font-size: 1.25rem;
-  }
+            .aviso {
+                margin-top: 28px;
+                padding-top: 24px;
+                border-top: 1px solid #e5e7eb;
+            }
 
-</style>
-</head>
-<body>
-  <main>
-    <div class="contenedor">
-      <div class="fondo">
+            .aviso-titulo {
+                color: #374151;
+                font-size: 16px;
+                font-weight: bold;
+            }
 
-        <div class="imagen">
-          <img src="{{ asset('images/icono.png')}} " alt="icono de la empresa">
+            .despedida {
+                margin-top: 32px;
+            }
+
+            .footer {
+                padding: 24px 32px 32px;
+            }
+
+            .footer p {
+                color: #6b7280;
+                font-size: 13px;
+                line-height: 20px;
+            }
+
+            .footer a {
+                color: #6e004c;
+                text-decoration: none;
+            }
+
+            @media only screen and (max-width: 600px) {
+
+                .contenido,
+                .footer {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="contenedor">
+            <div class="correo">
+                <div class="contenido"> <!-- Logo --> <img src="{{ $message->embed(public_path('images/icono.png')) }}"
+                        alt="Emprendedores Creativos" class="logo">
+                    <main>
+                        <h2> Hola {{ $user->nombre_completo }}, </h2>
+                        <p> Recibimos tu solicitud para cambiar la contraseña de tu cuenta de <strong>Emprendedores
+                                Creativos</strong>. </p>
+                        <p> Para continuar con el proceso, haz clic en el siguiente botón: </p>
+                        <div class="boton-contenedor"> <a class="boton"
+                                href="{{ env('APP_URL') . '/auth/nueva-contraseña/' . $user->verification_id }}">
+                                Cambiar contraseña </a> </div>
+                        <div class="aviso">
+                            <p class="aviso-titulo"> ¿No solicitaste esto? </p>
+                            <p> Si recibiste este correo electrónico, pero no estás intentando restablecer tu
+                                contraseña, puedes ignorarlo. No se ha realizado ningún cambio en tu cuenta. </p>
+                        </div>
+                        <p class="despedida"> Gracias,<br> <strong>Equipo de Emprendedores Creativos</strong> </p>
+                    </main>
+                </div>
+                <footer class="footer">
+                    <p> Este correo fue enviado a <a href="mailto:{{ $user->email }}"> {{ $user->email }} </a>. </p>
+                    <p> © {{ date('Y') }} Emprendedores Creativos. Todos los derechos reservados. </p>
+                </footer>
+            </div>
         </div>
-        <div class="contenedor-saludo">
+    </body>
 
-          <p class="">Hola
-            <span class="saludo">{{ $user->nombre_completo }}:
-            <p class="">
-              Recibimos tu solicitud para cambiar tu contraseña.
-            </p>
-          </p>
-          <div class="">
-            
-            <div class="btn">
-              
-              <a class="link"
-              href="{{ env("APP_URL") . "/auth/nueva-contraseña/" . $user->verification_id}} ">
-              Cambiar contraseña
-            </a>
-
-        </div>
-      </div>
-      <div>
-
-        <span class="saludo">¿No solicitaste esto?</span>            
-        <p class="prec">Si recibiste este correo electrónico, pero no estás intentando restablecer tu contraseña, puedes ignorarlo. No se ha realizado ningún cambio en tu cuenta.
-        </p>
-      </div>
-        </div>
-      </div>
-    </div>
-
-    </div>
-  </main>
-
-</body>
 </html>

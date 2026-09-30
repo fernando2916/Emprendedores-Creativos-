@@ -1,139 +1,143 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-<style>
-    body {
-    background-color: #000c1f;
-    color: white;
-  }
 
-  main {
-    height: 100vh;
-  }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Nuevo código de verificación</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #f3f4f6;
+                font-family: Arial, Helvetica, sans-serif;
+            }
 
-  .contenedor {
-    display: flex;
-    flex-direction: column;
-    padding: 2.5rem;
-  }
+            .contenedor {
+                width: 100%;
+                padding: 40px 0;
+            }
 
-  .fondo {
-     background-color: #00122e;
-    justify-content: center;
-    border-radius: 1rem;
-    padding: 2rem;
-  }
+            .correo {
+                width: 100%;
+                max-width: 672px;
+                margin: 0 auto;
+                background-color: #ffffff;
+            }
 
-  .imagen {
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    margin-inline: auto;
-    margin: .75rem;
-  }
-  img {
-    max-width: 100%;
-    height: auto;
-    width: 4rem;
-  }
-  .contenedor-saludo {
-    margin: 0.75rem;
-    
-  }
+            .contenido {
+                padding: 32px;
+            }
 
-  p {
-    font-size: 1.125rem;
-    line-height: 1.5rem;
-  }
+            .logo {
+                display: block;
+                height: 40px;
+                width: auto;
+                margin-bottom: 32px;
+            }
 
-  .saludo {
-    font-size: 18px;
-    line-height: 20px;
-    font-weight: 800;
-  }
+            h2 {
+                margin: 0;
+                color: #374151;
+                font-size: 24px;
+                line-height: 32px;
+            }
 
-  .codigo {
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin: .5rem;
-    background-color: #6e004c;
-    padding: .5rem;
-    border-radius: .5rem;
-  }
+            p {
+                color: #4b5563;
+                font-size: 16px;
+                line-height: 26px;
+                margin: 12px 0 0;
+            }
 
-  .prec {
-    font-size: 15px;
-    margin: .5rem;
-  }
+            .codigo-contenedor {
+                margin-top: 24px;
+            }
 
-  .btn {
-    margin: 1.25rem 0;
-    margin-inline: auto;
-    display: flex;
-    justify-content: center;
-  }
+            .codigo {
+                display: inline-block;
+                width: 42px;
+                height: 42px;
+                line-height: 42px;
+                margin-right: 6px;
+                text-align: center;
+                border: 1px solid #6e004c;
+                border-radius: 8px;
+                color: #6e004c;
+                background-color: #ffffff;
+                font-size: 24px;
+                font-weight: bold;
+            }
 
-  .link {
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    background-color: #6e004c;
-    border-radius: 6px;
-    padding: 0.75rem 0.5rem;
-    width: 100%;
-    cursor: pointer;
-    text-align: center;
-    font-size: 1.25rem;
-  }
+            .aviso {
+                margin-top: 20px;
+            }
 
-   .centro {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: auto;
-  }
+            .despedida {
+                margin-top: 32px;
+            }
 
-</style>
+            .footer {
+                padding: 24px 32px 32px;
+            }
 
-</head>
-<body >
-  <main>
-    <div class="contenedor">
-      <div class="fondo">
+            .footer p {
+                color: #6b7280;
+                font-size: 13px;
+                line-height: 20px;
+            }
 
-        <div class="imagen">
-          <img src="{{ asset('images/icono.png')}} " alt="icono de la empresa">
+            .footer a {
+                color: #6e004c;
+                text-decoration: none;
+            }
+
+            @media only screen and (max-width: 600px) {
+
+                .contenido,
+                .footer {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+
+                .codigo {
+                    width: 38px;
+                    height: 38px;
+                    line-height: 38px;
+                    font-size: 21px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="contenedor">
+            <div class="correo">
+                <div class="contenido"> <!-- Logo --> <img src="{{ $message->embed(public_path('images/icono.png')) }}"
+                        alt="Emprendedores Creativos" class="logo">
+                    <main>
+                        <h2> Hola {{ $user->nombre_completo }}, </h2>
+                        <p> Al parecer tu código de verificación anterior ha expirado. No te preocupes, hemos generado
+                            uno nuevo para ti. </p>
+                        <p> Utiliza el siguiente código para verificar e iniciar sesión en tu cuenta de
+                            <strong>Emprendedores Creativos</strong>. </p> <!-- Código -->
+                        <div class="codigo-contenedor">
+                            @foreach (str_split($user->verification_code) as $numero)
+                                <span class="codigo"> {{ $numero }} </span>
+                            @endforeach
+                        </div>
+                        <p class="aviso"> Este código será válido durante los próximos <strong>15 minutos</strong>.
+                        </p>
+                        <p class="despedida"> Gracias,<br> <strong>Equipo de Emprendedores Creativos</strong> </p>
+                    </main>
+                </div>
+                <footer class="footer">
+                    <p> Este correo fue enviado a <a href="mailto:{{ $user->email }}"> {{ $user->email }} </a>. </p>
+                    <p> © {{ date('Y') }} Emprendedores Creativos. Todos los derechos reservados. </p>
+                </footer>
+            </div>
         </div>
-        <div class="contenedor-saludo">
+    </body>
 
-          <p class="">Hola
-            <span class="saludo">{{$user->nombre_completo}}</span>,
-            Al parecer se ha expirado tú código de verificación, no te preocupes aqui tienes otro.
-          </p>
-          <div>
-
-            <p class="text-xl">Utiliza el siguiente código para verificar e iniciar sesión en tu cuenta de Emprendedores Creativos.
-            </p>
-            <div class="centro">
-
-              <p class="text-lg font-medium">
-                Este código expira en 15 minutos.
-              </p>
-              <span class="codigo">
-                {{ $user->verification_code }}
-              </span>
-            </div>            
-          </div>
-        </div>
-      </div>
-    </div>
-
-    </div>
-  </main>
-
-</body>
 </html>

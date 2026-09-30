@@ -56,4 +56,5 @@ class VerificationMail extends Mailable
     {
         return [];
     }
+    
 }
