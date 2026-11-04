@@ -43,7 +43,7 @@ Ingresar |
                 <input type="checkbox" name="remember" class="text-btn-400 accent-btn-400 ring-offset-transparent border-none">
                 <span class="text-sm text-white">Recuerdame</span>
             </div>
-            <a href="{{ route('reset') }}" wire:navigate class="text-link-100">¿Olvidaste tu
+            <a href="{{ route('reset') }}" wire:navigate class="text-link-100 inline-flex text-sm md:text-base">¿Olvidaste tu
                 contraseña?</a>
         </div>
         <button :disabled="cargando" type="submit"
