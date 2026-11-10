@@ -74,7 +74,7 @@
     <div class="mx-auto px-5 lg:container">
         {{-- tienda --}}
         <section class="py-32">
-            <div class="max-w-350 mx-auto px-6 sm:px-10 lg:px-12 ">                            
+            <div class="max-w-350 mx-auto px-2 sm:px-10 lg:px-12 ">                            
                 <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 animate-on-scroll visible">
                     <div class="max-w-2xl">
                         <span class="inline-block px-4 py-1.5 text-2xs font-mono font-semibold tracking-widest uppercase text-link-200 bg-accent-500/8 border border-link-500/20 rounded-full mb-4">
@@ -93,8 +93,8 @@
                     </a>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    @forelse ($ultimosPost as $post)
-
+                    @forelse ($productos as $producto)
+                    <x-ui.product-card :producto="$producto"/>
                     @empty
                         <p class="text-center">No hay productos aún.</p>
                     @endforelse
@@ -107,7 +107,7 @@
         </section>
         {{-- cursos --}}
         <section class="py-32">
-            <div class="max-w-350 mx-auto px-4 sm:px-10 lg:px-12 ">                            
+            <div class="max-w-350 mx-auto px-2 sm:px-10 lg:px-12 ">                            
                 <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 animate-on-scroll visible">
                     <div class="max-w-2xl">
                         <span class="inline-block px-4 py-1.5 text-2xs font-mono font-semibold tracking-widest uppercase text-link-200 bg-accent-500/8 border border-link-500/20 rounded-full mb-4">

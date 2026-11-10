@@ -31,6 +31,7 @@
     --color-cont-200: #59799c;
     --color-cont-300: #011b47;
     --color-cont-400: #001536;
+    --color-cont-500: #003C99;
 
     --color-nav-50: #eedbff;
     --color-nav-100: #dfbdff;
@@ -63,6 +64,7 @@
     --color-btn-200: #bd0081;
     --color-btn-400: #6e004c;
     --color-btn-600: #54003a;
+    --color-btn-800: #360025;
 
     --color-alerts-100: #1ee618;
     --color-alerts-300: #ffb433;
@@ -104,6 +106,11 @@
 .swiper {
     width: 100%;
     height: 300px;
+}
+
+.swiper-img {
+    width: 100%;
+    height: auto;
 }
 .swiper-marcas {
     width: 100%;

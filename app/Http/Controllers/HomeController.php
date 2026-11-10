@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Producto;
 
 class HomeController extends Controller
 {
@@ -11,8 +12,23 @@ class HomeController extends Controller
     
         $ultimosPost = Blog::latest()->take(3)->get();
 
+        $productos = Producto::with([
+        'images',
+        'categoria',
+        'subCategoria',
+        'tags',
+        'variantes',
+        'reseñas',
+    ])
+        ->where('estado', true)
+        ->latest()
+        ->take(3)
+        ->get();
+
+
         return view('home', [
             'ultimosPost' => $ultimosPost,
+            'productos' => $productos,
         ]);
     }
 }

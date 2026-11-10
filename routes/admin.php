@@ -21,8 +21,22 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TestimonioFotoController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\VacanteController;
+use App\Http\Controllers\Admin\Shop\AttributeValueController;
 use App\Http\Controllers\Admin\Shop\BrandController;
+use App\Http\Controllers\Admin\Shop\CategoriaController;
+use App\Http\Controllers\Admin\Shop\SubCategoriaController;
 use App\Http\Controllers\Admin\Shop\LicenseController;
+use App\Http\Controllers\Admin\Shop\ProductoController;
+use App\Http\Controllers\Admin\Shop\ProductoAttributeController;
+use App\Http\Controllers\Admin\Shop\TagController;
+
+use App\Livewire\Admin\Descuentos\Index as DescuentoIndex;
+use App\Livewire\Admin\Descuentos\Formulario as FormularioDescuento;
+use App\Livewire\Admin\Cupones\Index as CuponesIndex;
+use App\Livewire\Admin\Cupones\Formulario as FormularioCupon;
+use App\Livewire\Admin\Ordenes\Index as OrdenesIndex;
+use App\Livewire\Admin\Ordenes\Detalle as DetalleOrden;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -58,4 +72,35 @@ Route::resource('/marcas', BrandController::class)->names('admin.brand')
 ->parameters([
         'marcas' => 'brand',
     ]);;
+    
+Route::get('/cupones', CuponesIndex::class)
+    ->name('cupon.index');
+
+Route::get('/cupones/crear', FormularioCupon::class)
+    ->name('cupon.create');
+
+Route::get('/cupones/{cupon}/editar', FormularioCupon::class)
+    ->whereNumber('cupon')
+    ->name('cupon.edit');
+
+// Gestión de pedidos
+Route::get('/ordenes', OrdenesIndex::class)
+        ->name('orden.index');
+    
+Route::get('/ordenes/{orden}', DetalleOrden::class)
+        ->whereNumber('orden')
+        ->name('orden.show');
+        
 Route::resource('/licencias', LicenseController::class)->names('admin.licencia');
+Route::resource('/categorias', CategoriaController::class)->names('admin.categoria');
+Route::resource('/subcategorias', SubCategoriaController::class)->names('admin.subcategoria');
+Route::resource('/etiquetas', TagController::class)->names('admin.etiqueta');
+Route::resource('/atributos', ProductoAttributeController::class)->names('admin.atributo');
+Route::resource('/atributos/{productoAttribute}/valores', AttributeValueController::class)->parameters([
+    'valores' => 'valor'
+])->names('admin.atributo.valor');
+Route::resource('/productos', ProductoController::class)->names('admin.producto');
+
+Route::get('/descuento', DescuentoIndex::class)->name('descuento.index');
+Route::get('/descuento/crear', FormularioDescuento::class)->name('descuento.create');
+Route::get('/descuento/{descuento}/editar', FormularioDescuento::class)->name('descuento.edit');

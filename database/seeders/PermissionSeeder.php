@@ -142,15 +142,88 @@ class PermissionSeeder extends Seeder
             'marca edit',
             'marca delete',
             
+            'ver carrito',
+            'descuento index',    
+            'descuento create',
+            'descuento edit',
+            'descuento desactivar',
+            'descuento delete',
+
+            'zona index',
+            'zona create',
+            'zona edit',
+            'zona desactivar',
+            'zona delete',
+            
+            'cupon index',
+            'cupon create',
+            'cupon edit',
+            'cupon desactivar',
+            'cupon delete',
+            
+            
+            'categoria index',    
+            'categoria create',
+            'categoria edit',
+            'categoria delete',
+            
+            'orden index',    
+            'orden create',
+            'orden edit',
+            'orden show',
+            'orden delete',
+            
+            'subcategoria index',    
+            'subcategoria create',
+            'subcategoria edit',
+            'subcategoria delete',
+            
+            'tag index',    
+            'tag create',
+            'tag edit',
+            'tag delete',
+            
+            'atributos index',    
+            'atributos create',
+            'atributos edit',
+            'atributos show',
+            'atributos delete',
+            
+            'valorAtributo index',    
+            'valorAtributo create',
+            'valorAtributo edit',
+            'valorAtributo delete',
+            
+            'producto index',    
+            'producto create',
+            'producto edit',
+            'producto delete',
+            
+            'productoatribute index',    
+            'productoatribute create',
+            'productoatribute edit',
+            'productoatribute delete',
+            
+            'productimage index',    
+            'productimage create',
+            'productimage edit',
+            'productimage delete',
+            
+            'productovariante index',    
+            'productovariante create',
+            'productovariante edit',
+            'productovariante delete',
+            
+            'varianteatribute index',    
+            'varianteatribute create',
+            'varianteatribute edit',
+            'varianteatribute delete',
+            
             'licencia index',    
             'licencia create',
             'licencia edit',
             'licencia delete',
             
-            'producto index',
-            'producto create',
-            'producto edit',
-            'producto show',
 
         ];
 

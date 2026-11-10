@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'postalia' => [
+        'base_url' => env(
+            'POSTALIA_API_URL',
+            'https://postalia.com.mx/api/codigos-postales'
+        ),
+
+        'token' => env('POSTALIA_API_KEY'),
+    ],
+
 ];

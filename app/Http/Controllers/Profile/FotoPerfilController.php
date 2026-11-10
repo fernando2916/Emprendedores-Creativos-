@@ -21,7 +21,7 @@ class FotoPerfilController extends Controller
         $user = Auth::user();
         abort_unless(Auth::id() === $user->id, 403);
         $request->validate([
-            'avatar' => 'required|image|mimes:png,jpg,jpeg|max:2048',
+            'avatar' => 'required|image|mimes:png,jpg,jpeg|max:10240',
         ]);
 
         if ($user->profile->avatar) {

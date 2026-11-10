@@ -18,49 +18,49 @@
     <nav class="w-full space-y-1 text-sm font-medium">
         <a 
         wire:navigate
-        wire:current.exact="bg-light-200 dark:bg-purple-700" 
+        wire:current.exact="bg-light-200 dark:bg-nav-700" 
         href="{{ route('perfil.index',  ['user' => auth()->user()->username]) }}"
         class="block px-4 py-2 hover:bg-light-200 dark:hover:bg-nav-700 text-white rounded font-semibold">
             Perfil
         </a>
         <a
         wire:navigate 
-        wire:current.exact="bg-light-200 dark:bg-purple-700" 
+        wire:current.exact="bg-light-200 dark:bg-nav-700" 
         href="{{ route('foto.edit',  ['user' => auth()->user()->username]) }}"
         class="block px-4 py-2 hover:bg-light-200 dark:hover:bg-nav-700 text-white rounded font-semibold">
             Fotografia
         </a>
         <a 
         wire:navigate
-        wire:current.exact="bg-light-200 dark:bg-purple-700" 
+        wire:current.exact="bg-light-200 dark:bg-nav-700" 
         href="{{ route('cuenta.edit',  ['user' => auth()->user()->username]) }}" 
         class="block px-4 py-2 hover:bg-light-200 dark:hover:bg-nav-700 rounded">
             Seguridad de la cuenta
         </a>
         <a 
         wire:navigate
-        wire:current.exact="bg-light-200 dark:bg-purple-700"
+        wire:current.exact="bg-light-200 dark:bg-nav-700"
         href="{{ route('suscripciones.edit',  ['user' => auth()->user()->username]) }}" 
         class="block px-4 py-2 hover:bg-light-200 dark:hover:bg-nav-700 rounded">
             Suscripciones
         </a>
         <a 
         wire:navigate
-        wire:current.exact="bg-light-200 dark:bg-purple-700" 
+        wire:current.exact="bg-light-200 dark:bg-nav-700" 
         href="{{ route('metodos.edit',  ['user' => auth()->user()->username]) }}" 
         class="block px-4 py-2 hover:bg-light-200 dark:hover:bg-nav-700 rounded">
             Métodos de pago
         </a>
         <a 
         wire:navigate
-        wire:current.exact="bg-light-200 dark:bg-purple-700" 
+        wire:current.exact="bg-light-200 dark:bg-nav-700" 
         href="{{ route('notify.index',  ['user' => auth()->user()->username]) }}" class="block px-4 py-2 hover:bg-light-200 dark:hover:bg-nav-700 rounded">
             Preferencias de las
             notificaciones
         </a>
         <a
         wire:navigate
-        wire:current.exact="bg-light-200 dark:bg-purple-700" 
+        wire:current.exact="bg-light-200 dark:bg-nav-700" 
         href="{{ route('clean.delete',  ['user' => auth()->user()->username]) }}" class="block px-4 py-2 text-red-600 hover:bg-light-200 dark:hover:bg-nav-700 rounded">
             Cerrar cuenta
         </a>

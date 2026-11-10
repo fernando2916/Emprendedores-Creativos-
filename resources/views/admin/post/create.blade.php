@@ -103,7 +103,7 @@
         <div>
           <label for="category_id" class="block mb-2 text-sm font-medium text-white">Seleciona una categoria</label>
           <select name="categoria_posts_id" id="category_id"
-            class="border border-link-300 text-gray-900 text-sm rounded-lg focus:ring-link-500 focus:border-link-500 block w-full p-2.5 dark:bg-gray-800 dark:border-link-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-link-500 dark:focus:border-link-500">
+            class="border border-link-300 text-gray-900 text-sm rounded-md focus:ring-link-500 focus:border-link-500 block w-full p-2.5 dark:bg-gray-800 dark:border-link-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-link-500 dark:focus:border-link-500">
             <option selected disabled>Selecciona una categoria</option>
             @foreach ($categories as $category)
             <option value="{{ $category->id }}">{{ $category->nombre }}</option>

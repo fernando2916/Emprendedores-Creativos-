@@ -5,7 +5,7 @@
       >
       <a
       wire:navigate 
-      wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+      wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
         href="{{ route('home') }}"
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -20,7 +20,7 @@
     >
       <a
         wire:navigate 
-        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+        wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
         href="{{ route('blog.index') }}"
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -34,11 +34,11 @@
     >
       <a
         wire:navigate 
-        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+        wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
         href="{{ route('tienda.index') }}"
         class="flex items-center gap-3 p-3 text-lg"
       >
-        <i class="fa-solid fa-shopping-cart"></i>
+        <i class="fa-solid fa-store"></i>
       Tienda
         
       </a>
@@ -49,7 +49,7 @@
     >
       <a
         wire:navigate 
-        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+        wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
         {{-- href="{{ route("cursos.index") }}" --}}
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -71,7 +71,7 @@
     >
       <a
         wire:navigate
-        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+        wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
         href="{{ route('diseno.index') }}"
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -86,7 +86,7 @@
     >
       <a
         wire:navigate 
-        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+        wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
         href="{{ route('fotografia.index') }}"
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -101,7 +101,7 @@
     >
       <a
         wire:navigate 
-        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+        wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
         {{-- href="{{ route("desarrollo.index") }}" --}}
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -117,7 +117,7 @@
     >
       <a
         wire:navigate 
-        wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+        wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
         {{-- href="{{ route("asesorias.index") }}" --}}
         class="flex items-center gap-3 p-3 text-lg"
       >
@@ -139,7 +139,7 @@
   >
     <a
       wire:navigate 
-      wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+      wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
       {{-- href="{{ route("nosotros.index") }}" --}}
       class="flex items-center gap-3 p-3 text-lg"
     >
@@ -154,7 +154,7 @@
   >
     <a
       wire:navigate 
-      wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+      wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
       href="{{ route('contacto.index') }}"
       class="flex items-center gap-3 p-3 text-lg"
     >
@@ -169,7 +169,7 @@
   >
     <a
       wire:navigate 
-      wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+      wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
       href="{{ route('vacantes.index') }}"
       class="flex items-center gap-3 p-3 text-lg"
     >
@@ -184,7 +184,7 @@
   >
     <a
       wire:navigate 
-      wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+      wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
       href="{{ route('recursos.index') }}"
       class="flex items-center gap-3 p-3 text-lg"
     >
@@ -199,7 +199,7 @@
   >
     <a
       wire:navigate 
-      wire:current.exact="bg-light-200 dark:bg-purple-700 rounded-md"
+      wire:current.exact="bg-light-200 dark:bg-nav-700 rounded-md"
       href="{{ route('glosario.index') }}"
       class="flex items-center gap-3 p-3 text-lg"
     >

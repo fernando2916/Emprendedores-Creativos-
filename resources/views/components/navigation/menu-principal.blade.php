@@ -52,7 +52,7 @@
   </div>
   <div class="flex items center gap-2">
     <a wire:navigate href="{{ route('tienda.index') }}" class="">
-      <i class="fa-solid fa-shopping-cart"></i>
+      <i class="fa-solid fa-store"></i>
       Tienda
     </a>
   </div>

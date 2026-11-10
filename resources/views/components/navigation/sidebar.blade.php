@@ -1,21 +1,32 @@
 <!-- drawer init and show -->
 <div class="text-center">
-    <button
-        class="bg-light-200 hover:bg-light-300 dark:bg-btn-400 dark:hover:bg-btn-600 rounded-md p-1 text-white transition-colors duration-150 outline-none box-content cursor-pointer"
-        type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation"
-        aria-controls="drawer-navigation">
-        <i class="fa-solid fa-bars text-lg p-1"></i>
-    </button>
+    <div class="relative">
+        <button
+            class="bg-light-200 hover:bg-light-300 dark:bg-btn-400 dark:hover:bg-btn-600 rounded-md p-1 text-white transition-colors duration-150 outline-none box-content cursor-pointer"
+            type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation"
+            aria-controls="drawer-navigation">
+            <i class="fa-solid fa-bars text-lg p-1"></i>
+        </button>
+        <span
+        x-show="$store.indicadores.hayAlertas"
+        x-cloak
+        class="absolute -top-1 -right-1
+               w-3 h-3
+               rounded-full
+               bg-link-500               
+               "
+    ></span>
+    </div>
 </div>
 
 <!-- drawer component -->
 <div id="drawer-navigation"
-    class="fixed top-0 left-0 z-40 h-screen overflow-y-auto transition-transform -translate-x-full bg-light-100 w-[20rem] dark:bg-nav-900"
+    class="fixed top-0 left-0 z-40 h-screen overflow-y-auto transition-transform -translate-x-full bg-light-100 w-[20rem]  md:w-[24rem] dark:bg-nav-900"
     tabindex="-1" aria-labelledby="drawer-navigation-label">
 
     <div class="dark:bg-nav-800 flex h-36 items-center gap-3 bg-light-200 py-3">
         @auth
-            <div class="flex items-center gap-3 pl-8">
+            <div class="flex items-center gap-3 pl-8 w-full mx-auto">
                 <div>
                     @if ($avatar = auth()->user()->profile?->avatar)
                         <img src="{{ Storage::url($avatar) }}" alt="Foto de perfil"
@@ -27,23 +38,24 @@
                 </div>
                 <div>
                     <span class="text-2xl">{{ auth()->user()->nombre_completo }}</span>
-                    <p class="text-[13px] dark:text-gray-500 text-gray-200 italic ">
-                        {{ auth()->user()->profile->headline ?? 'Sin título profesional' }}
-                    </p>
-                    <div class="flex items-center gap-1">
-                        <a wire:navigate href="{{ route('perfil.index', ['user' => auth()->user()->username]) }}"
-                            class="flex items-center gap-1" @click="showMenu = false">
-                            <span class="text-link-200 text-base">Mi Perfil</span>
-                            <svg class="w-4 h-4 text-link-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
+                    <div class="flex items-center gap-2">
+
+                        <p class="text-[13px] dark:text-gray-300 text-gray-200 font-semibold italic ">
+                            {{ auth()->user()->profile->headline ?? 'Sin título profesional' }}
+                        </p>
+                        <div class="flex items-center gap-1">
+                            <a wire:navigate href="{{ route('perfil.index', ['user' => auth()->user()->username]) }}"
+                                class="flex items-center gap-1" @click="showMenu = false">
+                                <span class="text-link-200 text-base">Mi Perfil</span>
+                                <i class="fa-solid fa-chevron-right w-6 text-link-200"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         @else
             <div class="p-10">
-                <div class="flex items-center justify-center gap-3 pb-3">
+                <div class="flex items-center justify-center gap-3 pb-3  w-full mx-auto">
                     <i class="fa-solid fa-user"></i>
                     <div>
                         <span class="text-lg font-semibold">Entra a tu cuenta</span>

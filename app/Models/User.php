@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
@@ -77,5 +79,40 @@ class User extends Authenticatable
         return $this->avatar
             ? Storage::url($this->avatar)
             : 'https://ui-avatars.com/api/?name='.urlencode($this->nombre_completo);
+    }
+
+    public function productReviews(): HasMany
+    {
+        return $this->hasMany(ProductoReview::class);
+    }
+
+    public function listaDeseos(): BelongsToMany 
+    {
+        return $this->belongsToMany(
+            Producto::class,
+            'lista_deseos',
+            'user_id',
+            'producto_id',
+        )->withTimestamps();
+    }
+
+    public function carrito(): HasOne
+    {
+        return $this->hasOne(Carrito::class, 'user_id');
+    }
+
+    public function direcciones(): HasMany
+    {
+        return $this->hasMany(Direccion::class, 'user_id');
+    }
+
+    public function cuponUsos(): HasMany
+    {
+        return $this->hasMany(CuponUso::class, 'user_id');
+    }
+    
+    public function ordenes(): HasMany
+    {
+        return $this->hasMany(Orden::class);
     }
 }
