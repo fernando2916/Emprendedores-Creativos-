@@ -1,4 +1,4 @@
-<nav class="flex items-center gap-3 md:gap-4">
+<nav class="flex items-center gap-2 md:gap-4">
     <x-utils.btn-darkmode />
     <x-navigation.cart />
     <x-navigation.notification />

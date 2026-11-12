@@ -18,7 +18,7 @@ class HomeController extends Controller
         'subCategoria',
         'tags',
         'variantes',
-        'reseñas',
+        'reseñasPublicadas:id,producto_id,calificacion',
     ])
         ->where('estado', true)
         ->latest()

@@ -453,6 +453,60 @@
 
                 </div>
 
+                {{-- Propietario del producto --}}
+                @if (auth()->user()->hasRole('Super Admin'))
+
+                    <div class="md:col-span-2">
+
+                        <label
+                            for="propietario_id"
+                            class="block mb-2 text-sm font-medium"
+                        >
+                            Vendedor propietario
+                        </label>
+
+                        <select
+                            id="propietario_id"
+                            wire:model="propietario_id"
+                            class="w-full pr-4 py-3 bg-link-800 border border-link-500 rounded-2xl focus:outline-none focus:ring-2 focus:ring-link-500/50 transition-all"
+                        >
+
+                            <option value="">
+                                Selecciona un vendedor
+                            </option>
+
+                            @foreach ($vendedores as $vendedor)
+
+                                <option value="{{ $vendedor->id }}">
+                                    {{ $vendedor->nombre_completo }}
+                                </option>
+
+                            @endforeach
+
+                        </select>
+
+                        @error('propietario_id')
+                            <p class="mt-1 text-sm text-red-600">
+                                {{ $message }}
+                            </p>
+                        @enderror
+
+                        <p class="mt-1 text-xs text-gray-500">
+                            Selecciona al vendedor responsable de este producto.
+                        </p>
+
+                    </div>
+
+                @else
+
+                    <div class="md:col-span-2">
+                        <p class="text-sm text-gray-500">
+                            Este producto quedará asignado automáticamente a tu cuenta.
+                        </p>
+                    </div>
+
+                @endif
+
             </div>
 
         </div>

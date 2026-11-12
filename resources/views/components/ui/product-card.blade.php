@@ -47,15 +47,14 @@
     |--------------------------------------------------------------------------
     */
 
-    $precioMinimo = $variantesActivas->min('precio');
-    $precioMaximo = $variantesActivas->max('precio');
-
     $stockTotal = $variantesActivas->sum('stock');
 
-    $totalReseñas = $producto->reseñas->count();
+    $reseñas = $producto->reseñasPublicadas;
+
+    $totalReseñas = $reseñas->count();
 
     $promedioRaiting = $totalReseñas > 0
-        ? round($producto->reseñas->avg('calificacion')* 2) / 2
+        ? round($reseñas->avg('calificacion') * 2) / 2
         : 0;
 
 @endphp
@@ -183,7 +182,7 @@
         @endif
 
         {{-- RATING --}}
-        <div class="flex items-center gap-2 mt-3">
+         <div class="flex items-center gap-2 mt-3">
 
             @if ($totalReseñas > 0)
 
@@ -191,12 +190,12 @@
 
                     @for ($i = 1; $i <= 5; $i++)
 
-                        @if ($promedioRating >= $i)
+                        @if ($promedioRaiting >= $i)
 
                             {{-- Estrella completa --}}
-                            <i class="fa-solid fa-star"></i>
+                             <i class="fa-solid fa-star"></i>
 
-                        @elseif ($promedioRating >= ($i - 0.5))
+                        @elseif ($promedioRaiting >= ($i - 0.5)) 
 
                             {{-- Media estrella --}}
                             <i class="fa-solid fa-star-half-stroke"></i>
@@ -206,14 +205,14 @@
                             {{-- Estrella vacía --}}
                             <i class="fa-regular fa-star"></i>
 
-                        @endif
+                         @endif 
 
                     @endfor
 
                 </div>
 
                 <span class="text-xs">
-                    {{ number_format($promedioRating, 1) }}
+                    {{ number_format($promedioRaiting, 1) }}
                 </span>
 
                 <span class="text-xs ">
@@ -238,7 +237,7 @@
 
             @endif
 
-        </div>
+        </div> 
 
 
 

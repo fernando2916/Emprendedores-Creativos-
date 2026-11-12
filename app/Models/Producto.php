@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,6 +13,7 @@ class Producto extends Model
     protected $table = 'productos';
     //
     protected $fillable = [
+        'user_id',
         'nombre',
         'slug',
         'descripcion',
@@ -62,10 +64,20 @@ class Producto extends Model
     {
         return $this->hasMany(ProductoImage::class, 'producto_id')->orderBy('orden');
     }
-
+    
     public function reseñas(): HasMany
     {
         return $this->hasMany(ProductoReview::class);
+    }
+
+    public function preguntas(): HasMany
+    {
+        return $this->hasMany(ProductoPregunta::class, 'producto_id');
+    }
+
+    public function reseñasPublicadas(): HasMany
+    {
+        return $this->reseñas()->where('estado', true);
     }
 
     public function variantes(): HasMany
@@ -91,6 +103,11 @@ class Producto extends Model
             'producto_id',
             'descuento_id'
         );
+    }
+
+    public function propietario(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
     
 }

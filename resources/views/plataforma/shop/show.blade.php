@@ -35,11 +35,14 @@
         $tieneDescuentoInicial =
             $varianteMasEconomica['aplicado'] ?? false;
 
-        $totalReseñas = $producto->reseñas->count();
+            $resenasPublicadas = $producto->reseñas
+                ->where('estado', true);
 
-        $promedioRaiting = $totalReseñas > 0
-            ? round($producto->reseñas->avg('calificacion')* 2) / 2
-            : 0;
+            $totalReseñas = $resenasPublicadas->count();
+
+            $promedioRaiting = $totalReseñas > 0
+                ? round($resenasPublicadas->avg('calificacion') * 2) / 2
+                : 0;
 
     @endphp
 
@@ -514,6 +517,61 @@
             </div>
 
         </div>
+
+        {{-- PRODUCTOS RELACIONADOS --}}
+        @if ($productosRelacionados->isNotEmpty())
+        <section class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-10">
+    
+            {{-- Encabezado --}}
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-8">
+    
+                <div>
+                    <span class="text-sm font-semibold uppercase tracking-wider text-purple-600 dark:text-purple-400">
+                        Descubre más
+                    </span>
+    
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mt-1">
+                        También te puede interesar
+                    </h2>
+    
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                        Otros productos que podrían gustarte.
+                    </p>
+                </div>
+                
+            </div>
+    
+            {{-- Swiper --}}
+            <div class="swiper productosRelacionadosSwiper w-full min-w-0">
+    
+                <div class="swiper-wrapper ">
+    
+                    @foreach ($productosRelacionados as $productoRelacionado)
+    
+                        <div
+                            class="swiper-slide"
+                            wire:key="producto-relacionado-{{ $productoRelacionado->id }}"
+                        >
+                            {{-- <div class="w-full min-w-0"> --}}
+                                <x-ui.product-card :producto="$productoRelacionado" />
+                            {{-- </div> --}}
+                        </div>
+    
+                    @endforeach
+    
+                </div>
+
+    
+            </div>
+    
+        </section>
+    @endif
+
+        {{-- RESEÑAS Y PREGUNTAS DEL PRODUCTO --}}
+        <livewire:shop.producto-interacciones
+            :producto="$producto"
+            :key="'interacciones-producto-' . $producto->id"
+        />
 
     </div>
 

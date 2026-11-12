@@ -86,6 +86,16 @@ class User extends Authenticatable
         return $this->hasMany(ProductoReview::class);
     }
 
+    public function productoPreguntas(): HasMany
+    {
+        return $this->hasMany(ProductoPregunta::class, 'user_id');
+    }
+
+    public function productoRespuestas(): HasMany
+    {
+        return $this->hasMany(ProductoRespuesta::class, 'user_id');
+    }
+
     public function listaDeseos(): BelongsToMany 
     {
         return $this->belongsToMany(
@@ -115,4 +125,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Orden::class);
     }
+
+    public function productosPropios(): HasMany
+    {
+        return $this->hasMany(Producto::class, 'user_id');
+    }
+
 }

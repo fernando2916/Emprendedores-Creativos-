@@ -12,6 +12,8 @@ use App\Models\ProductoAttribute;
 use App\Models\ProductoVariante;
 use App\Models\AttributeValue;
 use App\Models\Tag;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -24,6 +26,10 @@ class ProductForm extends Component
     use WithFileUploads;
     
     public ?Producto $producto = null;
+
+    public ?int $propietario_id = null;
+
+    public $vendedores = [];
 
     public $nombre = '';
     public $descripcion = '';
@@ -63,159 +69,133 @@ class ProductForm extends Component
     | MOUNT
     |--------------------------------------------------------------------------
     */
-    public function mount(?Producto $producto = null)
-{
-    if (!$producto?->exists) {
-        return;
-    }
+    public function mount(?Producto $producto = null): void
+    {
+        abort_unless(
+            Auth::check() && Auth::user()->hasAnyRole([
+                'Super Admin',
+                'Vendedor',
+                'Admin',
+            ]),
+            403
+        );
 
-    $this->producto = $producto;
+        $esSuperAdmin = Auth::user()->hasRole('Super Admin');
 
-    $this->imagenesExistentes = $producto->images()
-    ->orderBy('orden')
-    ->get();
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Datos del producto
-    |--------------------------------------------------------------------------
-    */
-
-    $this->nombre = $producto->nombre;
-    $this->descripcion = $producto->descripcion;
-    $this->brand_id = $producto->brand_id;
-    $this->license_id = $producto->license_id;
-    $this->categoria_id = $producto->categoria_id;
-    $this->sub_categoria_id = $producto->sub_categoria_id;
-    $this->estado = $producto->estado;
-    $this->destacado = $producto->destacado;
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Tags
-    |--------------------------------------------------------------------------
-    */
-
-    $this->tags = $producto->tags()
-        ->pluck('tags.id')
-        ->toArray();
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Subcategorías
-    |--------------------------------------------------------------------------
-    */
-
-    $this->cargarSubcategorias();
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Atributos del producto
-    |--------------------------------------------------------------------------
-    */
-
-    $this->atributosSeleccionados = $producto->atributos()
-        ->pluck('producto_attributes.id')
-        ->map(fn ($id) => (int) $id)
-        ->toArray();
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Variantes existentes
-    |--------------------------------------------------------------------------
-    */
-
-    $variantesGuardadas = $producto->variantes()
-        ->with('valores')
-        ->get();
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Valores realmente utilizados
-    |--------------------------------------------------------------------------
-    */
-
-    $this->valoresSeleccionados = [];
-
-    foreach ($variantesGuardadas as $variante) {
-
-        foreach ($variante->valores as $valor) {
-
-            $atributoId = (int) $valor->producto_attribute_id;
-            $valorId = (int) $valor->id;
-
-            $this->valoresSeleccionados[$atributoId][$valorId] = true;
+        // Cargar vendedores disponibles para el Super Admin.
+        if ($esSuperAdmin) {
+            $this->vendedores = User::role([
+                'Vendedor',
+                'Admin',
+            ])
+                ->orderBy('nombre_completo')
+                ->get();
         }
-    }
 
+        // Si es un producto nuevo.
+        if (!$producto?->exists) {
+            if (!$esSuperAdmin) {
+                $this->propietario_id = Auth::id();
+            }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Generar combinaciones
-    |--------------------------------------------------------------------------
-    */
+            return;
+        }
 
-    $this->generarVariantes();
+        // Un vendedor solamente puede editar sus propios productos.
+        if (!$esSuperAdmin) {
+            abort_unless(
+                (int) $producto->user_id === (int) Auth::id(),
+                403
+            );
 
+            $this->propietario_id = Auth::id();
+        } else {
+            $this->propietario_id = $producto->user_id
+                ? (int) $producto->user_id
+                : null;
+        }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Recuperar SKU, precio, stock y estado
-    |--------------------------------------------------------------------------
-    */
+        $this->producto = $producto;
 
-    foreach ($variantesGuardadas as $varianteGuardada) {
+        $this->imagenesExistentes = $producto->images()
+            ->orderBy('orden')
+            ->get();
 
-        $ids = $varianteGuardada->valores
-            ->pluck('id')
+        // Información general.
+        $this->nombre = $producto->nombre;
+        $this->descripcion = $producto->descripcion;
+        $this->brand_id = $producto->brand_id;
+        $this->license_id = $producto->license_id;
+        $this->categoria_id = $producto->categoria_id;
+        $this->sub_categoria_id = $producto->sub_categoria_id;
+        $this->estado = $producto->estado;
+        $this->destacado = $producto->destacado;
+
+        // Tags.
+        $this->tags = $producto->tags()
+            ->pluck('tags.id')
+            ->toArray();
+
+        // Subcategorías.
+        $this->cargarSubcategorias();
+
+        // Atributos.
+        $this->atributosSeleccionados = $producto->atributos()
+            ->pluck('producto_attributes.id')
             ->map(fn ($id) => (int) $id)
-            ->sort()
-            ->values()
-            ->implode('-');
+            ->toArray();
 
+        // Variantes existentes.
+        $variantesGuardadas = $producto->variantes()
+            ->with('valores')
+            ->get();
 
-        foreach ($this->variantes as $indice => $variante) {
+        $this->valoresSeleccionados = [];
 
-            $idsActuales = collect($variante['valores'])
-                ->pluck('valor_id')
+        foreach ($variantesGuardadas as $variante) {
+            foreach ($variante->valores as $valor) {
+                $atributoId = (int) $valor->producto_attribute_id;
+                $valorId = (int) $valor->id;
+
+                $this->valoresSeleccionados[$atributoId][$valorId] = true;
+            }
+        }
+
+        $this->generarVariantes();
+
+        // Recuperar SKU, precio, stock y estado.
+        foreach ($variantesGuardadas as $varianteGuardada) {
+            $ids = $varianteGuardada->valores
+                ->pluck('id')
                 ->map(fn ($id) => (int) $id)
                 ->sort()
                 ->values()
                 ->implode('-');
 
+            foreach ($this->variantes as $indice => $variante) {
+                $idsActuales = collect($variante['valores'])
+                    ->pluck('valor_id')
+                    ->map(fn ($id) => (int) $id)
+                    ->sort()
+                    ->values()
+                    ->implode('-');
 
-            if ($ids === $idsActuales) {
+                if ($ids === $idsActuales) {
+                    $this->variantes[$indice]['sku'] = $varianteGuardada->sku;
+                    $this->variantes[$indice]['precio'] = $varianteGuardada->precio;
+                    $this->variantes[$indice]['stock'] = $varianteGuardada->stock;
+                    $this->variantes[$indice]['estado'] = $varianteGuardada->estado;
 
-                $this->variantes[$indice]['sku'] =
-                    $varianteGuardada->sku;
-
-                $this->variantes[$indice]['precio'] =
-                    $varianteGuardada->precio;
-
-                $this->variantes[$indice]['stock'] =
-                    $varianteGuardada->stock;
-
-                $this->variantes[$indice]['estado'] =
-                    $varianteGuardada->estado;
-
-                break;
+                    break;
+                }
             }
         }
-    }
 
         $this->dispatch(
-        'producto-editor-cargar',
-        descripcion: $this->descripcion
-    );
-
-
-}
+            'producto-editor-cargar',
+            descripcion: $this->descripcion
+        );
+    }
 
     /*
     ----------------------------------------------------------------
@@ -223,97 +203,97 @@ class ProductForm extends Component
     ----------------------------------------------------------------
     */
     public function generarVariantes()
-{
-    $grupos = [];
+    {
+        $grupos = [];
 
-    foreach ($this->valoresSeleccionados as $atributoId => $valores) {
+        foreach ($this->valoresSeleccionados as $atributoId => $valores) {
 
-        if (!is_array($valores)) {
-            continue;
-        }
-
-        $grupo = [];
-
-        foreach ($valores as $valorId => $seleccionado) {
-
-            if (!$seleccionado) {
+            if (!is_array($valores)) {
                 continue;
             }
 
-            $grupo[] = [
-                'atributo_id' => (int) $atributoId,
-                'valor_id' => (int) $valorId,
-            ];
-        }
+            $grupo = [];
 
-        if (!empty($grupo)) {
-            $grupos[] = $grupo;
-        }
-    }
+            foreach ($valores as $valorId => $seleccionado) {
 
-    /*
-    |--------------------------------------------------------------------------
-    | No hay valores seleccionados
-    |--------------------------------------------------------------------------
-    */
+                if (!$seleccionado) {
+                    continue;
+                }
 
-    if (empty($grupos)) {
-        $this->variantes = [];
-        return;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Generar combinaciones
-    |--------------------------------------------------------------------------
-    */
-
-    $combinaciones = [[]];
-
-    foreach ($grupos as $grupo) {
-
-        $nuevasCombinaciones = [];
-
-        foreach ($combinaciones as $combinacion) {
-
-            foreach ($grupo as $valor) {
-
-                $nuevasCombinaciones[] = [
-                    ...$combinacion,
-                    $valor,
+                $grupo[] = [
+                    'atributo_id' => (int) $atributoId,
+                    'valor_id' => (int) $valorId,
                 ];
+            }
+
+            if (!empty($grupo)) {
+                $grupos[] = $grupo;
             }
         }
 
-        $combinaciones = $nuevasCombinaciones;
+        /*
+        |--------------------------------------------------------------------------
+        | No hay valores seleccionados
+        |--------------------------------------------------------------------------
+        */
+
+        if (empty($grupos)) {
+            $this->variantes = [];
+            return;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Generar combinaciones
+        |--------------------------------------------------------------------------
+        */
+
+        $combinaciones = [[]];
+
+        foreach ($grupos as $grupo) {
+
+            $nuevasCombinaciones = [];
+
+            foreach ($combinaciones as $combinacion) {
+
+                foreach ($grupo as $valor) {
+
+                    $nuevasCombinaciones[] = [
+                        ...$combinacion,
+                        $valor,
+                    ];
+                }
+            }
+
+            $combinaciones = $nuevasCombinaciones;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Crear variantes
+        |--------------------------------------------------------------------------
+        */
+
+            $this->variantes = collect($combinaciones)
+                ->map(function ($combinacion) {
+
+                    return [
+                        'id' => null,
+                        
+                        'valores' => $combinacion,
+
+                        'sku' => '',
+
+                        'precio' => '',
+
+                        'stock' => 0,
+
+                        'estado' => true,
+                    ];
+                })
+                ->values()
+                ->toArray();
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Crear variantes
-    |--------------------------------------------------------------------------
-    */
-
-        $this->variantes = collect($combinaciones)
-            ->map(function ($combinacion) {
-
-                return [
-                    'id' => null,
-                    
-                    'valores' => $combinacion,
-
-                    'sku' => '',
-
-                    'precio' => '',
-
-                    'stock' => 0,
-
-                    'estado' => true,
-                ];
-            })
-            ->values()
-            ->toArray();
-}
     
     /*
     ----------------------------------------------------------------
@@ -406,7 +386,7 @@ class ProductForm extends Component
     |--------------------------------------------------------------------------
     */
 
-    public function guardar()
+        public function guardar()
     {
         $datos = $this->validate([
             'nombre' => [
@@ -514,6 +494,45 @@ class ProductForm extends Component
                 ],
         ]);
 
+                // Definir el propietario del producto.
+        if (Auth::user()->hasRole('Super Admin')) {
+
+            $propietarioValidado = $this->validate([
+                'propietario_id' => [
+                    'required',
+                    'integer',
+                    'exists:users,id',
+                ],
+            ]);
+
+            $nuevoPropietario = User::role([
+                'Vendedor',
+                'Admin',
+            ])->find($propietarioValidado['propietario_id']);
+
+            if (!$nuevoPropietario) {
+                $this->addError(
+                    'propietario_id',
+                    'Selecciona un usuario que tenga el rol de vendedor.'
+                );
+
+                return;
+            }
+
+            $datos['user_id'] = $nuevoPropietario->id;
+
+        } elseif (Auth::user()->hasAnyRole([
+            'Vendedor',
+            'Admin',
+        ])) {
+
+            // El vendedor siempre será propietario de su producto.
+            $datos['user_id'] = Auth::id();
+
+        } else {
+            abort(403);
+        }
+
         $datos['slug'] = Str::slug($datos['nombre']);
 
         unset($datos['tags']);
@@ -521,88 +540,100 @@ class ProductForm extends Component
         unset($datos['variantes']);
 
         DB::transaction(function () use ($datos) {
-
-        /*
-        |--------------------------------------------------------------------------
-        | Guardar producto
-        |--------------------------------------------------------------------------
-        */
-
-        if ($this->producto?->exists) {
-
-            $this->producto->update($datos);
-
-        } else {
-
-            $this->producto = Producto::create($datos);
-        }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Tags
-        |--------------------------------------------------------------------------
-        */
-
-        $this->producto->tags()->sync($this->tags);
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Atributos
-        |--------------------------------------------------------------------------
-        */
-
-        $this->producto->atributos()->sync(
-            $this->atributosSeleccionados
-        );
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Eliminar variantes anteriores
-        |--------------------------------------------------------------------------
-        */
-
-        $this->producto->variantes()->delete();
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Crear nuevas variantes
-        |--------------------------------------------------------------------------
-        */
-
-        foreach ($this->variantes as $variante) {
-
-            $nuevaVariante = $this->producto->variantes()->create([
-                'sku' => $variante['sku'],
-                'precio' => $variante['precio'],
-                'stock' => $variante['stock'],
-                'estado' => $variante['estado'] ?? true,
-            ]);
-
-
+               
             /*
             |--------------------------------------------------------------------------
-            | Obtener IDs de los valores
+            | Guardar producto
             |--------------------------------------------------------------------------
             */
 
-            $valoresIds = collect($variante['valores'])
-                ->pluck('valor_id')
-                ->map(fn ($id) => (int) $id)
-                ->toArray();
+            if ($this->producto?->exists) {
 
-
-            /*
-            |--------------------------------------------------------------------------
-            | Relacionar valores con la variante
-            |--------------------------------------------------------------------------
-            */
-
-            $nuevaVariante->valores()->sync($valoresIds);
+                $productoActual = Producto::findOrFail($this->producto->id);
+            
+                // Un vendedor no puede modificar productos ajenos.
+                if (!Auth::user()->hasRole('Super Admin')) {
+                    abort_unless(
+                        (int) $productoActual->user_id === (int) Auth::id(),
+                        403
+                    );
+                }
+            
+                $this->producto = $productoActual;
+            
+                $this->producto->update($datos);
+            
+            } else {
+            
+                $this->producto = Producto::create($datos);
             }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Tags
+            |--------------------------------------------------------------------------
+            */
+
+            $this->producto->tags()->sync($this->tags);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Atributos
+            |--------------------------------------------------------------------------
+            */
+
+            $this->producto->atributos()->sync(
+                $this->atributosSeleccionados
+            );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Eliminar variantes anteriores
+            |--------------------------------------------------------------------------
+            */
+
+            $this->producto->variantes()->delete();
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Crear nuevas variantes
+            |--------------------------------------------------------------------------
+            */
+
+            foreach ($this->variantes as $variante) {
+
+                $nuevaVariante = $this->producto->variantes()->create([
+                    'sku' => $variante['sku'],
+                    'precio' => $variante['precio'],
+                    'stock' => $variante['stock'],
+                    'estado' => $variante['estado'] ?? true,
+                ]);
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Obtener IDs de los valores
+                |--------------------------------------------------------------------------
+                */
+
+                $valoresIds = collect($variante['valores'])
+                    ->pluck('valor_id')
+                    ->map(fn ($id) => (int) $id)
+                    ->toArray();
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Relacionar valores con la variante
+                |--------------------------------------------------------------------------
+                */
+
+                $nuevaVariante->valores()->sync($valoresIds);
+                }
         });
         
         if (!empty($this->imagenes)) {

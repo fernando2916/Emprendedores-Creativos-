@@ -156,7 +156,8 @@
                 </h2>
 
                 <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                    Cuando haya novedades de tus pedidos, aparecerán aquí.
+                    Aquí aparecerán las novedades de tus pedidos,
+                    preguntas, reseñas y otras actividades.
                 </p>
 
                 <a
