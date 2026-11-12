@@ -17,7 +17,7 @@ use Livewire\Component;
 class ProductoInteracciones extends Component
 {
     // Cambiar a true cuando se implemente la pasarela de pago.
-    private const REQUIERE_COMPRA_VERIFICADA = false;
+    private const REQUIERE_COMPRA_VERIFICADA = true;
 
     public Producto $producto;
 
