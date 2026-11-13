@@ -21,6 +21,7 @@ use App\Http\Controllers\TiendaController;
 use App\Http\Controllers\Shop\PedidoController;
 use App\Http\Controllers\Shop\MisPedidosController;
 use App\Http\Controllers\Shop\NotificacionController;
+use App\Http\Controllers\Shop\PagoController;
 use App\Http\Controllers\VacantesController;
 use App\Livewire\ComentarioPost;
 // use App\Livewire\Shop\Carrito;
@@ -101,4 +102,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/notificaciones', Notificaciones::class)
             ->name('notificaciones.index');
     Route::get('/notificaciones/{notification}/abrir', [NotificacionController::class, 'abrir'])->name('notificaciones.abrir');
+
+    Route::post('/pedido/{orden}/pagar', [PagoController::class,'iniciar',])  
+            ->whereNumber('orden')
+            ->name('pedido.pagar');
 });

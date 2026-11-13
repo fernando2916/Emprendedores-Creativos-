@@ -38,6 +38,9 @@ class Orden extends Model
     'fecha_envio',
     'fecha_entrega',
     'notas_admin',
+    'mercadopago_order_id',
+    'mercadopago_idempotency_key',
+    'mercadopago_checkout_url',
     ];
 
     protected function casts(): array

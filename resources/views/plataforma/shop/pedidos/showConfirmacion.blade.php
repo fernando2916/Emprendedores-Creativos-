@@ -568,9 +568,39 @@
                     </p>
                 @endif
 
-                <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                    El pago en línea todavía no está habilitado.
-                </p>
+                @if (
+                        $orden->estado === 'pendiente' &&
+                        $orden->estado_pago === 'pendiente'
+                    )
+                        @if (
+                            !$orden->fecha_expiracion ||
+                            !$orden->fecha_expiracion->isPast()
+                        )
+                            <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                Completa tu pago para continuar con tu pedido.
+                            </p>
+                    
+                            <form
+                                action="{{ route('pedido.pagar', $orden->id) }}"
+                                method="POST"
+                                class="mt-4"
+                            >
+                                @csrf
+                    
+                                <button
+                                    type="submit"
+                                    class="flex w-full items-center justify-center gap-2 rounded-lg bg-[#009EE3] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#0087C9]"
+                                >
+                                    <i class="fa-solid fa-credit-card"></i>
+                                    Pagar con Mercado Pago
+                                </button>
+                            </form>
+                        @else
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                El tiempo para completar el pago de este pedido ha expirado.
+                            </p>
+                        @endif
+                @endif
 
             </div>
 

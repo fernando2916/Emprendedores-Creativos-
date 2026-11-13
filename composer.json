@@ -14,6 +14,7 @@
         "laravel/tinker": "^3.0",
         "livewire/flux": "^2.16",
         "livewire/livewire": "^4.4",
+        "mercadopago/dx-php": "3.16",
         "spatie/laravel-permission": "^8.3"
     },
     "require-dev": {
@@ -58,8 +59,7 @@
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi",
-            "@ide-helper"
+            "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
