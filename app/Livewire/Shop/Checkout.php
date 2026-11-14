@@ -735,15 +735,24 @@ class Checkout extends Component
             return;
         }
 
-        Flux::toast(
-            heading: 'Intento de compra preparado',
-            text: 'Se guardó la referencia ' . $resultado['referencia'] .
-                '. El inventario permanece sin cambios.',
-            variant: 'success',
+        /*
+        |--------------------------------------------------------------------------
+        | 10. Redirigir al checkout de Mercado Pago
+        |--------------------------------------------------------------------------
+        |
+        | El controlador utilizará el intento recién creado para generar
+        | o recuperar el checkout externo.
+        |
+        | No se crea una orden ni se modifica el inventario.
+        */
+        
+        return $this->redirectRoute(
+            'checkout.intento.pagar',
+            [
+                'intento' => $resultado['intento_id'],
+            ],
+            navigate: false
         );
-
-        // En el siguiente paso conectaremos este intento con Mercado Pago
-        // y redirigiremos al checkout externo.
     }
 
     public function render(): View

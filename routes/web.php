@@ -105,7 +105,4 @@ Route::middleware('auth')->group(function () {
             ->name('notificaciones.index');
     Route::get('/notificaciones/{notification}/abrir', [NotificacionController::class, 'abrir'])->name('notificaciones.abrir');
 
-    Route::post('/pedido/{orden}/pagar', [PagoController::class,'iniciar',])  
-            ->whereNumber('orden')
-            ->name('pedido.pagar');
 });
