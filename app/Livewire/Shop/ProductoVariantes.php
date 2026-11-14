@@ -9,6 +9,8 @@ use Livewire\Attributes\On;
 use App\Services\Shop\CalculadoraPrecios;
 use App\Services\Shop\CarritoService;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ProductoVariante;
+use App\Services\Shop\DisponibilidadInventarioService;
 
 class ProductoVariantes extends Component
 {
@@ -66,6 +68,11 @@ class ProductoVariantes extends Component
             ) {
                 $this->varianteSeleccionada = $variante;
 
+                // Consultar disponibilidad real, descontando pedidos en espera.
+                $inventario = app(DisponibilidadInventarioService::class);
+                
+                $disponibilidad = $inventario->consultar($variante);
+                
                 $resultado = app(CalculadoraPrecios::class)->calcular(
                     $this->producto,
                     $variante
@@ -79,7 +86,7 @@ class ProductoVariantes extends Component
                     porcentaje_ahorro: $resultado['porcentaje_ahorro'],
                     aplicado: $resultado['aplicado'],
                     sku: $variante->sku,
-                    stock: $variante->stock
+                    stock: $disponibilidad['disponible']
                 );
 
                 return;
@@ -175,29 +182,38 @@ class ProductoVariantes extends Component
             return;
         }
 
-        if ($this->varianteSeleccionada->stock <= 0) {
+            // Actualizar los datos de la variante antes de validar.
+            $this->varianteSeleccionada->refresh();
 
-            Flux::toast(
-                heading: 'Producto agotado',
-                text: 'La variante seleccionada no tiene existencias.',
-                variant: 'danger',
-                duration: 3500,
+            $inventario = app(DisponibilidadInventarioService::class);
+
+            $disponible = $inventario->disponibleParaVenta(
+                $this->varianteSeleccionada
             );
 
-            return;
-        }
+            if ($disponible <= 0) {
 
-        if ($cantidad > $this->varianteSeleccionada->stock) {
+                Flux::toast(
+                    heading: 'Producto agotado',
+                    text: 'La variante seleccionada no tiene existencias disponibles para venta.',
+                    variant: 'danger',
+                    duration: 3500,
+                );
 
-            Flux::toast(
-                heading: 'Stock insuficiente',
-                text: 'No hay suficiente stock para la cantidad seleccionada.',
-                variant: 'warning',
-                duration: 3500,
-            );
+                return;
+            }
 
-            return;
-        }
+            if ($cantidad > $disponible) {
+
+                Flux::toast(
+                    heading: 'Stock insuficiente',
+                    text: "Solo tienes {$disponible} unidades disponibles para esta variante.",
+                    variant: 'warning',
+                    duration: 3500,
+                );
+
+                return;
+            }
 
         /*
         * Carrito temporal por sesión.

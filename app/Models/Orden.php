@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Orden extends Model
 {
@@ -41,6 +42,14 @@ class Orden extends Model
     'mercadopago_order_id',
     'mercadopago_idempotency_key',
     'mercadopago_checkout_url',
+    'decision_stock',
+    'fecha_notificacion_stock',
+    'fecha_limite_decision_stock',
+    'fecha_decision_stock',
+    'estado_reembolso',
+    'mercadopago_refund_id',
+    'fecha_reembolso',
+    'motivo_reembolso',
     ];
 
     protected function casts(): array
@@ -57,21 +66,41 @@ class Orden extends Model
         'total' => 'decimal:2',
         'fecha_envio' => 'datetime',
         'fecha_entrega' => 'datetime',
+        'fecha_notificacion_stock' => 'datetime',
+        'fecha_limite_decision_stock' => 'datetime',
+        'fecha_decision_stock' => 'datetime',
+        'fecha_reembolso' => 'datetime',
     ];
     }
 
     public function usuario(): BelongsTo
     {
-    return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function cupon(): BelongsTo
     {
-    return $this->belongsTo(Cupon::class);
+        return $this->belongsTo(Cupon::class);
     }
 
     public function items(): HasMany
     {
-    return $this->hasMany(OrdenItem::class);
+        return $this->hasMany(OrdenItem::class);
+    }
+
+    public function checkoutIntento(): HasOne
+    {
+        return $this->hasOne(
+            CheckoutIntento::class,
+            'orden_id'
+        );
+    }
+
+    public function esperasStock(): HasMany
+    {
+        return $this->hasMany(
+            OrdenStockEspera::class,
+            'orden_id'
+        );
     }
 }

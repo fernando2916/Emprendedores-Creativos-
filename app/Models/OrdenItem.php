@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class OrdenItem extends Model
 {
@@ -39,11 +40,19 @@ class OrdenItem extends Model
 
     public function orden(): BelongsTo
     {
-    return $this->belongsTo(Orden::class);
+        return $this->belongsTo(Orden::class);
     }
 
     public function comprable(): MorphTo
     {
-    return $this->morphTo();
+        return $this->morphTo();
+    }
+
+    public function esperaStock(): HasOne
+    {
+        return $this->hasOne(
+            OrdenStockEspera::class,
+            'orden_item_id'
+        );
     }
 }

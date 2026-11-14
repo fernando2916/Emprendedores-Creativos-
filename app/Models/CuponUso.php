@@ -13,6 +13,7 @@ class CuponUso extends Model
         'cupon_id',
         'user_id',
         'orden_id',
+        'checkout_intento_id',
         'estado',
         'usado_en',
     ];
@@ -34,5 +35,13 @@ class CuponUso extends Model
     public function orden(): BelongsTo
     {
         return $this->belongsTo(Orden::class);
+    }
+
+    public function checkoutIntento(): BelongsTo
+    {
+        return $this->belongsTo(
+            CheckoutIntento::class,
+            'checkout_intento_id'
+        );
     }
 }

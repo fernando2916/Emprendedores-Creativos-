@@ -6,6 +6,7 @@ use App\Models\Carrito as CarritoModel;
 use App\Models\ProductoVariante;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Services\Shop\DisponibilidadInventarioService;
 
 class CarritoService
 {
@@ -33,54 +34,98 @@ class CarritoService
         }
 
         DB::transaction(function () use ($carrito, $lineasSesion) {
+            // Obtener los IDs de las variantes de la sesión.
             $ids = collect($lineasSesion)
-                ->map(fn ($linea, $key) =>
-                    (int) ($linea['variante_id'] ?? $key)
-                )
+                ->map(fn ($linea, $key) => (int) (
+                    is_array($linea)
+                        ? ($linea['variante_id'] ?? $key)
+                        : $key
+                ))
                 ->filter(fn ($id) => $id > 0)
                 ->unique()
+                ->sort()
                 ->values();
 
+            if ($ids->isEmpty()) {
+                return;
+            }
+
+            // Bloquear las variantes en orden para evitar conflictos.
             $variantes = ProductoVariante::query()
+                ->with('producto')
                 ->whereIn('id', $ids)
+                ->orderBy('id')
+                ->lockForUpdate()
                 ->get()
                 ->keyBy('id');
 
+            $inventario = app(DisponibilidadInventarioService::class);
+
             foreach ($lineasSesion as $key => $linea) {
-                $varianteId = (int) ($linea['variante_id'] ?? $key);
-
-                $variante = $variantes->get($varianteId);
-
-                // Ignorar referencias a variantes que ya no existen.
-                if (! $variante) {
+                if (! is_array($linea)) {
                     continue;
                 }
 
-                $cantidad = max(
+                $varianteId = (int) ($linea['variante_id'] ?? $key);
+                $variante = $variantes->get($varianteId);
+
+                // Descartar variantes inexistentes o inactivas.
+                if (
+                    ! $variante ||
+                    ! $variante->estado ||
+                    ! $variante->producto ||
+                    ! $variante->producto->estado
+                ) {
+                    continue;
+                }
+
+                $cantidadSolicitada = max(
                     1,
                     (int) ($linea['cantidad'] ?? 1)
                 );
 
+                // Buscar la línea existente en el carrito.
                 $item = $carrito->items()
                     ->where('comprable_type', ProductoVariante::class)
                     ->where('comprable_id', $variante->id)
                     ->lockForUpdate()
                     ->first();
 
+                $cantidadActual = (int) ($item?->cantidad ?? 0);
+
+                // Consultar disponibilidad real, descontando compromisos.
+                $disponible = $inventario->disponibleParaVenta($variante);
+
+                // Calcular cuánto espacio queda para agregar.
+                $espacioDisponible = max(
+                    0,
+                    $disponible - $cantidadActual
+                );
+
+                $cantidadAAgregar = min(
+                    $cantidadSolicitada,
+                    $espacioDisponible
+                );
+
+                // No agregar si ya no existe disponibilidad.
+                if ($cantidadAAgregar < 1) {
+                    continue;
+                }
+
                 if ($item) {
-                    $item->cantidad += $cantidad;
+                    $item->cantidad += $cantidadAAgregar;
                     $item->save();
                 } else {
                     $carrito->items()->create([
                         'comprable_type' => ProductoVariante::class,
                         'comprable_id' => $variante->id,
-                        'cantidad' => $cantidad,
+                        'cantidad' => $cantidadAAgregar,
                     ]);
                 }
             }
         });
 
-        // La sesión deja de ser la fuente del carrito.
+        // Limpiar la sesión después de sincronizar correctamente.
         session()->forget('carrito');
 
         return $carrito->fresh();
@@ -93,59 +138,63 @@ class CarritoService
      * Resultados: agregado, stock, no_disponible.
      */
     public function agregarVariante(
-        User $usuario,
-        int $varianteId,
-        int $cantidad
-    ): string {
-        $this->sincronizarSesion($usuario);
+            User $usuario,
+            int $varianteId,
+            int $cantidad
+        ): string {
+            $this->sincronizarSesion($usuario);
 
-        return DB::transaction(function () use (
-            $usuario,
-            $varianteId,
-            $cantidad
-        ) {
-            $variante = ProductoVariante::query()
-                ->with('producto')
-                ->lockForUpdate()
-                ->find($varianteId);
-
-            if (
-                ! $variante ||
-                ! $variante->estado ||
-                ! $variante->producto ||
-                ! $variante->producto->estado
+            return DB::transaction(function () use (
+                $usuario,
+                $varianteId,
+                $cantidad
             ) {
-                return 'no_disponible';
-            }
+                $variante = ProductoVariante::query()
+                    ->with('producto')
+                    ->lockForUpdate()
+                    ->find($varianteId);
 
-            $carrito = $this->obtenerOCrear($usuario);
+                if (
+                    ! $variante ||
+                    ! $variante->estado ||
+                    ! $variante->producto ||
+                    ! $variante->producto->estado
+                ) {
+                    return 'no_disponible';
+                }
 
-            $item = $carrito->items()
-                ->where('comprable_type', ProductoVariante::class)
-                ->where('comprable_id', $variante->id)
-                ->lockForUpdate()
-                ->first();
+                $carrito = $this->obtenerOCrear($usuario);
 
-            $cantidadActual = (int) ($item?->cantidad ?? 0);
-            $cantidadNueva = $cantidadActual + max(1, $cantidad);
+                $item = $carrito->items()
+                    ->where('comprable_type', ProductoVariante::class)
+                    ->where('comprable_id', $variante->id)
+                    ->lockForUpdate()
+                    ->first();
 
-            if ($cantidadNueva > $variante->stock) {
-                return 'stock';
-            }
+                $cantidadActual = (int) ($item?->cantidad ?? 0);
+                $cantidadNueva = $cantidadActual + max(1, $cantidad);
 
-            if ($item) {
-                $item->cantidad = $cantidadNueva;
-                $item->save();
-            } else {
-                $carrito->items()->create([
-                    'comprable_type' => ProductoVariante::class,
-                    'comprable_id' => $variante->id,
-                    'cantidad' => $cantidadNueva,
-                ]);
-            }
+                $inventario = app(DisponibilidadInventarioService::class);
 
-            return 'agregado';
-        });
+                $disponible = $inventario->disponibleParaVenta($variante);
+
+                if ($cantidadNueva > $disponible) {
+                    return 'stock';
+                }
+
+                if ($item) {
+                    $item->cantidad = $cantidadNueva;
+                    $item->save();
+                } else {
+                    $carrito->items()->create([
+                        'comprable_type' => ProductoVariante::class,
+                        'comprable_id' => $variante->id,
+                        'cantidad' => $cantidadNueva,
+                    ]);
+                }
+
+                return 'agregado';
+            });
     }
 
     /**
@@ -155,10 +204,10 @@ class CarritoService
      * no_encontrado.
      */
     public function cambiarCantidad(
-        User $usuario,
-        int $varianteId,
-        int $cambio
-    ): string {
+            User $usuario,
+            int $varianteId,
+            int $cambio
+        ): string {
         $carrito = $this->obtenerOCrear($usuario);
 
         return DB::transaction(function () use (
@@ -197,7 +246,11 @@ class CarritoService
                     return 'no_disponible';
                 }
 
-                if ($cantidadNueva > $variante->stock) {
+                $inventario = app(DisponibilidadInventarioService::class);
+
+                $disponible = $inventario->disponibleParaVenta($variante);
+
+                if ($cantidadNueva > $disponible) {
                     return 'stock';
                 }
             }
@@ -213,9 +266,9 @@ class CarritoService
      * Eliminar una variante del carrito del usuario.
      */
     public function eliminarVariante(
-        User $usuario,
-        int $varianteId
-    ): bool {
+            User $usuario,
+            int $varianteId
+        ): bool {
         $carrito = $usuario->carrito()->first();
 
         if (! $carrito) {
@@ -232,19 +285,19 @@ class CarritoService
      * Comprobar si la variante está dentro del carrito.
      */
     public function contieneVariante(
-        User $usuario,
-        int $varianteId
-    ): bool {
-        $carrito = $usuario->carrito()->first();
+            User $usuario,
+            int $varianteId
+        ): bool {
+            $carrito = $usuario->carrito()->first();
 
-        if (! $carrito) {
-            return false;
-        }
+            if (! $carrito) {
+                return false;
+            }
 
-        return $carrito->items()
-            ->where('comprable_type', ProductoVariante::class)
-            ->where('comprable_id', $varianteId)
-            ->exists();
+            return $carrito->items()
+                ->where('comprable_type', ProductoVariante::class)
+                ->where('comprable_id', $varianteId)
+                ->exists();
     }
 
     /**

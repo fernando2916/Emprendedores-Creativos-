@@ -44,4 +44,11 @@ class ProductoVariante extends Model
         return $this->hasMany(VarianteAttribute::class);
     }
 
+    public function esperasStock(): HasMany
+    {
+        return $this->hasMany(
+            OrdenStockEspera::class,
+            'producto_variante_id'
+        );
+    }
 }

@@ -25,7 +25,7 @@ class PagoController extends Controller
 
     try {
 
-        $url = $mercadoPago->crearCheckoutPro($orden);
+        $url = $mercadoPago->crearCheckout($orden);
 
         // Redirigir al checkout alojado por Mercado Pago.
         return redirect()->away($url);

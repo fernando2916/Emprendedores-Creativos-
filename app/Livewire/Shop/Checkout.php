@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Services\Shop\NotificadorPedidos;
+use App\Services\Shop\DisponibilidadInventarioService;
 use Livewire\Component;
 
 class Checkout extends Component
@@ -374,6 +375,61 @@ class Checkout extends Component
                 $calculadoraPrecios = app(CalculadoraPrecios::class);
                 $lineasProcesadas = collect();
 
+                // Obtener los IDs de las variantes del carrito.
+                $idsVariantes = $lineasCarrito
+                    ->where('comprable_type', ProductoVariante::class)
+                    ->pluck('comprable_id')
+                    ->unique()
+                    ->sort()
+                    ->values();
+
+                // Bloquear todas las variantes en orden ascendente.
+                // Esto reduce el riesgo de deadlocks entre compras simultáneas.
+                $variantesBloqueadas = ProductoVariante::query()
+                    ->whereIn('id', $idsVariantes)
+                    ->orderBy('id')
+                    ->lockForUpdate()
+                    ->get()
+                    ->keyBy('id');
+
+                // Cargar las relaciones necesarias para procesar los artículos.
+                $variantesBloqueadas->load([
+                    'producto.images',
+                    'valores.attribute',
+                ]);
+
+                // Validar la cantidad acumulada por variante.
+                // Esto evita que líneas duplicadas superen el inventario disponible.
+                $cantidadesPorVariante = $lineasCarrito
+                    ->where('comprable_type', ProductoVariante::class)
+                    ->groupBy('comprable_id')
+                    ->map(fn ($lineas) => (int) $lineas->sum('cantidad'));
+
+                $inventario = app(DisponibilidadInventarioService::class);
+
+                foreach ($cantidadesPorVariante as $varianteId => $cantidadTotal) {
+
+                    $variante = $variantesBloqueadas->get((int) $varianteId);
+
+                    if (! $variante || ! $variante->producto) {
+                        return [
+                            'error' => 'Uno de los productos de tu carrito ya no está disponible.',
+                        ];
+                    }
+
+                    $disponible = $inventario->disponibleParaVenta($variante);
+
+                    if ($cantidadTotal > $disponible) {
+                        return [
+                            'error' => 'La cantidad solicitada de "' .
+                                $variante->producto->nombre .
+                                '" supera las existencias disponibles. Actualmente solo hay ' .
+                                $disponible .
+                                ' unidades disponibles.',
+                        ];
+                    }
+                }
+
                 foreach ($lineasCarrito as $linea) {
 
                     // El checkout actual solamente admite productos físicos.
@@ -385,13 +441,9 @@ class Checkout extends Component
                         ];
                     }
 
-                    $variante = ProductoVariante::query()
-                        ->with([
-                            'producto.images',
-                            'valores.attribute',
-                        ])
-                        ->lockForUpdate()
-                        ->find($linea->comprable_id);
+                    $variante = $variantesBloqueadas->get(
+                        (int) $linea->comprable_id
+                    );
 
                     if (! $variante || ! $variante->producto) {
                         return [
@@ -412,11 +464,18 @@ class Checkout extends Component
                         ];
                     }
 
-                    if ($variante->stock < $cantidad) {
+                    // Consultar disponibilidad real, descontando pedidos en espera.
+                    $inventario = app(DisponibilidadInventarioService::class);
+
+                    $disponible = $inventario->disponibleParaVenta($variante);
+
+                    if ($disponible < $cantidad) {
                         return [
                             'error' => 'Ya no hay existencias suficientes de "' .
                                 $producto->nombre .
-                                '". Actualiza tu carrito antes de continuar.',
+                                '". Actualmente solo hay ' .
+                                $disponible .
+                                ' unidades disponibles. Actualiza tu carrito antes de continuar.',
                         ];
                     }
 
@@ -861,9 +920,10 @@ class Checkout extends Component
                         2
                     ),
                     'disponible' =>
-                        (bool) $variante->estado
-                        && (bool) $producto->estado
-                        && $variante->stock >= $cantidad,
+                    (bool) $variante->estado
+                    && (bool) $producto->estado
+                    && app(DisponibilidadInventarioService::class)
+                        ->puedeSatisfacer($variante, $cantidad),
                 ];
             })
             ->values();
