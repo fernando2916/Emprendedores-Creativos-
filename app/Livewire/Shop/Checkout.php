@@ -16,11 +16,13 @@ use Illuminate\Support\Collection;
 use App\Models\CarritoItem;
 use App\Models\Cupon;
 use App\Models\CuponUso;
-use App\Models\Orden;
+// use App\Models\Orden;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use App\Models\User;
-use App\Services\Shop\NotificadorPedidos;
+// use App\Models\User;
+// use App\Services\Shop\NotificadorPedidos;
+use App\Models\CheckoutIntento;
+use App\Models\CheckoutIntentoItem;
 use App\Services\Shop\DisponibilidadInventarioService;
 use Livewire\Component;
 
@@ -309,8 +311,9 @@ class Checkout extends Component
     }
     
     /**
-     * Registra un pedido con los precios vigentes y reserva el inventario.
-     */
+    * Crea un intento de compra y guarda una copia histórica
+    * de los artículos. No crea órdenes ni modifica el inventario.
+    */
     public function confirmarPedido()
     {
         $usuario = Auth::user();
@@ -320,7 +323,6 @@ class Checkout extends Component
         }
 
         try {
-            // Compatibilidad con cualquier carrito antiguo de sesión.
             app(CarritoService::class)->sincronizarSesion($usuario);
 
             $resultado = DB::transaction(function () use ($usuario) {
@@ -337,9 +339,7 @@ class Checkout extends Component
                     ->first();
 
                 if (! $carrito) {
-                    return [
-                        'error' => 'No encontramos tu carrito.',
-                    ];
+                    return ['error' => 'No encontramos tu carrito.'];
                 }
 
                 $lineasCarrito = CarritoItem::query()
@@ -349,101 +349,52 @@ class Checkout extends Component
                     ->get();
 
                 if ($lineasCarrito->isEmpty()) {
-                    return [
-                        'error' => 'Tu carrito está vacío.',
-                    ];
+                    return ['error' => 'Tu carrito está vacío.'];
                 }
 
                 $tipoEntrega = $carrito->tipo_entrega ?: 'domicilio';
 
-                if (! in_array(
-                    $tipoEntrega,
-                    ['domicilio', 'recoger_tienda'],
-                    true
-                )) {
-                    return [
-                        'error' => 'La modalidad de entrega no es válida.',
-                    ];
+                if (! in_array($tipoEntrega, ['domicilio', 'recoger_tienda'], true)) {
+                    return ['error' => 'La modalidad de entrega no es válida.'];
                 }
 
                 /*
                 |--------------------------------------------------------------------------
-                | 2. Validar productos, variantes y existencias
+                | 2. Consultar productos sin bloquear ni descontar inventario
                 |--------------------------------------------------------------------------
+                |
+                | Dos compradores pueden crear intentos para las mismas unidades.
+                | La asignación real del stock ocurrirá después de confirmar el pago.
                 */
+
+                if ($lineasCarrito->contains(
+                    fn ($linea) => $linea->comprable_type !== ProductoVariante::class
+                )) {
+                    return [
+                        'error' => 'Tu carrito contiene artículos cuyo proceso de compra todavía no está habilitado.',
+                    ];
+                }
+
+                $idsVariantes = $lineasCarrito
+                    ->pluck('comprable_id')
+                    ->unique()
+                    ->values();
+
+                $variantes = ProductoVariante::query()
+                    ->whereIn('id', $idsVariantes)
+                    ->with([
+                        'producto.images',
+                        'valores.attribute',
+                    ])
+                    ->get()
+                    ->keyBy('id');
 
                 $calculadoraPrecios = app(CalculadoraPrecios::class);
                 $lineasProcesadas = collect();
 
-                // Obtener los IDs de las variantes del carrito.
-                $idsVariantes = $lineasCarrito
-                    ->where('comprable_type', ProductoVariante::class)
-                    ->pluck('comprable_id')
-                    ->unique()
-                    ->sort()
-                    ->values();
-
-                // Bloquear todas las variantes en orden ascendente.
-                // Esto reduce el riesgo de deadlocks entre compras simultáneas.
-                $variantesBloqueadas = ProductoVariante::query()
-                    ->whereIn('id', $idsVariantes)
-                    ->orderBy('id')
-                    ->lockForUpdate()
-                    ->get()
-                    ->keyBy('id');
-
-                // Cargar las relaciones necesarias para procesar los artículos.
-                $variantesBloqueadas->load([
-                    'producto.images',
-                    'valores.attribute',
-                ]);
-
-                // Validar la cantidad acumulada por variante.
-                // Esto evita que líneas duplicadas superen el inventario disponible.
-                $cantidadesPorVariante = $lineasCarrito
-                    ->where('comprable_type', ProductoVariante::class)
-                    ->groupBy('comprable_id')
-                    ->map(fn ($lineas) => (int) $lineas->sum('cantidad'));
-
-                $inventario = app(DisponibilidadInventarioService::class);
-
-                foreach ($cantidadesPorVariante as $varianteId => $cantidadTotal) {
-
-                    $variante = $variantesBloqueadas->get((int) $varianteId);
-
-                    if (! $variante || ! $variante->producto) {
-                        return [
-                            'error' => 'Uno de los productos de tu carrito ya no está disponible.',
-                        ];
-                    }
-
-                    $disponible = $inventario->disponibleParaVenta($variante);
-
-                    if ($cantidadTotal > $disponible) {
-                        return [
-                            'error' => 'La cantidad solicitada de "' .
-                                $variante->producto->nombre .
-                                '" supera las existencias disponibles. Actualmente solo hay ' .
-                                $disponible .
-                                ' unidades disponibles.',
-                        ];
-                    }
-                }
-
                 foreach ($lineasCarrito as $linea) {
 
-                    // El checkout actual solamente admite productos físicos.
-                    if (
-                        $linea->comprable_type !== ProductoVariante::class
-                    ) {
-                        return [
-                            'error' => 'Tu carrito contiene artículos cuyo proceso de compra todavía no está habilitado.',
-                        ];
-                    }
-
-                    $variante = $variantesBloqueadas->get(
-                        (int) $linea->comprable_id
-                    );
+                    $variante = $variantes->get((int) $linea->comprable_id);
 
                     if (! $variante || ! $variante->producto) {
                         return [
@@ -464,22 +415,7 @@ class Checkout extends Component
                         ];
                     }
 
-                    // Consultar disponibilidad real, descontando pedidos en espera.
-                    $inventario = app(DisponibilidadInventarioService::class);
-
-                    $disponible = $inventario->disponibleParaVenta($variante);
-
-                    if ($disponible < $cantidad) {
-                        return [
-                            'error' => 'Ya no hay existencias suficientes de "' .
-                                $producto->nombre .
-                                '". Actualmente solo hay ' .
-                                $disponible .
-                                ' unidades disponibles. Actualiza tu carrito antes de continuar.',
-                        ];
-                    }
-
-                    // Recalcular el precio real en el servidor.
+                    // No se comprueba ni se reserva stock en esta etapa.
                     $precio = $calculadoraPrecios->calcular(
                         $producto,
                         $variante
@@ -523,28 +459,20 @@ class Checkout extends Component
                         'producto' => $producto,
                         'cantidad' => $cantidad,
                         'nombre_articulo' => $producto->nombre .
-                            ($textoValores !== ''
-                                ? ' - ' . $textoValores
-                                : ''),
+                            ($textoValores !== '' ? ' - ' . $textoValores : ''),
                         'sku' => $variante->sku,
                         'imagen' => $imagen?->imagen,
                         'valores' => $valores,
                         'precio_original_unitario' => $precioOriginal,
                         'precio_unitario' => $precioFinal,
-                        'subtotal_original' => round(
-                            $precioOriginal * $cantidad,
-                            2
-                        ),
-                        'subtotal' => round(
-                            $precioFinal * $cantidad,
-                            2
-                        ),
+                        'subtotal_original' => round($precioOriginal * $cantidad, 2),
+                        'subtotal' => round($precioFinal * $cantidad, 2),
                     ]);
                 }
 
                 /*
                 |--------------------------------------------------------------------------
-                | 3. Calcular subtotales después de las promociones automáticas
+                | 3. Calcular subtotales y promociones
                 |--------------------------------------------------------------------------
                 */
 
@@ -565,7 +493,7 @@ class Checkout extends Component
 
                 /*
                 |--------------------------------------------------------------------------
-                | 4. Volver a validar el cupón bajo bloqueo
+                | 4. Validar el cupón bajo bloqueo
                 |--------------------------------------------------------------------------
                 */
 
@@ -621,7 +549,7 @@ class Checkout extends Component
 
                 /*
                 |--------------------------------------------------------------------------
-                | 5. Validar modalidad, dirección y envío
+                | 5. Validar dirección y costo de envío
                 |--------------------------------------------------------------------------
                 */
 
@@ -636,8 +564,6 @@ class Checkout extends Component
 
                 if ($tipoEntrega === 'domicilio') {
 
-                    // Usar la dirección guardada en el carrito y verificar
-                    // que realmente pertenezca al usuario.
                     $direccion = Direccion::query()
                         ->where('user_id', $usuario->id)
                         ->whereKey($carrito->direccion_id)
@@ -645,7 +571,7 @@ class Checkout extends Component
 
                     if (! $direccion) {
                         return [
-                            'error' => 'Selecciona una dirección válida antes de confirmar tu pedido.',
+                            'error' => 'Selecciona una dirección válida antes de continuar.',
                         ];
                     }
 
@@ -675,18 +601,9 @@ class Checkout extends Component
 
                 /*
                 |--------------------------------------------------------------------------
-                | 6. Guardar el pedido y la copia histórica de sus artículos
+                | 6. Guardar snapshot de entrega
                 |--------------------------------------------------------------------------
                 */
-
-                do {
-                    $numero = 'EMP-ORDEN-' .
-                        now()->format('dmY') .
-                        '-' .
-                        Str::upper(Str::random(8));
-                } while (
-                    Orden::where('numero', $numero)->exists()
-                );
 
                 $direccionSnapshot = $direccion
                     ? [
@@ -707,16 +624,20 @@ class Checkout extends Component
 
                 $zona = $resultadoEnvio['zona'] ?? null;
 
-                $orden = Orden::create([
-                    'numero' => $numero,
+                /*
+                |--------------------------------------------------------------------------
+                | 7. Crear el intento de compra
+                |--------------------------------------------------------------------------
+                */
+
+                $intento = CheckoutIntento::create([
+                    'referencia_externa' => (string) Str::uuid(),
                     'user_id' => $usuario->id,
                     'cupon_id' => $cupon?->id,
-                    'cupon_codigo' => $cupon?->codigo,
                     'estado' => 'pendiente',
-                    'estado_pago' => 'pendiente',
-                    'fecha_expiracion' => now()->addMinutes(
-                        max(1, (int) config('tienda.reserva_minutos_orden', 30))
-                    ),
+                    'metodo_pago' => 'mercado_pago',
+                    'cupon_codigo' => $cupon?->codigo,
+                    'mercadopago_idempotency_key' => (string) Str::uuid(),
                     'tipo_entrega' => $tipoEntrega,
                     'direccion_entrega' => $direccionSnapshot,
                     'zona_envio' => is_object($zona)
@@ -729,11 +650,21 @@ class Checkout extends Component
                     'costo_envio' => $costoEnvio,
                     'total' => $total,
                     'moneda' => 'MXN',
+                    'fecha_expiracion' => now()->addMinutes(
+                        max(1, (int) config('tienda.reserva_minutos_orden', 30))
+                    ),
                 ]);
 
+                /*
+                |--------------------------------------------------------------------------
+                | 8. Guardar los artículos como snapshot
+                |--------------------------------------------------------------------------
+                */
+
                 foreach ($lineasProcesadas as $item) {
-                    $orden->items()->create([
-                        'comprable_type' => $item['variante']::class,
+
+                    $intento->items()->create([
+                        'comprable_type' => ProductoVariante::class,
                         'comprable_id' => $item['variante']->id,
                         'nombre_articulo' => $item['nombre_articulo'],
                         'sku' => $item['sku'],
@@ -744,8 +675,7 @@ class Checkout extends Component
                             'valores' => $item['valores'],
                             'precio_original_unitario' =>
                                 $item['precio_original_unitario'],
-                            'precio_unitario' =>
-                                $item['precio_unitario'],
+                            'precio_unitario' => $item['precio_unitario'],
                         ],
                         'cantidad' => $item['cantidad'],
                         'precio_original_unitario' =>
@@ -758,51 +688,37 @@ class Checkout extends Component
 
                 /*
                 |--------------------------------------------------------------------------
-                | 7. Reservar el cupón y el inventario
+                | 9. Registrar el uso reservado del cupón
                 |--------------------------------------------------------------------------
+                |
+                | Esto reserva únicamente el uso del cupón, nunca el inventario.
                 */
 
                 if ($cupon) {
                     CuponUso::create([
                         'cupon_id' => $cupon->id,
                         'user_id' => $usuario->id,
-                        'orden_id' => $orden->id,
+                        'checkout_intento_id' => $intento->id,
                         'estado' => 'reservado',
                         'usado_en' => null,
                     ]);
                 }
 
-                foreach ($lineasProcesadas as $item) {
-                    // Las variantes siguen bloqueadas dentro de la transacción.
-                    $item['variante']->decrement(
-                        'stock',
-                        $item['cantidad']
-                    );
-                }
-
-                /*
-                |--------------------------------------------------------------------------
-                | 8. Vaciar el carrito solo después de guardar todo
-                |--------------------------------------------------------------------------
-                */
-
-                $carrito->items()->delete();
-                $carrito->cupon_id = null;
-                $carrito->save();
-
                 return [
-                    'orden_id' => $orden->id,
-                    'numero' => $orden->numero,
+                    'intento_id' => $intento->id,
+                    'referencia' => $intento->referencia_externa,
+                    'total' => $intento->total,
                 ];
 
             }, 3);
 
         } catch (\Throwable $e) {
+
             report($e);
 
             Flux::toast(
-                heading: 'No se pudo registrar el pedido',
-                text: 'Ocurrió un problema al procesar la compra. Tu operación fue cancelada; inténtalo nuevamente.',
+                heading: 'No se pudo preparar la compra',
+                text: 'Ocurrió un problema al guardar el intento. No se modificó el inventario; inténtalo nuevamente.',
                 variant: 'warning',
             );
 
@@ -811,49 +727,23 @@ class Checkout extends Component
 
         if (isset($resultado['error'])) {
             Flux::toast(
-                heading: 'No se puede confirmar el pedido',
+                heading: 'No se puede continuar',
                 text: $resultado['error'],
                 variant: 'warning',
             );
 
             return;
         }
-        
-                /*
-        |--------------------------------------------------------------------------
-        | Notificaciones del nuevo pedido
-        |--------------------------------------------------------------------------
-        */
 
-        try {
-            $orden = Orden::findOrFail($resultado['orden_id']);
+        Flux::toast(
+            heading: 'Intento de compra preparado',
+            text: 'Se guardó la referencia ' . $resultado['referencia'] .
+                '. El inventario permanece sin cambios.',
+            variant: 'success',
+        );
 
-            app(NotificadorPedidos::class)->nuevoPedido($orden);
-
-        } catch (\Throwable $e) {
-
-            report($e);
-
-            logger()->error(
-                'Error al enviar las notificaciones del nuevo pedido.',
-                [
-                    'orden_id' => $resultado['orden_id'] ?? null,
-                    'error' => $e->getMessage(),
-                ]
-            );
-        }
-
-                Flux::toast(
-                    heading: 'Pedido registrado',
-                    text: 'Tu número de pedido es ' . $resultado['numero'] . '.',
-                    variant: 'success',
-                );
-
-                return $this->redirectRoute(
-                    'pedido.confirmacion',
-                    ['orden' => $resultado['orden_id']],
-                    navigate: true
-                );
+        // En el siguiente paso conectaremos este intento con Mercado Pago
+        // y redirigiremos al checkout externo.
     }
 
     public function render(): View

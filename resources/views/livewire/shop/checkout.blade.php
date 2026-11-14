@@ -369,16 +369,6 @@
                         </div>
                     @endif
 
-                    @if ($ahorroTotal > 0)
-                        <div class="flex justify-between gap-3 text-green-500 dark:text-green-400">
-                            <span>Ahorro en promociones</span>
-
-                            <span class="font-semibold">
-                                -${{ number_format($ahorroTotal, 2) }} MXN
-                            </span>
-                        </div>
-                    @endif
-
                     @if ($resultadoCupon['valido'] && $descuentoCupon > 0)
                         <div class="flex justify-between gap-3 text-green-600 dark:text-green-400">
                             <span>
@@ -664,8 +654,7 @@
                         </button>
 
                         <p class="mt-3 text-center text-xs text-gray-500 dark:text-gray-400">
-                            Al confirmar, se registrará el pedido y se reservarán las existencias.
-                            El pago en línea aún no está habilitado.
+                            La disponibilidad se confirmará al procesar el pago. Si las existencias no alcanzan, podrás elegir esperar o solicitar un reembolso.
                         </p>
                     </form>
                 @endif

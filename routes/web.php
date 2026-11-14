@@ -92,6 +92,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/lista-deseos/{producto}', [ListaDeseosController::class, 'destroy'])->name('lista-deseos.destroy');
     Route::get('/mis-direcciones', Direcciones::class)->name('direcciones.index');
     Route::get('/checkout', Checkout::class)->name('checkout.index');
+    Route::get('/checkout/intentos/{intento}/pagar', [PagoController::class, 'iniciar'])->whereNumber('intento')
+            ->name('checkout.intento.pagar');
     
     Route::get('/pedido/{orden}', [PedidoController::class, 'show'])->whereNumber('orden')->name('pedido.confirmacion');
     Route::post('/pedido/{orden}/cancelar', [PedidoController::class, 'cancelar',])

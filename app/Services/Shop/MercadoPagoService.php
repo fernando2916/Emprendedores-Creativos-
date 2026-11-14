@@ -2,7 +2,7 @@
 
 namespace App\Services\Shop;
 
-use App\Models\Orden;
+use App\Models\CheckoutIntento;
 use Illuminate\Support\Str;
 use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Order\OrderClient;
@@ -13,21 +13,32 @@ use RuntimeException;
 class MercadoPagoService
 {
     /**
-     * Crear o recuperar el checkout de una orden existente.
+     * Crear o recuperar el checkout de un intento de compra.
+     *
+     * Importante:
+     * - No crea órdenes locales.
+     * - No descuenta inventario.
+     * - No modifica el estado del pago.
      */
-    public function crearCheckout(Orden $orden): string
+    public function crearCheckout(CheckoutIntento $intento): string
     {
-        // Cargar al comprador.
-        $orden->loadMissing('usuario');
+        $intento->loadMissing('usuario');
 
-        // Evitar iniciar otro pago para una orden pagada.
-        if ($orden->estado_pago === 'pagado') {
+        if ($intento->estado !== 'pendiente') {
             throw new RuntimeException(
-                'Esta orden ya se encuentra pagada.'
+                'Este intento de compra ya no está pendiente.'
             );
         }
 
-        // Comprobar que existe el Access Token.
+        if (
+            $intento->fecha_expiracion &&
+            $intento->fecha_expiracion->isPast()
+        ) {
+            throw new RuntimeException(
+                'Este intento de compra ha expirado. Regresa al carrito para iniciar una nueva compra.'
+            );
+        }
+
         $accessToken = config('services.mercadopago.access_token');
 
         if (empty($accessToken)) {
@@ -36,43 +47,34 @@ class MercadoPagoService
             );
         }
 
-        // Si ya existe una URL de checkout, reutilizarla.
+        // Reutilizar el checkout si ya fue creado.
         if (
-            $orden->mercadopago_order_id &&
-            $orden->mercadopago_checkout_url
+            $intento->mercadopago_order_id &&
+            $intento->mercadopago_checkout_url
         ) {
-            return $orden->mercadopago_checkout_url;
+            return $intento->mercadopago_checkout_url;
         }
 
-        // Crear y guardar la clave antes de realizar la petición.
-        // Así podemos reutilizarla si ocurre un error de conexión.
-        if (!$orden->mercadopago_idempotency_key) {
-            $orden->forceFill([
+        // La clave debe ser única por intento y persistente.
+        if (!$intento->mercadopago_idempotency_key) {
+            $intento->forceFill([
                 'mercadopago_idempotency_key' => (string) Str::uuid(),
             ])->save();
         }
 
-        // Configurar el SDK.
         MercadoPagoConfig::setAccessToken($accessToken);
 
-        // Inicializar el cliente de Orders API.
         $client = new OrderClient();
 
-        // El total ya contempla descuentos y envío.
         $total = number_format(
-            (float) $orden->total,
+            (float) $intento->total,
             2,
             '.',
             ''
         );
 
-        // URL de regreso a la confirmación de nuestra orden.
-        $urlConfirmacion = route(
-            'pedido.confirmacion',
-            ['orden' => $orden->id]
-        );
-
-        // Construir la solicitud de Checkout Pro.
+        // Una sola línea por el total final.
+        // Incluye descuentos y envío.
         $request = [
             'type' => 'online',
 
@@ -82,63 +84,50 @@ class MercadoPagoService
 
             'total_amount' => $total,
 
-            'external_reference' => (string) $orden->numero,
+            // Identifica el intento, no una orden local.
+            'external_reference' => $intento->referencia_externa,
 
-            'description' => 'Pedido ' . $orden->numero,
+            'description' => 'Compra ' . $intento->referencia_externa,
 
             'payer' => [
-                'email' => $orden->usuario->email,
+                'email' => $intento->usuario->email,
             ],
 
-            // Un solo concepto por el total final del pedido.
-            // Así incluimos correctamente descuentos y envío.
             'items' => [
                 [
-                    'title' => 'Pedido ' . $orden->numero,
+                    'title' => 'Compra en Emprendedores Creativos',
                     'quantity' => 1,
                     'unit_price' => $total,
                 ],
             ],
-
-            'config' => [
-                'online' => [
-                    'success_url' => $urlConfirmacion,
-                    'failure_url' => $urlConfirmacion,
-                    'pending_url' => $urlConfirmacion,
-                ],
-            ],
         ];
 
-        // Configurar idempotencia.
         $requestOptions = new RequestOptions();
 
         $requestOptions->setCustomHeaders([
             'X-Idempotency-Key: ' .
-            $orden->mercadopago_idempotency_key,
+            $intento->mercadopago_idempotency_key,
         ]);
 
         try {
-            // Crear la orden en Mercado Pago.
             $respuesta = $client->create(
                 $request,
                 $requestOptions
             );
 
-            // Verificar que recibimos los datos necesarios.
             if (
                 empty($respuesta->id) ||
                 empty($respuesta->checkout_url)
             ) {
                 throw new RuntimeException(
-                    'Mercado Pago no devolvió los datos del checkout.'
+                    'Mercado Pago no devolvió los datos necesarios para iniciar el pago.'
                 );
             }
 
-            // Guardar la referencia y URL de pago.
-            $orden->forceFill([
+            $intento->forceFill([
                 'mercadopago_order_id' => $respuesta->id,
                 'mercadopago_checkout_url' => $respuesta->checkout_url,
-                'metodo_pago' => 'mercadopago',
+                'metodo_pago' => 'mercado_pago',
             ])->save();
 
             return $respuesta->checkout_url;
@@ -148,8 +137,7 @@ class MercadoPagoService
             report($e);
 
             throw new RuntimeException(
-                'No fue posible crear el checkout de Mercado Pago. ' .
-                'Revisa el registro de errores para conocer el detalle.',
+                'No fue posible crear el checkout de Mercado Pago. Revisa el registro de errores.',
                 previous: $e
             );
         }

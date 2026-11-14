@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Orden;
+use App\Models\CheckoutIntento;
 use App\Services\Shop\MercadoPagoService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -13,35 +12,31 @@ use Throwable;
 class PagoController extends Controller
 {
     public function iniciar(
-    Orden $orden,
-    MercadoPagoService $mercadoPago
+        CheckoutIntento $intento,
+        MercadoPagoService $mercadoPago
     ): RedirectResponse {
 
-    // Comprobar que el pedido pertenece al usuario autenticado.
-    abort_unless(
-        (int) $orden->user_id === (int) Auth::id(),
-        404
-    );
+        // El intento solamente puede ser utilizado por su propietario.
+        abort_unless(
+            (int) $intento->user_id === (int) Auth::id(),
+            404
+        );
 
-    try {
+        try {
+            $url = $mercadoPago->crearCheckout($intento);
 
-        $url = $mercadoPago->crearCheckout($orden);
+            return redirect()->away($url);
 
-        // Redirigir al checkout alojado por Mercado Pago.
-        return redirect()->away($url);
+        } catch (Throwable $e) {
 
-    } catch (Throwable $e) {
+            report($e);
 
-        report($e);
-
-        return redirect()
-            ->route('pedido.confirmacion', [
-                'orden' => $orden->id,
-            ])
-            ->with(
-                'error',
-                $e->getMessage() ?: 'No fue posible iniciar el pago. Inténtalo nuevamente.'
-            );
-    }
+            return redirect()
+                ->route('checkout.index')
+                ->with(
+                    'error',
+                    $e->getMessage() ?: 'No fue posible iniciar el pago. Inténtalo nuevamente.'
+                );
+        }
     }
 }
