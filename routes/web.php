@@ -19,6 +19,7 @@ use App\Http\Controllers\RecursoController;
 use App\Http\Controllers\TerminosController;
 use App\Http\Controllers\TiendaController;
 use App\Http\Controllers\Shop\PedidoController;
+use App\Http\Controllers\Shop\MercadoPagoWebhookController;
 use App\Http\Controllers\Shop\MisPedidosController;
 use App\Http\Controllers\Shop\NotificacionController;
 use App\Http\Controllers\Shop\PagoController;
@@ -104,5 +105,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/notificaciones', Notificaciones::class)
             ->name('notificaciones.index');
     Route::get('/notificaciones/{notification}/abrir', [NotificacionController::class, 'abrir'])->name('notificaciones.abrir');
-
+    
 });
+
+/*
+|--------------------------------------------------------------------------
+| Webhook de Mercado Pago
+|--------------------------------------------------------------------------
+*/
+
+Route::post('/webhooks/mercadopago/orders', MercadoPagoWebhookController::class)->name('webhooks.mercadopago.orders');

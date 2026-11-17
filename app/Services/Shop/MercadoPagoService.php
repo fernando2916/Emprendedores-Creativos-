@@ -142,4 +142,36 @@ class MercadoPagoService
             );
         }
     }
+
+    /**
+     * Consultar una orden directamente en Mercado Pago.
+     *
+     * Esta consulta obtiene el estado real de la orden.
+     * Nunca se debe confiar en el estado enviado por el navegador
+     * ni únicamente en el contenido del webhook.
+     */
+    public function consultarOrden(string $orderId): \MercadoPago\Resources\Order
+    {
+        $accessToken = config('services.mercadopago.access_token');
+
+        if (empty($accessToken)) {
+            throw new RuntimeException(
+                'No está configurado el Access Token de Mercado Pago.'
+            );
+        }
+
+        MercadoPagoConfig::setAccessToken($accessToken);
+
+        try {
+            $client = new OrderClient();
+
+            return $client->get($orderId);
+
+        } catch (MPApiException $e) {
+
+        report($e);
+    
+        throw $e;
+    }
+    }
 }
