@@ -8,6 +8,7 @@ use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Order\OrderClient;
 use MercadoPago\Exceptions\MPApiException;
 use MercadoPago\MercadoPagoConfig;
+use Illuminate\Support\Facades\URL;
 use RuntimeException;
 
 class MercadoPagoService
@@ -73,6 +74,16 @@ class MercadoPagoService
             ''
         );
 
+        $crearUrlRetorno = fn (string $resultado) =>
+            URL::temporarySignedRoute(
+                'checkout.resultado',
+                now()->addDays(7),
+                [
+                    'intento' => $intento->id,
+                    'resultado' => $resultado,
+                ]
+            );
+
         // Una sola línea por el total final.
         // Incluye descuentos y envío.
         $request = [
@@ -98,6 +109,15 @@ class MercadoPagoService
                     'title' => 'Compra en Emprendedores Creativos',
                     'quantity' => 1,
                     'unit_price' => $total,
+                ],
+            ],
+
+            'config' => [
+                'online' => [
+                    'success_url' => $crearUrlRetorno('success'),
+                    'failure_url' => $crearUrlRetorno('failure'),
+                    'pending_url' => $crearUrlRetorno('pending'),
+                    'auto_return' => 'approved',
                 ],
             ],
         ];

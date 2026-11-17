@@ -23,6 +23,7 @@ use App\Http\Controllers\Shop\MercadoPagoWebhookController;
 use App\Http\Controllers\Shop\MisPedidosController;
 use App\Http\Controllers\Shop\NotificacionController;
 use App\Http\Controllers\Shop\PagoController;
+use App\Http\Controllers\Shop\ResultadoPagoController;
 use App\Http\Controllers\VacantesController;
 use App\Livewire\ComentarioPost;
 // use App\Livewire\Shop\Carrito;
@@ -115,3 +116,10 @@ Route::middleware('auth')->group(function () {
 */
 
 Route::post('/webhooks/mercadopago/orders', MercadoPagoWebhookController::class)->name('webhooks.mercadopago.orders');
+Route::get(
+    '/checkout/resultado/{intento}/{resultado}',
+    ResultadoPagoController::class
+)
+    ->whereNumber('intento')
+    ->whereIn('resultado', ['success', 'failure', 'pending'])
+    ->name('checkout.resultado');
