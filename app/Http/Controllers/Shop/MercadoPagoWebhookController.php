@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use MercadoPago\Exceptions\InvalidWebhookSignatureException;
 use MercadoPago\Webhook\WebhookSignatureValidator;
+use App\Services\Shop\ActualizarEstadoCheckoutMercadoPagoService;
 use Throwable;
 
 class MercadoPagoWebhookController extends Controller
@@ -18,7 +19,8 @@ class MercadoPagoWebhookController extends Controller
     public function __invoke(
         Request $request,
         MercadoPagoService $mercadoPago,
-        ProcesarPagoCheckoutService $procesarPago
+        ProcesarPagoCheckoutService $procesarPago,
+        ActualizarEstadoCheckoutMercadoPagoService $actualizarEstado
         ): JsonResponse {
 
         /*
@@ -231,23 +233,62 @@ class MercadoPagoWebhookController extends Controller
         */
 
         if (
-            $ordenMP->status !== 'processed' ||
-            $ordenMP->status_detail !== 'accredited'
-        ) {
+                $ordenMP->status !== 'processed' ||
+                $ordenMP->status_detail !== 'accredited'
+            ) {
+                $pagosNotificados = collect(
+                    data_get($ordenMP, 'transactions.payments', [])
+                )->map(function ($pago) {
+                    return [
+                        'id' => data_get($pago, 'id'),
+                        'reference_id' => data_get($pago, 'reference_id'),
+                        'status' => data_get($pago, 'status'),
+                        'status_detail' => data_get($pago, 'status_detail'),
+                        'amount' => data_get($pago, 'amount'),
+                        'paid_amount' => data_get($pago, 'paid_amount'),
+                    ];
+                })->values()->all();
 
-            Log::info(
-                'La orden de Mercado Pago todavía no está acreditada.',
-                [
-                    'order_id' => $ordenMP->id,
+                try {
+                    $actualizarEstado->actualizar(
+                        (int) $intento->id,
+                        [
+                            'mercadopago_order_id' => (string) $ordenMP->id,
+                            'order_status' => (string) $ordenMP->status,
+                            'order_status_detail' =>
+                                (string) $ordenMP->status_detail,
+
+                            'payments' => $pagosNotificados,
+
+                            'notification_id' => $request->input('id'),
+                            'notification_action' => $request->input('action'),
+                        ]
+                    );
+
+                } catch (Throwable $e) {
+                    report($e);
+
+                    // Mercado Pago podrá reintentar la notificación.
+                    return response()->json([
+                        'message' => 'No fue posible actualizar el estado del checkout.',
+                    ], 500);
+                }
+
+                Log::info(
+                    'Estado de Mercado Pago registrado sin procesar una orden.',
+                    [
+                        'intento_id' => $intento->id,
+                        'mercadopago_order_id' => $ordenMP->id,
+                        'order_status' => $ordenMP->status,
+                        'order_status_detail' => $ordenMP->status_detail,
+                    ]
+                );
+
+                return response()->json([
+                    'received' => true,
+                    'processed' => false,
                     'status' => $ordenMP->status,
-                    'status_detail' => $ordenMP->status_detail,
-                ]
-            );
-
-            return response()->json([
-                'received' => true,
-                'message' => 'El pago todavía no está acreditado.',
-            ]);
+                ]);
         }
 
         /*
