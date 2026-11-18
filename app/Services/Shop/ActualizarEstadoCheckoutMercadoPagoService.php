@@ -113,14 +113,18 @@ class ActualizarEstadoCheckoutMercadoPagoService
             ];
 
             if (
-                ! in_array(
-                    $intento->estado,
-                    $estadosDefinitivos,
-                    true
-                ) &&
-                $nuevoEstado !== null
-            ) {
-                $intento->estado = $nuevoEstado;
+                    ! in_array(
+                        $intento->estado,
+                        $estadosDefinitivos,
+                        true
+                    ) &&
+                    $nuevoEstado !== null &&
+                    ! (
+                        $intento->estado === 'procesando' &&
+                        $nuevoEstado === 'pendiente'
+                    )
+                ) {
+                    $intento->estado = $nuevoEstado;
             }
 
             $intento->save();

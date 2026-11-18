@@ -87,8 +87,6 @@
 
         @else
 
-        @else
-
             @if ($intento->estado === 'rechazado')
         
                 <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">
