@@ -50,12 +50,6 @@ class MercadoPagoService
             )
         );
 
-        $segundosRestantes = max(
-            1,
-            (int) ceil(
-                now()->diffInSeconds($intento->fecha_expiracion, false)
-            )
-        );
 
         $accessToken = config('services.mercadopago.access_token');
 
