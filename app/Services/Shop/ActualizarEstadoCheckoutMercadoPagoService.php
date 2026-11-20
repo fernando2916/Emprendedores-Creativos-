@@ -152,6 +152,18 @@ class ActualizarEstadoCheckoutMercadoPagoService
                     ]);
             }
 
+            if (
+                    in_array(
+                        $nuevoEstado,
+                        ['rechazado', 'cancelado', 'expirado'],
+                        true
+                    ) &&
+                    !$intento->fecha_liberacion
+                ) {
+                    $intento->fecha_liberacion = now();
+                    $intento->save();
+            }
+
             /*
              * Un reembolso o contracargo sin orden local requiere
              * revisión, no debemos crear una orden automáticamente.

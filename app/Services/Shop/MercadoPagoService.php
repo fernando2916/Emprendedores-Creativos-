@@ -40,6 +40,13 @@ class MercadoPagoService
             );
         }
 
+        $segundosRestantes = max(
+            1,
+            (int) ceil(
+                now()->diffInSeconds($intento->fecha_expiracion, false)
+            )
+        );
+
         $accessToken = config('services.mercadopago.access_token');
 
         if (empty($accessToken)) {
@@ -99,6 +106,8 @@ class MercadoPagoService
             'external_reference' => $intento->referencia_externa,
 
             'description' => 'Compra ' . $intento->referencia_externa,
+            
+            'expiration_time' => 'PT' . $segundosRestantes . 'S',
 
             'payer' => [
                 'email' => $intento->usuario->email,
@@ -193,5 +202,46 @@ class MercadoPagoService
     
         throw $e;
     }
+    }
+
+    /**
+     * Cancelar una orden de Mercado Pago.
+     *
+     * Solo debe utilizarse después de consultar su estado
+     * y comprobar que todavía puede cancelarse.
+     */
+    public function cancelarOrden(
+        string $orderId,
+        int $intentoId
+    ): \MercadoPago\Resources\Order {
+
+        $accessToken = config('services.mercadopago.access_token');
+
+        if (empty($accessToken)) {
+            throw new RuntimeException(
+                'No está configurado el Access Token de Mercado Pago.'
+            );
+        }
+
+        MercadoPagoConfig::setAccessToken($accessToken);
+
+        $client = new OrderClient();
+
+        $requestOptions = new RequestOptions();
+
+        // La misma clave se reutiliza en los reintentos de cancelación.
+        $idempotencyKey = hash(
+            'sha256',
+            'checkout-expiration-' . $intentoId
+        );
+
+        $requestOptions->setCustomHeaders([
+            'X-Idempotency-Key: ' . $idempotencyKey,
+        ]);
+
+        return $client->cancel(
+            $orderId,
+            $requestOptions
+        );
     }
 }

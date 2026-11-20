@@ -11,3 +11,7 @@ Artisan::command('inspire', function () {
 Schedule::command('ordenes:cancelar-expiradas')
     ->everyMinute()
     ->withoutOverlapping();
+
+Schedule::command('checkout:expirar-intentos')
+    ->everyMinute()
+    ->withoutOverlapping();
