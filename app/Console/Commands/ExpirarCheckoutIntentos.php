@@ -29,6 +29,7 @@ class ExpirarCheckoutIntentos extends Command
                 ['Órdenes canceladas en Mercado Pago', $resultado['cancelados_pasarela']],
                 ['Intentos pendientes de resolución', $resultado['pendientes']],
                 ['Errores', $resultado['errores']],
+                ['Pagos acreditados recuperados', $resultado['pagos_recuperados']],
             ]
         );
 

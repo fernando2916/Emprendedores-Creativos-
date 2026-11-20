@@ -10,7 +10,9 @@ class ExpirarCheckoutIntentosService
 {
     public function __construct(
         private MercadoPagoService $mercadoPago,
-        private ActualizarEstadoCheckoutMercadoPagoService $actualizarEstado
+        private ActualizarEstadoCheckoutMercadoPagoService $actualizarEstado,
+        private ProcesarPagoCheckoutService $procesarPago
+        
     ) {
     }
 
@@ -21,6 +23,7 @@ class ExpirarCheckoutIntentosService
             'cancelados_pasarela' => 0,
             'pendientes' => 0,
             'errores' => 0,
+            'pagos_recuperados' => 0,
         ];
 
         CheckoutIntento::query()
@@ -156,22 +159,114 @@ class ExpirarCheckoutIntentosService
         );
 
         /*
-         * Si ya se acreditó, jamás cancelar ni liberar el cupón.
-         * El webhook se encargará del procesamiento definitivo.
-         */
+        |--------------------------------------------------------------------------
+        | Recuperar pagos acreditados
+        |--------------------------------------------------------------------------
+        |
+        | La API oficial confirma el estado del pago. Si el webhook no llegó,
+        | podemos procesarlo desde esta tarea programada.
+        |
+        | Se reutiliza ProcesarPagoCheckoutService para conservar la
+        | idempotencia y la asignación atómica del inventario.
+        */
+
         if (
             $estado === 'processed' &&
             $ordenMP->status_detail === 'accredited'
         ) {
-            Log::warning(
-                'Se encontró un pago acreditado durante la expiración de un checkout. Se espera el webhook.',
+            $pagos = collect(
+                data_get($ordenMP, 'transactions.payments', [])
+            );
+
+            $pagosAcreditados = $pagos->filter(
+                fn ($pago) =>
+                    data_get($pago, 'status') === 'processed' &&
+                    data_get($pago, 'status_detail') === 'accredited'
+            )->values();
+
+            if ($pagosAcreditados->count() !== 1) {
+                Log::critical(
+                    'No se pudo recuperar el pago: la orden no contiene exactamente un pago acreditado.',
+                    [
+                        'intento_id' => $intento->id,
+                        'mercadopago_order_id' => $ordenMP->id,
+                        'cantidad_pagos' => $pagosAcreditados->count(),
+                    ]
+                );
+
+                $resultado['errores']++;
+
+                return;
+            }
+
+            $pago = $pagosAcreditados->first();
+
+            $pagoId = data_get($pago, 'id');
+
+            $importePagado = number_format(
+                (float) data_get($pago, 'paid_amount', 0),
+                2,
+                '.',
+                ''
+            );
+
+            $totalPagadoOrden = number_format(
+                (float) $ordenMP->total_paid_amount,
+                2,
+                '.',
+                ''
+            );
+
+            if (
+                empty($pagoId) ||
+                $importePagado !== $importeEsperado ||
+                $totalPagadoOrden !== $importeEsperado
+            ) {
+                Log::critical(
+                    'No se pudo recuperar el pago: el importe acreditado no coincide.',
+                    [
+                        'intento_id' => $intento->id,
+                        'mercadopago_order_id' => $ordenMP->id,
+                        'payment_id' => $pagoId,
+                        'importe_esperado' => $importeEsperado,
+                        'importe_pagado' => $importePagado,
+                        'total_pagado_orden' => $totalPagadoOrden,
+                    ]
+                );
+
+                $resultado['errores']++;
+
+                return;
+            }
+
+            $this->procesarPago->procesarPagoConfirmado(
+                (int) $intento->id,
+                (string) $pagoId,
+                (string) $ordenMP->id,
                 [
-                    'intento_id' => $intento->id,
-                    'mercadopago_order_id' => $ordenMP->id,
+                    'proveedor' => 'mercado_pago',
+                    'mercadopago_order_id' => (string) $ordenMP->id,
+                    'mercadopago_payment_id' => (string) $pagoId,
+                    'order_status' => $ordenMP->status,
+                    'order_status_detail' => $ordenMP->status_detail,
+                    'payment_status' => data_get($pago, 'status'),
+                    'payment_status_detail' => data_get($pago, 'status_detail'),
+                    'paid_amount' => $importePagado,
+                    'currency' => $ordenMP->currency,
+                    'origen' => 'recuperacion_automatica',
                 ]
             );
 
-            $resultado['pendientes']++;
+            $resultado['pagos_recuperados']++;
+
+            Log::info(
+                'Pago acreditado recuperado correctamente mediante la tarea de expiración.',
+                [
+                    'intento_id' => $intento->id,
+                    'mercadopago_order_id' => $ordenMP->id,
+                    'mercadopago_payment_id' => $pagoId,
+                ]
+            );
 
             return;
         }
