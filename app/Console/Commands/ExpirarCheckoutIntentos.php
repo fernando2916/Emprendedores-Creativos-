@@ -2,13 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Attributes\Description;
-use Illuminate\Console\Attributes\Signature;
 use App\Services\Shop\ExpirarCheckoutIntentosService;
 use Illuminate\Console\Command;
 
-#[Signature('app:expirar-checkout-intentos')]
-#[Description('Command description')]
 class ExpirarCheckoutIntentos extends Command
 {
     /**

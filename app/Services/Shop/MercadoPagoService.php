@@ -31,14 +31,24 @@ class MercadoPagoService
             );
         }
 
-        if (
-            $intento->fecha_expiracion &&
-            $intento->fecha_expiracion->isPast()
-        ) {
+        if (!$intento->fecha_expiracion) {
+            throw new RuntimeException(
+                'El intento de compra no tiene una fecha de expiración válida.'
+            );
+        }
+
+        if ($intento->fecha_expiracion->isPast()) {
             throw new RuntimeException(
                 'Este intento de compra ha expirado. Regresa al carrito para iniciar una nueva compra.'
             );
         }
+
+        $segundosRestantes = max(
+            1,
+            (int) ceil(
+                now()->diffInSeconds($intento->fecha_expiracion, false)
+            )
+        );
 
         $segundosRestantes = max(
             1,
