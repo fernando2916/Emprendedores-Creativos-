@@ -36,6 +36,7 @@ use App\Livewire\Admin\Cupones\Index as CuponesIndex;
 use App\Livewire\Admin\Cupones\Formulario as FormularioCupon;
 use App\Livewire\Admin\Ordenes\Index as OrdenesIndex;
 use App\Livewire\Admin\Ordenes\Detalle as DetalleOrden;
+use App\Livewire\Admin\Pagos\IntentosIndex;
 
 use Illuminate\Support\Facades\Route;
 
@@ -90,6 +91,10 @@ Route::get('/ordenes', OrdenesIndex::class)
 Route::get('/ordenes/{orden}', DetalleOrden::class)
         ->whereNumber('orden')
         ->name('orden.show');
+
+// Historial y administración de pagos
+Route::get('/pagos/intentos', IntentosIndex::class)
+    ->name('pago.intentos.index');
         
 Route::resource('/licencias', LicenseController::class)->names('admin.licencia');
 Route::resource('/categorias', CategoriaController::class)->names('admin.categoria');

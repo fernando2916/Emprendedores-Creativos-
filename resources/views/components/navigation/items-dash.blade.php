@@ -101,16 +101,16 @@
                 @endcan
                 {{-- @can('aviso index')
   
-        <li>
-          <a href="{{ route('admin.aviso.index') }}" wire:navigate
-            class="flex items-center w-full p-2 transition duration-75 rounded-md  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
-            <i class="fa-solid fa-bullhorn"></i>
-            Avisos
-          </a>
-        </li>
-        @endcan  --}}
+                <li>
+                <a href="{{ route('admin.aviso.index') }}" wire:navigate
+                    class="flex items-center w-full p-2 transition duration-75 rounded-md  gap-3 group hover:bg-light-300 dark:hover:bg-nav-700">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    Avisos
+                </a>
+                </li> 
+            @endcan  
 
-            </div>
+                </div> --}}
         @endcan
         @can('ver glosario')
             <div>
@@ -183,6 +183,19 @@
                 @endcan
                 
             </div>
+            @can('pago index')
+                <li>
+                    <a
+                        href="{{ route('pago.intentos.index') }}"
+                        wire:navigate
+                        wire:current.exact*="bg-light-200 dark:bg-nav-700"
+                        class="flex items-center w-full p-2 transition duration-75 rounded-md gap-3 group hover:bg-light-300 dark:hover:bg-nav-700"
+                    >
+                        <i class="fa-solid fa-money-check-dollar"></i>
+                        Historial de pagos
+                    </a>
+                </li>
+            @endcan
         @endcan
         @can('ver tienda')           
          </li>

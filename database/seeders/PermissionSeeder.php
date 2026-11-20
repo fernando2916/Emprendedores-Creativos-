@@ -173,6 +173,11 @@ class PermissionSeeder extends Seeder
             'orden show',
             'orden delete',
             
+            'pago index',
+            'pago edit',
+            'pago delete',
+            
+            
             'subcategoria index',    
             'subcategoria create',
             'subcategoria edit',
