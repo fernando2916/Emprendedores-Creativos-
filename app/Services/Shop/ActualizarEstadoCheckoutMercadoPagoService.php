@@ -45,7 +45,7 @@ class ActualizarEstadoCheckoutMercadoPagoService
                 
                 'expired' => 'expirado',
 
-                'canceled' => $detalleOrden === 'expired'
+                'canceled', 'cancelled' => $detalleOrden === 'expired'
                     ? 'expirado'
                     : 'cancelado',
 

@@ -24,13 +24,32 @@ class ExpirarCheckoutIntentosService
         ];
 
         CheckoutIntento::query()
-            ->whereIn('estado', ['pendiente', 'procesando'])
             ->whereNotNull('fecha_expiracion')
             ->where('fecha_expiracion', '<=', now())
             ->whereNull('orden_id')
+            ->where(function ($query) {
+                $query
+                    ->whereIn('estado', ['pendiente', 'procesando'])
+
+                    /*
+                    * También recuperar intentos ya expirados,
+                    * rechazados o cancelados que todavía tienen
+                    * una orden externa pendiente de sincronizar.
+                    */
+                    ->orWhere(function ($query) {
+                        $query
+                            ->whereIn(
+                                'estado',
+                                ['rechazado', 'cancelado', 'expirado']
+                            )
+                            ->whereNotNull('mercadopago_order_id')
+                            ->whereNull(
+                                'respuesta_pasarela->mercadopago_estado->expiracion_sincronizada_en'
+                            );
+                    });
+            })
             ->orderBy('id')
             ->chunkById(50, function ($intentos) use (&$resultado) {
-
                 foreach ($intentos as $intento) {
                     try {
                         $this->procesarIntento(
@@ -213,6 +232,7 @@ class ExpirarCheckoutIntentosService
                         (string) $ordenMP->status_detail,
                     'payments' => $pagos,
                     'origen' => 'expiracion_automatica',
+                    'expiracion_sincronizada_en' => now()->toIso8601String(),
                 ]
             );
 

@@ -9,6 +9,7 @@ use MercadoPago\Client\Order\OrderClient;
 use MercadoPago\Exceptions\MPApiException;
 use MercadoPago\MercadoPagoConfig;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 class MercadoPagoService
@@ -157,13 +158,82 @@ class MercadoPagoService
                 );
             }
 
-            $intento->forceFill([
-                'mercadopago_order_id' => $respuesta->id,
-                'mercadopago_checkout_url' => $respuesta->checkout_url,
-                'metodo_pago' => 'mercado_pago',
-            ])->save();
+            /*
+            * Guardamos primero la orden externa.
+            *
+            * Así, aunque el intento haya vencido mientras Mercado Pago
+            * procesaba la solicitud, nunca perdemos el ID de esa orden.
+            */
+            $resultado = DB::transaction(function () use (
+                $intento,
+                $respuesta
+            ) {
+                $intentoActual = CheckoutIntento::query()
+                    ->whereKey($intento->id)
+                    ->lockForUpdate()
+                    ->firstOrFail();
 
-            return $respuesta->checkout_url;
+                $intentoActual->forceFill([
+                    'mercadopago_order_id' => (string) $respuesta->id,
+                    'mercadopago_checkout_url' => $respuesta->checkout_url,
+                    'metodo_pago' => 'mercado_pago',
+                ])->save();
+
+                /*
+                * Si el webhook ya generó una orden local o confirmó
+                * el pago, no debemos cancelar nada.
+                */
+                if (
+                    $intentoActual->orden_id ||
+                    $intentoActual->estado === 'aprobado'
+                ) {
+                    return [
+                        'cancelar' => false,
+                        'url' => $respuesta->checkout_url,
+                    ];
+                }
+
+                $estadoTerminal = in_array(
+                    $intentoActual->estado,
+                    ['rechazado', 'cancelado', 'expirado'],
+                    true
+                );
+
+                $fechaVencida = $intentoActual->fecha_expiracion
+                    && $intentoActual->fecha_expiracion->lte(now());
+
+                /*
+                * No cancelamos un intento que ya está procesando
+                * un pago. El webhook debe resolver ese resultado.
+                */
+                $debeCancelar = $estadoTerminal || (
+                    $fechaVencida &&
+                    $intentoActual->estado !== 'procesando'
+                );
+
+                return [
+                    'cancelar' => $debeCancelar,
+                    'url' => $respuesta->checkout_url,
+                ];
+            }, 3);
+
+            /*
+            * Si venció durante la creación, cancelar la orden externa.
+            * El ID ya quedó guardado para permitir reintentos automáticos
+            * si Mercado Pago presenta un error temporal.
+            */
+            if ($resultado['cancelar']) {
+                $this->cancelarOrden(
+                    (string) $respuesta->id,
+                    (int) $intento->id
+                );
+
+                throw new RuntimeException(
+                    'El tiempo para completar este checkout terminó. Regresa al carrito para iniciar una nueva compra.'
+                );
+            }
+
+            return $resultado['url'];
 
         } catch (MPApiException $e) {
 
